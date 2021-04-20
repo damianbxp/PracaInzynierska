@@ -6,4 +6,34 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="img\02_logo_white_64x64.ico" />
+    <None Remove="img\iconTest.png" />
+    <None Remove="img\luna02logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Functions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\iconTest.png" />
+    <Resource Include="img\luna02logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

@@ -12,34 +12,59 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
+using System.IO;
 
 namespace BlockBot {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        public List<FunctionsType> functionsList = new List<FunctionsType>();
-        public List<FunctionBlock> codeBlocks = new List<FunctionBlock>();
+
         public MainWindow() {
-            InitializeComponent();            
+            InitializeComponent();
 
-
-            FunctionsType Basic = new FunctionsType() { Title = "Basic" };
-            Basic.functionsList.Add(new FunctionBlock { Name = "Move" });
-            Basic.functionsList.Add(new FunctionBlock { Name = "Open" });
-            Basic.functionsList.Add(new FunctionBlock { Name = "Close" });
-            functionsList.Add(Basic);
-
-            FunctionsType Advanced = new FunctionsType() { Title = "Advanced" };
-            Advanced.functionsList.Add(new FunctionBlock { Name = "Continous Move" });
-            Advanced.functionsList.Add(new FunctionBlock { Name = "Grid Placing" });
-            functionsList.Add(Advanced);
-
-            FunctionsTreeView.ItemsSource = functionsList;
-
-            codeBlocks.Add(new FunctionBlock { Name = "zc" });
+            
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e) {
+            string[] basicFunctions = { "move", "open", "close" };
+            string[] advancedFunctions = { "grid place", "dance" };
+            string[] loopFunctions = { "for", "while" };
+
+            TreeViewItem basicFunctionsItem = new TreeViewItem { Header = "Basic" };
+            foreach(string fcnName in basicFunctions) {
+                basicFunctionsItem.Items.Add(new TreeViewFunction { Header=fcnName});
+            }
+            FunctionsTreeView.Items.Add(basicFunctionsItem);
+
+            TreeViewItem advancedFunctionsItem = new TreeViewItem { Header = "Advanced" };
+            foreach(string fcnName in advancedFunctions) {
+                advancedFunctionsItem.Items.Add(new TreeViewFunction { Header = fcnName });
+            }
+            FunctionsTreeView.Items.Add(advancedFunctionsItem);
+
+            TreeViewItem loopFunctionsItem = new TreeViewItem { Header = "Loop" };
+            foreach(string fcnName in loopFunctions) {
+                loopFunctionsItem.Items.Add(new TreeViewFunction { Header = fcnName });
+            }
+            FunctionsTreeView.Items.Add(loopFunctionsItem);
+
+
+            ///////////CODE
+            CodeTreeView.Items.Add(new TreeViewFunction { Header = "Test1" });
+            CodeTreeView.Items.Add(new TreeViewFunction { Header = "Test2" });
+
+            TreeViewFunction loopTest = new TreeViewFunction { Header = "Loop test" };
+            loopTest.Items.Add(new TreeViewFunction { Header = "Loop1" });
+            loopTest.Items.Add(new TreeViewFunction { Header = "Loop2" });
+            loopTest.Items.Add(new TreeViewFunction { Header = "Loop3" });
+
+            CodeTreeView.Items.Add(loopTest);
+        }
+        private void LoadProperties() {
+
+        }
         private void Btn_New_Click(object sender, RoutedEventArgs e) {
 
         }
@@ -63,23 +88,9 @@ namespace BlockBot {
         private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e) {
 
         }
+
     }
-
-    public class FunctionsType {
-        public string Title { get; set; }
-        public List<FunctionBlock> functionsList { get; set; }
-
-        public FunctionsType() {
-            this.functionsList = new List<FunctionBlock>();
-        }
-    }
-
-    public class FunctionBlock {
-        public string Name { get; set; }
-        public List<FunctionBlock> Functions { get; set; }
-
-        public FunctionBlock() {
-            Functions = new List<FunctionBlock>();
-        }
+    public class TreeViewFunction : TreeViewItem {
+        public TreeViewFunction InsideFunctions { get; set; }
     }
 }
