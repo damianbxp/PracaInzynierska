@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FunctionBlockManager : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class FunctionBlockManager : MonoBehaviour
         FcnFolder loop = new FcnFolder("Loop", BlockPrefabs[0]);
 
         basic.functionBlocks.Add(new FcnMove("Move", BlockPrefabs[1]));
+        basic.functionBlocks.Add(new FcnMove("Move Round", BlockPrefabs[1]));
+        basic.functionBlocks.Add(new FcnMove("Move Linear", BlockPrefabs[1]));
 
         advanced.functionBlocks.Add(new FcnMove("Advanced Move", BlockPrefabs[1]));
         loop.functionBlocks.Add(new FcnMove("Loop Move", BlockPrefabs[1]));
@@ -37,6 +40,8 @@ public class FunctionBlockManager : MonoBehaviour
 
     void AddFcnBlockToUI(FunctionBlock block, Transform parent) {
         Transform spawnedBlock = Instantiate(block.BlockPrefab, parent).transform;
+        spawnedBlock.name = block.Name;
+        spawnedBlock.GetChild(0).GetComponent<Text>().text = block.Name;
         Debug.Log(block.GetType());
         if(block.GetType() == typeof(FcnFolder)) {
             FcnFolder folder = block as FcnFolder;
@@ -45,5 +50,7 @@ public class FunctionBlockManager : MonoBehaviour
             }
         }
     }
+    public void expand() {
 
+    }
 }
