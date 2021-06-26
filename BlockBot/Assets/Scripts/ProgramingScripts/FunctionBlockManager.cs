@@ -42,7 +42,7 @@ public class FunctionBlockManager : MonoBehaviour
         Transform spawnedBlock = Instantiate(block.BlockPrefab, parent).transform;
         spawnedBlock.name = block.Name;
         spawnedBlock.GetChild(0).GetComponent<Text>().text = block.Name;
-        Debug.Log(block.GetType());
+        //Debug.Log(block.GetType());
         if(block.GetType() == typeof(FcnFolder)) {
             FcnFolder folder = block as FcnFolder;
             foreach(FunctionBlock insideBlock in folder.functionBlocks) {
