@@ -8,6 +8,10 @@ public class Axis : MonoBehaviour
     public float minTheta;
     public float maxTheta;
 
+    public float d;
+    public float a;
+    public float alpha;
+
     float xAngle;
     float yAngle;
     public float offset;
