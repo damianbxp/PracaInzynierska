@@ -29,7 +29,8 @@ public class IKSolver : MonoBehaviour
     private void Update() {
         UpdateTargetLocalPos();
 
-        inv3();
+        inv4();
+        //inv3();
         //inv2();
         //inv1();
     }
@@ -45,6 +46,36 @@ public class IKSolver : MonoBehaviour
         if(joint.childCount > 0) {
             UpdateAxes(joint.GetChild(0));
         }
+    }
+
+
+    void inv4() {
+        float q1,q2, beta, alpha, d, a;
+
+        d = Mathf.Sqrt(Mathf.Pow(target.position.x, 2) + Mathf.Pow(target.position.z, 2));//pos robota = (0,0,0)
+        alpha = Mathf.Atan((1.22f + 0.17f) / 0.145f);
+        a = Mathf.Sqrt(Mathf.Pow(0.145f, 2) + Mathf.Pow(1.22f + 0.17f, 2));
+
+        beta = Mathf.Pow(d - 0.35f, 2) + Mathf.Pow(target.position.y - 0.815f, 2) - Mathf.Pow(0.85f, 2) - Mathf.Pow(a, 2);
+        beta /= 2 * 0.85f * a;
+        beta = Mathf.Acos(beta);
+
+        q1 = Mathf.Atan(( target.position.y - 0.815f ) / ( d - 0.35f ));
+        q1 += Mathf.Atan(( a * Mathf.Sin(beta) ) / ( 0.85f + a * Mathf.Cos(beta) ));
+        q1 *= Mathf.Rad2Deg;
+
+        beta *= Mathf.Rad2Deg;
+        alpha *= Mathf.Rad2Deg;
+        q2 = beta - alpha;
+
+        q1 -= 90;
+        q1 *= -1;
+
+        Debug.Log("q1="+q1+"|q2="+q2+"|alpha="+alpha+"|beta="+beta);
+
+
+        axes[1].theta = q1;
+        axes[2].theta = q2;
     }
 
     void inv3() {
