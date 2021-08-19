@@ -8,10 +8,13 @@ public class Axis : MonoBehaviour
     public float minTheta;
     public float maxTheta;
 
+    public float speed;
+
     float xAngle;
     float yAngle;
     public float offset;
 
+    float newTheta;
 
     private void Start() {
         xAngle = transform.localEulerAngles.x;
@@ -19,6 +22,13 @@ public class Axis : MonoBehaviour
     }
 
     private void Update() {
-        transform.localEulerAngles = new Vector3(xAngle, yAngle, theta + offset);
+
+        if(theta<maxTheta && theta > minTheta) {
+            newTheta = theta + offset;
+        }
+
+        
+
+        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed*Time.deltaTime);
     }
 }

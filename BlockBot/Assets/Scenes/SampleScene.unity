@@ -2960,6 +2960,7 @@ MonoBehaviour:
   theta: 0
   minTheta: 0
   maxTheta: 0
+  speed: 0
   offset: 0
 --- !u!54 &2384070324963373587
 Rigidbody:
@@ -3084,8 +3085,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theta: 0
-  minTheta: 0
-  maxTheta: 0
+  minTheta: -185
+  maxTheta: 185
+  speed: 3
   offset: 0
 --- !u!54 &3673896425261027055
 Rigidbody:
@@ -3220,8 +3222,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theta: 0
-  minTheta: 0
-  maxTheta: 0
+  minTheta: -45
+  maxTheta: 125
+  speed: 3
   offset: 0
 --- !u!54 &4145384635480310237
 Rigidbody:
@@ -3274,6 +3277,7 @@ MonoBehaviour:
   theta: 0
   minTheta: 0
   maxTheta: 0
+  speed: 0
   offset: 0
 --- !u!54 &4154000569969648918
 Rigidbody:
@@ -3326,6 +3330,7 @@ MonoBehaviour:
   theta: 0
   minTheta: 0
   maxTheta: 0
+  speed: 0
   offset: 0
 --- !u!54 &4753417008544802851
 Rigidbody:
@@ -3577,6 +3582,7 @@ MonoBehaviour:
   theta: 0
   minTheta: 0
   maxTheta: 0
+  speed: 0
   offset: 0
 --- !u!4 &9055150649988189730
 Transform:
@@ -3626,8 +3632,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theta: 0
-  minTheta: 0
-  maxTheta: 0
+  minTheta: -120
+  maxTheta: 135
+  speed: 3
   offset: -90
 --- !u!54 &9094336982893471484
 Rigidbody:

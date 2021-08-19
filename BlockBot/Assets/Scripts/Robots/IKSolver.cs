@@ -30,6 +30,7 @@ public class IKSolver : MonoBehaviour
         UpdateTargetLocalPos();
 
         inv4();
+        IkRotation();
         //inv3();
         //inv2();
         //inv1();
@@ -48,6 +49,14 @@ public class IKSolver : MonoBehaviour
         }
     }
 
+    void IkRotation() {
+
+        float q0 = Mathf.Atan(target.position.z / target.position.x)*Mathf.Rad2Deg;
+        if(target.position.x > 0) {
+            q0 *= -1;
+        }
+        axes[0].theta = q0;
+    }
 
     void inv4() {
         float q1,q2, beta, alpha, d, a;
@@ -71,11 +80,15 @@ public class IKSolver : MonoBehaviour
         q1 -= 90;
         q1 *= -1;
 
-        Debug.Log("q1="+q1+"|q2="+q2+"|alpha="+alpha+"|beta="+beta);
+        //Debug.Log("q1="+q1+"|q2="+q2);
 
+        if (!float.IsNaN(q1) && !float.IsNaN(q2)) {
+            if(q1>axes[1].minTheta && q2<axes[1].maxTheta && q2 >axes[2].minTheta && q2 < axes[2].maxTheta) {
+                axes[1].theta = q1;
+                axes[2].theta = q2;
+            }
+        }
 
-        axes[1].theta = q1;
-        axes[2].theta = q2;
     }
 
     void inv3() {
