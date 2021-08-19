@@ -3085,8 +3085,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theta: 0
-  minTheta: -185
-  maxTheta: 185
+  minTheta: 0
+  maxTheta: 0
   speed: 3
   offset: 0
 --- !u!54 &3673896425261027055

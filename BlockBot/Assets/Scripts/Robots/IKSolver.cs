@@ -29,11 +29,9 @@ public class IKSolver : MonoBehaviour
     private void Update() {
         UpdateTargetLocalPos();
 
-        inv4();
+        //inv4();
+        invLocalPos();
         IkRotation();
-        //inv3();
-        //inv2();
-        //inv1();
     }
 
     private void UpdateTargetLocalPos() {
@@ -53,9 +51,47 @@ public class IKSolver : MonoBehaviour
 
         float q0 = Mathf.Atan(target.position.z / target.position.x)*Mathf.Rad2Deg;
         if(target.position.x > 0) {
-            q0 *= -1;
+            if(target.position.z > 0) {
+                q0 = 360 - q0;
+            } else {
+                q0 *= -1;   
+            }
+        } else {
+            q0 = 180 - q0;
         }
         axes[0].theta = q0;
+        Debug.Log(q0);
+    }
+
+    void invLocalPos() {
+        float q1, q2, beta, alpha, d, a;
+        d = targetLocalPos.x;
+        alpha = Mathf.Atan(( 1.22f + 0.17f ) / 0.145f); // przy obrocie kiœci¹ to bêdzie zmienna
+        a = Mathf.Sqrt(Mathf.Pow(0.145f, 2) + Mathf.Pow(1.22f + 0.17f, 2)); // przy obrocie kiœci¹ to bêdzie zmienna
+
+        beta = Mathf.Pow(d, 2) + Mathf.Pow(targetLocalPos.y, 2) - Mathf.Pow(0.85f, 2) - Mathf.Pow(a, 2);
+        beta /= 2 * 0.85f * a;
+        beta = Mathf.Acos(beta);
+
+        q1 = Mathf.Atan(( targetLocalPos.y ) / (d));
+        q1 += Mathf.Atan(( a * Mathf.Sin(beta) ) / ( 0.85f + a * Mathf.Cos(beta) ));
+        q1 *= Mathf.Rad2Deg;
+
+        beta *= Mathf.Rad2Deg;
+        alpha *= Mathf.Rad2Deg;
+        q2 = beta - alpha;
+
+        q1 -= 90;
+        q1 *= -1;
+
+        //Debug.Log("q1="+q1+"|q2="+q2 + "|d=" + d + "|beta=" + beta);
+        //Debug.Log("q1="+q1+"|q2="+q2);
+
+
+        if(!float.IsNaN(q1) && !float.IsNaN(q2)) {
+            axes[1].theta = q1;
+            axes[2].theta = q2;
+        }
     }
 
     void inv4() {
@@ -91,61 +127,5 @@ public class IKSolver : MonoBehaviour
 
     }
 
-    void inv3() {
-        float q1, q2;
-        //targetLocalPos = new Vector2(0.5f, 0);
-
-        q2 = Mathf.Pow(targetLocalPos.x, 2) + Mathf.Pow(targetLocalPos.y, 2) - Mathf.Pow(a1, 2) - Mathf.Pow(a2, 2);
-        q2 /= 2 * a1 * a2;
-        q2 = Mathf.Acos(q2);
-        q1 = a2 * Mathf.Sin(q2);
-        q1 /= a1 + a2 * Mathf.Cos(q2);
-        q1 = Mathf.Atan(targetLocalPos.y / targetLocalPos.x) - Mathf.Atan(q1);
-
-        q1 = Mathf.Rad2Deg * q1 * -1;
-        q2 = Mathf.Rad2Deg * q2;
-
-        q1 = 90 - q1;
-
-        Debug.Log(q1 + "|" + q2);
-
-        axes[1].theta = q1;
-        axes[2].theta = q2;
-
-    }
-    void inv2() {
-        float q1, q2;
-
-        q1 = Mathf.Pow(a1, 2) + Mathf.Pow(targetLocalPos.x, 2) + Mathf.Pow(targetLocalPos.y, 2) - Mathf.Pow(a2, 2);
-        q1 /= 2 * a1 * Mathf.Sqrt(Mathf.Pow(targetLocalPos.x, 2) + Mathf.Pow(targetLocalPos.y, 2));
-        q1 = Mathf.Acos(q1);
-
-        q2 = Mathf.Pow(a1, 2) + Mathf.Pow(a2, 2) - Mathf.Pow(targetLocalPos.x, 2) - Mathf.Pow(targetLocalPos.y, 2);
-        q2 /= 2 * a1 * a2;
-        q2 = Mathf.Acos(q2);
-
-        Debug.Log(Mathf.Rad2Deg * q1 + "|" + Mathf.Rad2Deg * q2);
-
-        axes[1].theta = 90 - Mathf.Rad2Deg * q1;
-        axes[2].theta = 90 - Mathf.Rad2Deg * q2 + q2Offset;
-    }
-
-    void inv1() {
-        float q1, q2;
-
-        q2 = Mathf.Pow(targetLocalPos.x, 2) + Mathf.Pow(targetLocalPos.y, 2) - Mathf.Pow(a1, 2) - Mathf.Pow(a2, 2);
-        q2 /= 2 * a1 * a2;
-        q2 = Mathf.Acos(q2);
-
-        q1 = a2 * Mathf.Sin(q2);
-        q1 /= a1 + a2 * Mathf.Cos(q2);
-        q1 = Mathf.Atan(targetLocalPos.y / targetLocalPos.x) - Mathf.Atan(q1);
-
-
-        //Debug.Log(targetLocalPos);
-        Debug.Log(Mathf.Rad2Deg * q1 +"|" + Mathf.Rad2Deg* q2);
-
-        axes[1].theta = Mathf.Rad2Deg * q1;
-        axes[2].theta = Mathf.Rad2Deg * q2 + 180;
-    }
+    
 }

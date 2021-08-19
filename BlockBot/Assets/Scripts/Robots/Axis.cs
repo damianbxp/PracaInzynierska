@@ -23,7 +23,7 @@ public class Axis : MonoBehaviour
 
     private void Update() {
 
-        if(theta<maxTheta && theta > minTheta) {
+        if((minTheta==0 && maxTheta==0)||(theta<maxTheta && theta > minTheta)) {
             newTheta = theta + offset;
         }
 
