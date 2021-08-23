@@ -8,21 +8,18 @@ public class IKSolver : MonoBehaviour
 
     List<Axis> axes = new List<Axis>();
 
-    public Transform rotBase, joint1, joint2;
+    public Transform rotBase, joint1, joint2,wrist;
 
     Vector2 targetLocalPos;
 
+    Matrix4x4 wristRot;
+    Matrix4x4 targetRot;
 
     float a1, a2;
     float q2Offset;
 
     private void Start() {
         UpdateAxes(transform.GetChild(0));
-        a1 = 0.85f;
-        a2 = 1.22f;
-        //a1 = 1f;
-        //a2 = 1f;
-        q2Offset = 90 - Mathf.Rad2Deg* Mathf.Atan(a2 / 0.145f);
     }
 
 
@@ -32,6 +29,7 @@ public class IKSolver : MonoBehaviour
         //inv4();
         invLocalPos();
         IkRotation();
+        wristRotation();
     }
 
     private void UpdateTargetLocalPos() {
@@ -47,6 +45,49 @@ public class IKSolver : MonoBehaviour
         }
     }
 
+    void wristRotation() {
+
+        targetRot = target.localToWorldMatrix;
+        wristRot = wrist.localToWorldMatrix;
+
+        //Debug.Log(wristRot);
+
+        Quaternion targetRotQ = targetRot.rotation;
+
+        Matrix4x4 R06, R03, R36;
+
+        R06 = targetRot;
+        R03 = wristRot;
+
+        R36 = R03.inverse * R06;
+
+        float theta5 = getTheta5(R36);
+        float theta4 = getTheta4(R36, theta5) * Mathf.Rad2Deg;
+        float theta6 = getTheta6(R36, theta5) * Mathf.Rad2Deg;
+        theta5 *= Mathf.Rad2Deg;
+
+        Debug.Log(new Vector3(theta4, theta5, theta6));
+
+        axes[3].theta = theta4;
+        axes[4].theta = theta6;
+        axes[5].theta = theta5;
+
+
+
+    }
+
+    float getTheta4(Matrix4x4 matrix, float theta5) {
+        return Mathf.Acos(matrix[1,2]/Mathf.Sin(theta5));
+    }
+
+    float getTheta5(Matrix4x4 matrix) {
+        return Mathf.Acos(matrix[2, 2]);
+    }
+
+    float getTheta6(Matrix4x4 matrix, float theta5) {
+        return Mathf.Acos(matrix[2, 0] / -Mathf.Sin(theta5));
+    }
+
     void IkRotation() {
 
         float q0 = Mathf.Atan(target.position.z / target.position.x)*Mathf.Rad2Deg;
@@ -60,7 +101,7 @@ public class IKSolver : MonoBehaviour
             q0 = 180 - q0;
         }
         axes[0].theta = q0;
-        Debug.Log(q0);
+        //Debug.Log(q0);
     }
 
     void invLocalPos() {
