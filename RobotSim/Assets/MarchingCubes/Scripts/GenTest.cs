@@ -15,10 +15,11 @@ public class GenTest : MonoBehaviour
 	public float isoLevel = 0f;
 	public bool useFlatShading;
 
-	[Header("Block Size")]
+	[Header("Block")]
 	public float width = 0.1f;
 	public float lenght = 0.1f;
 	public float height = 0.1f;
+	public Vector3 blockPosition;
 
 
 	[Header("References")]
@@ -26,7 +27,6 @@ public class GenTest : MonoBehaviour
 	public ComputeShader densityCompute;
 	public ComputeShader editCompute;
 	public Material material;
-
 
 	// Private
 	ComputeBuffer triangleBuffer;
@@ -46,6 +46,8 @@ public class GenTest : MonoBehaviour
 
 	void Start()
 	{
+		blockPosition += new Vector3(0, height / 2, 0);
+
 		SetBoundingBox();
 
 		InitTextures();
@@ -63,7 +65,7 @@ public class GenTest : MonoBehaviour
 	}
 
 	void CorrectPosition() {
-		transform.position = new Vector3(2f, height/2f, 0f);
+		transform.position = blockPosition;
 	}
 
 	void SetBoundingBox() {
@@ -178,19 +180,11 @@ public class GenTest : MonoBehaviour
 
 	void Update()
 	{
-
-		// TODO: move somewhere more sensible
-		//material.SetTexture("DensityTex", originalMap);
-		//material.SetFloat("oceanRadius", FindObjectOfType<Water>().radius);
-		//material.SetFloat("planetBoundsSize", boundsSize);
-
-		
 		if (Input.GetKeyDown(KeyCode.G))
 		{
 			Debug.Log("Generate");
 			GenerateAllChunks();
 		}
-		
 	}
 
 
@@ -257,8 +251,9 @@ public class GenTest : MonoBehaviour
 
 	public void Terraform(Vector3 point, float weight, float radius)
 	{
-
+		point -= blockPosition;
 		int editTextureSize = rawDensityTexture.width;
+		//Debug.Log($"Edit Texture Size {editTextureSize}");
 		float editPixelWorldSize = boundsSize / editTextureSize;
 		int editRadius = Mathf.CeilToInt(radius / editPixelWorldSize);
 		//Debug.Log(editPixelWorldSize + "  " + editRadius);
@@ -271,6 +266,8 @@ public class GenTest : MonoBehaviour
 		int editY = Mathf.RoundToInt(ty * (editTextureSize - 1));
 		int editZ = Mathf.RoundToInt(tz * (editTextureSize - 1));
 
+		//Debug.Log($"Edit point {editX} {editY} {editZ}");
+
 		editCompute.SetFloat("weight", weight);
 		editCompute.SetFloat("deltaTime", Time.deltaTime);
 		editCompute.SetInts("brushCentre", editX, editY, editZ);
@@ -282,32 +279,20 @@ public class GenTest : MonoBehaviour
 		//ProcessDensityMap();
 		int size = rawDensityTexture.width;
 
-		//if (blurMap)
-		//{
-		//	blurCompute.SetInt("textureSize", rawDensityTexture.width);
-		//	blurCompute.SetInts("brushCentre", editX - blurRadius - editRadius, editY - blurRadius - editRadius, editZ - blurRadius - editRadius);
-		//	blurCompute.SetInt("blurRadius", blurRadius);
-		//	blurCompute.SetInt("brushRadius", editRadius);
-		//	int k = (editRadius + blurRadius) * 2;
-		//	ComputeHelper.Dispatch(blurCompute, k, k, k);
-		//}
+        //ComputeHelper.CopyRenderTexture3D(originalMap, processedDensityTexture);
 
-		//ComputeHelper.CopyRenderTexture3D(originalMap, processedDensityTexture);
+        //float worldRadius = (editRadius + 1 + ((blurMap) ? blurRadius : 0)) * editPixelWorldSize;
+        float worldRadius = ( editRadius + 1 );
+        for(int i = 0; i < chunks.Length; i++) {
+            Chunk chunk = chunks[i];
+            GenerateChunk(chunk);
+            if(MathUtility.SphereIntersectsBox(point, worldRadius, chunk.centre, Vector3.one * chunk.size)) {
 
-		//float worldRadius = (editRadius + 1 + ((blurMap) ? blurRadius : 0)) * editPixelWorldSize;
-		float worldRadius = (editRadius + 1) * editPixelWorldSize;
-		for (int i = 0; i < chunks.Length; i++)
-		{
-			Chunk chunk = chunks[i];
-			if (MathUtility.SphereIntersectsBox(point, worldRadius, chunk.centre, Vector3.one * chunk.size))
-			{
+                chunk.terra = true;
 
-				chunk.terra = true;
-				GenerateChunk(chunk);
-
-			}
-		}
-	}
+            }
+        }
+    }
 
 	void Create3DTexture(ref RenderTexture texture, int size, string name)
 	{
