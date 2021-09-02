@@ -56,19 +56,19 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Robot\Scripts\Axis.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Processing\GaussianBlur.cs" />
+    <Compile Include="Assets\Robot\Scripts\InverseKinematics.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\VertexData.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\ComputeHelper.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Chunk.cs" />
+    <Compile Include="Assets\Robot\Scripts\Tool.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\GenTest.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MeshBaker.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\TextureViewer\TextureViewer3D.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MathUtility.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Terraformer.cs" />
-    <Compile Include="Assets\Robot\Scripts\Axis.cs" />
-    <Compile Include="Assets\Robot\Scripts\Tool.cs" />
-    <Compile Include="Assets\Robot\Scripts\InverseKinematics.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />
@@ -710,6 +710,12 @@
     </Reference>
     <Reference Include="Unity.Mathematics">
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="com.unity.cinemachine.editor">
+      <HintPath>Library\ScriptAssemblies\com.unity.cinemachine.editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Cinemachine">
+      <HintPath>Library\ScriptAssemblies\Cinemachine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
