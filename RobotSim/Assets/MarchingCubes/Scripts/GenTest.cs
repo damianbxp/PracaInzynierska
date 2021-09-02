@@ -249,35 +249,28 @@ public class GenTest : MonoBehaviour
 	}
 
 
-	public void Terraform(Vector3 point, float weight, float radius)
+	public void Terraform(Vector3 toolPos, float toolRadius, float toolHeight)
 	{
-		point -= blockPosition;
+		toolPos -= blockPosition;
 		int editTextureSize = rawDensityTexture.width;
-		//Debug.Log($"Edit Texture Size {editTextureSize}");
 		float editPixelWorldSize = boundsSize / editTextureSize;
-		int editRadius = Mathf.CeilToInt(radius / editPixelWorldSize);
-		//Debug.Log(editPixelWorldSize + "  " + editRadius);
+		int editRadius = Mathf.CeilToInt(toolRadius / editPixelWorldSize);
 
-		float tx = Mathf.Clamp01((point.x + boundsSize / 2) / boundsSize);
-		float ty = Mathf.Clamp01((point.y + boundsSize / 2) / boundsSize);
-		float tz = Mathf.Clamp01((point.z + boundsSize / 2) / boundsSize);
+		float tx = Mathf.Clamp01((toolPos.x + boundsSize / 2) / boundsSize);
+		float ty = Mathf.Clamp01((toolPos.y + boundsSize / 2) / boundsSize);
+		float tz = Mathf.Clamp01((toolPos.z + boundsSize / 2) / boundsSize);
 
 		int editX = Mathf.RoundToInt(tx * (editTextureSize - 1));
 		int editY = Mathf.RoundToInt(ty * (editTextureSize - 1));
 		int editZ = Mathf.RoundToInt(tz * (editTextureSize - 1));
 
-		//Debug.Log($"Edit point {editX} {editY} {editZ}");
 
-		editCompute.SetFloat("weight", weight);
-		editCompute.SetFloat("deltaTime", Time.deltaTime);
-		editCompute.SetInts("brushCentre", editX, editY, editZ);
-		editCompute.SetInt("brushRadius", editRadius);
+		editCompute.SetInts("toolCentre", editX, editY, editZ);
+		editCompute.SetInt("toolHeight", Mathf.CeilToInt(toolHeight / editPixelWorldSize));
+		editCompute.SetInt("toolRadius", Mathf.CeilToInt(toolRadius / editPixelWorldSize));
 
-		editCompute.SetInt("size", editTextureSize);
 		ComputeHelper.Dispatch(editCompute, editTextureSize, editTextureSize, editTextureSize);
 
-		//ProcessDensityMap();
-		int size = rawDensityTexture.width;
 
         //ComputeHelper.CopyRenderTexture3D(originalMap, processedDensityTexture);
 
@@ -286,7 +279,7 @@ public class GenTest : MonoBehaviour
         for(int i = 0; i < chunks.Length; i++) {
             Chunk chunk = chunks[i];
             GenerateChunk(chunk);
-            if(MathUtility.SphereIntersectsBox(point, worldRadius, chunk.centre, Vector3.one * chunk.size)) {
+            if(MathUtility.SphereIntersectsBox(toolPos, worldRadius, chunk.centre, Vector3.one * chunk.size)) {
 
                 chunk.terra = true;
 

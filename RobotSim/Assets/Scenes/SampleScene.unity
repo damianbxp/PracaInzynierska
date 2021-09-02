@@ -343,6 +343,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockMesh: {fileID: 1041445924}
   toolWorkCenter: {fileID: 11030236}
+  toolRadius: 0.05
+  toolHeight: 0.08
   autoTransform: 0
 --- !u!1 &1041445924
 GameObject:
