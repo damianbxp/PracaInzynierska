@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 
 public class GenTest : MonoBehaviour
 {
+	public UIManager uiManager;
 
 	[Header("Init Settings")]
 	public int numChunks = 4;
@@ -46,6 +47,8 @@ public class GenTest : MonoBehaviour
 
 	void Start()
 	{
+		uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+
 		blockPosition += new Vector3(0, height / 2, 0);
 
 		SetBoundingBox();
@@ -169,6 +172,7 @@ public class GenTest : MonoBehaviour
 		// Fetch vertex data from GPU
 
 		triangleBuffer.GetData(vertexDataArray, 0, 0, numVertices);
+		uiManager.UpdateVertices(numVertices);
 
 		timer_fetchVertexData.Stop();
 
@@ -251,6 +255,7 @@ public class GenTest : MonoBehaviour
 
 	public void Terraform(Vector3 toolPos, float toolRadius, float toolHeight)
 	{
+		uiManager.UpdateToolPosition(toolPos);
 		toolPos -= blockPosition;
 		int editTextureSize = rawDensityTexture.width;
 		float editPixelWorldSize = boundsSize / editTextureSize;

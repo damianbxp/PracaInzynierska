@@ -8,7 +8,7 @@ public class Tool : MonoBehaviour
     public GameObject blockMesh;
     public Transform toolWorkCenter;
 
-    public float toolRadius;
+    public float toolDiameter;
     public float toolHeight;
 
     public bool autoTransform;
@@ -19,7 +19,7 @@ public class Tool : MonoBehaviour
 
     void Update() {
         if(Input.GetKey(KeyCode.F) || autoTransform) {
-            blockMesh.GetComponent<GenTest>().Terraform(toolWorkCenter.position, toolRadius, toolHeight);
+            blockMesh.GetComponent<GenTest>().Terraform(toolWorkCenter.position, toolDiameter/2, toolHeight);
             //Debug.Log(transform.position - blockMesh.transform.position);
             onTerrainModified?.Invoke();
         }
