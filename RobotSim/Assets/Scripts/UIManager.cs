@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -10,7 +11,13 @@ public class UIManager : MonoBehaviour
     Text VerticesText;
     Text ToolPosText;
 
+    Transform tool;
+    float incrementMoveAmount;
+
     private void Start() {
+        tool = GameObject.Find("Tool").transform;
+        incrementMoveAmount = 0.001f;
+
         FPSText = GameObject.Find("FPSText").GetComponent<Text>();
         VerticesText = GameObject.Find("VerticesText").GetComponent<Text>();
         ToolPosText = GameObject.Find("ToolPosText").GetComponent<Text>();
@@ -31,6 +38,41 @@ public class UIManager : MonoBehaviour
     public void UpdateToolPosition(Vector3 toolPos) {
         ToolPosText.text = $"Tool Position:\n\tX:{toolPos.x}\n\tY:{toolPos.y}\n\tZ:{toolPos.z}";
     }
+
+    public void MoveTool(Vector3 newPos) {
+        tool.position = newPos;
+    }
+
+    public void MoveToolIncrement(int axis) {
+        
+
+        switch(axis) {
+            case 1:
+                MoveTool(new Vector3(incrementMoveAmount, 0, 0) + tool.position);
+                break;
+            case -1:
+                MoveTool(new Vector3(-incrementMoveAmount, 0, 0) + tool.position);
+                break;
+            case 2:
+                MoveTool(new Vector3(0, incrementMoveAmount, 0) + tool.position);
+                break;
+            case -2:
+                MoveTool(new Vector3(0, -incrementMoveAmount, 0) + tool.position);
+                break;
+            case 3:
+                MoveTool(new Vector3(0, 0, incrementMoveAmount) + tool.position);
+                break;
+            case -3:
+                MoveTool(new Vector3(0, 0, -incrementMoveAmount) + tool.position);
+                break;
+            default:
+                Debug.LogError("Wrong axis passed");
+                break;
+        }
+    }
+    
+    public void SetIncrementAmount(float amount) {
+        incrementMoveAmount = amount;
+    }
+    
 }
-
-

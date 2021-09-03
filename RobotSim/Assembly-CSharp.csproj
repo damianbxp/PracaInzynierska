@@ -70,6 +70,7 @@
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Terraformer.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
+    <Compile Include="Assets\Scripts\MoveToolBtn.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />
