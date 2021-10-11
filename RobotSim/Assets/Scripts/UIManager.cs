@@ -11,11 +11,11 @@ public class UIManager : MonoBehaviour
     Text VerticesText;
     Text ToolPosText;
 
-    Transform tool;
+    Transform toolTarget;
     float incrementMoveAmount;
 
     private void Start() {
-        tool = GameObject.Find("Tool").transform;
+        toolTarget = GameObject.Find("ToolTarget").transform;
         incrementMoveAmount = 0.001f;
 
         FPSText = GameObject.Find("FPSText").GetComponent<Text>();
@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void MoveTool(Vector3 newPos) {
-        tool.position = newPos;
+        toolTarget.position = newPos;
     }
 
     public void MoveToolIncrement(int axis) {
@@ -48,22 +48,22 @@ public class UIManager : MonoBehaviour
 
         switch(axis) {
             case 1:
-                MoveTool(new Vector3(incrementMoveAmount, 0, 0) + tool.position);
+                MoveTool(new Vector3(incrementMoveAmount, 0, 0) + toolTarget.position);
                 break;
             case -1:
-                MoveTool(new Vector3(-incrementMoveAmount, 0, 0) + tool.position);
+                MoveTool(new Vector3(-incrementMoveAmount, 0, 0) + toolTarget.position);
                 break;
             case 2:
-                MoveTool(new Vector3(0, incrementMoveAmount, 0) + tool.position);
+                MoveTool(new Vector3(0, incrementMoveAmount, 0) + toolTarget.position);
                 break;
             case -2:
-                MoveTool(new Vector3(0, -incrementMoveAmount, 0) + tool.position);
+                MoveTool(new Vector3(0, -incrementMoveAmount, 0) + toolTarget.position);
                 break;
             case 3:
-                MoveTool(new Vector3(0, 0, incrementMoveAmount) + tool.position);
+                MoveTool(new Vector3(0, 0, incrementMoveAmount) + toolTarget.position);
                 break;
             case -3:
-                MoveTool(new Vector3(0, 0, -incrementMoveAmount) + tool.position);
+                MoveTool(new Vector3(0, 0, -incrementMoveAmount) + toolTarget.position);
                 break;
             default:
                 Debug.LogError("Wrong axis passed");
