@@ -12,6 +12,6 @@ public class ToolTarget : MonoBehaviour
     void Update()
     {
         transform.position = TCP.position;
-        transform.rotation = TCP.rotation;
+        //transform.rotation = TCP.rotation;
     }
 }

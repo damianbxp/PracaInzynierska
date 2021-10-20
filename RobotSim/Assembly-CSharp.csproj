@@ -74,6 +74,7 @@
     <Compile Include="Assets\MarchingCubes\Scripts\Terraformer.cs" />
     <Compile Include="Assets\Scripts\ToolTarget.cs" />
     <Compile Include="Assets\Scripts\GcodeInterpreter.cs" />
+    <Compile Include="Assets\Robot\Scripts\RobotMaster.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />

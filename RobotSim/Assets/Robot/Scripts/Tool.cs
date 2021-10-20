@@ -23,7 +23,7 @@ public class Tool : MonoBehaviour
 
     void Update() {
         transform.position = TCP.position;
-        transform.rotation = TCP.rotation;
+        //transform.rotation = TCP.rotation;
 
         if(Input.GetKey(KeyCode.F) || autoTransform) {
             blockMesh.GetComponent<GenTest>().Terraform(toolWorkCenter.position, toolDiameter/2, toolHeight);

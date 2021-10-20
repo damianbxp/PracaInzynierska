@@ -5,15 +5,20 @@ using UnityEngine;
 public class GcodeInterpreter : MonoBehaviour {
 
     public string commandLine;
+    public List<GCommand> commands;
 
     private void Start() {
-        List<GCommand> commands = ExecuteCommands(DecryptLine(commandLine));
-        for(int i = 0; i < commands.Count; i++) {
-            Debug.Log(commands[i]);
-        }
+        //for(int i = 0; i < commands.Count; i++) {
+        //    Debug.Log(commands[i]);
+        //}
     }
 
-    List<GCommand> ExecuteCommands(List<GcodeData> list) {
+    public List<GCommand> LoadCommands() {
+        commands = GenerateCommands(DecryptLine(commandLine));
+        return commands;
+    }
+
+    List<GCommand> GenerateCommands(List<GcodeData> list) {
         Debug.Log($"Detected {list.Count} elements");
         List<GCommand> commands = new List<GCommand>();
 

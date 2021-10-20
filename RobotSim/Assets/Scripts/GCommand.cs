@@ -9,7 +9,7 @@ abstract public class GCommand
     public string name;
     public List<string> implementedCommands;
 
-    abstract public void Execute(Transform toolTarget);
+    abstract public void Execute(RobotMaster robot);
     abstract public bool ImplementCheck(string command);
 }
 
@@ -17,11 +17,6 @@ public class G0 : GCommand {
     public float X;
     public float Y;
     public float Z;
-    public Vector3 position;
-    public Vector3 rotation;
-
-    public Vector3 oldPos;
-    public Vector3 oldRot;
 
     public G0() {
         name = "G0";
@@ -41,12 +36,11 @@ public class G0 : GCommand {
         return $"{name} X{X} Y{Y} Z{Z} {(active?"Active":"Not Active")} {(done?"Finnished":"Not Finished")}";
     }
 
-    public override void Execute(Transform toolTarget) {
-        position.x = ( position.x != float.NaN ) ? position.x : oldPos.x;
-        position.y = ( position.y != float.NaN ) ? position.y : oldPos.y;
-        position.z = ( position.z != float.NaN ) ? position.z : oldPos.z;
+    public override void Execute(RobotMaster robot) {
+        active = true;
 
-        toolTarget.position = position;
+        Vector3 newPos = new Vector3(( X == float.NaN ? robot.targetPos.x : X ), ( Y == float.NaN ? robot.targetPos.y : Y ), ( Z != float.NaN ? robot.targetPos.z : Z ));
+        robot.targetPos = newPos;
     }
 
     public override bool ImplementCheck(string command) {
@@ -68,7 +62,7 @@ public class G1 : G0{
         implementedCommands.Add("F");
     }
 
-    public override void Execute(Transform toolTarget) {
+    public override void Execute(RobotMaster robot) {
         throw new System.NotImplementedException();
     }
 }
