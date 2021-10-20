@@ -4,63 +4,44 @@ using UnityEngine;
 
 public class GcodeInterpreter : MonoBehaviour {
 
-    GcodeCommands GcodeCommands;
     public string commandLine;
 
     private void Start() {
-        GcodeCommands = GetComponent<GcodeCommands>();
-        ExecuteCommands(DecryptLine(commandLine));
+        List<GCommand> commands = ExecuteCommands(DecryptLine(commandLine));
+        for(int i = 0; i < commands.Count; i++) {
+            Debug.Log(commands[i]);
+        }
     }
 
-    void ExecuteCommands(List<GcodeData> list) {
+    List<GCommand> ExecuteCommands(List<GcodeData> list) {
         Debug.Log($"Detected {list.Count} elements");
+        List<GCommand> commands = new List<GCommand>();
+
         for(int i = 0; i < list.Count; i++) {
             switch(list[i].dataType) {
-                case 'G': {
+                case "G": {
                     switch(list[i].dataValue) {
-                        case 1: {
-                            for(int j = 1; j < Mathf.Min(6, list.Count-i); j++) {
-                                if(list[i + j].dataType == 'G') {
-                                    i += j-1;
-                                    break;
-                                } else {
-                                    G1Data g1Data = new G1Data();
-                                    g1Data.x = float.NaN;
-                                    g1Data.y = float.NaN;
-                                    g1Data.z = float.NaN;
-                                    g1Data.f = float.NaN;
-
-                                    switch(list[i + j].dataType) {
-                                        case 'X': {
-                                            g1Data.x = list[i + j].dataValue;
-                                            break;
-                                        }
-                                        case 'Y': {
-                                            g1Data.y = list[i + j].dataValue;
-                                            break;
-                                        }
-                                        case 'Z': {
-                                            g1Data.z = list[i + j].dataValue;
-                                            break;
-                                        }
-                                        case 'F': {
-                                            g1Data.f = list[i + j].dataValue;
-                                            break;
-                                        }
-
-                                    }
-                                    Debug.Log($"{i}|{j} {list[i + j].dataType} {list[i + j].dataValue}");
-                                    
-                                }
+                        case 0: {
+                            G0 g0 = new G0();
+                            for(int j = 1; j < list.Count - i; j++) {
+                                if(list[i + j].dataType == "G") break;
+                                if(!g0.ImplementCheck(list[i + j].dataType)) break;
+                                g0.GetType().GetField(list[i+j].dataType.ToString()).SetValue(g0, list[i + j].dataValue);
                             }
-                            
+                            commands.Add(g0);
                             break;
                         }
-
-                        default:
+                        case 1: {
+                            G1 g1 = new G1();
+                            for(int j = 1; j < list.Count - i; j++) {
+                                if(list[i + j].dataType == "G") break;
+                                if(!g1.ImplementCheck(list[i + j].dataType)) break;
+                                g1.GetType().GetField(list[i+j].dataType.ToString()).SetValue(g1, list[i + j].dataValue);
+                            }
+                            commands.Add(g1);
                             break;
+                        }
                     }
-
 
                     break;
                 }
@@ -68,11 +49,13 @@ public class GcodeInterpreter : MonoBehaviour {
                     break;
             }
         }
+        return commands;
     }
 
     List<GcodeData> DecryptLine(string code) {
         Debug.Log(code);
         code = code.Trim(' ');
+        code = code.ToUpper();
 
         GcodeData temp = new GcodeData();
         List<GcodeData> codeList = new List<GcodeData>();
@@ -82,7 +65,7 @@ public class GcodeInterpreter : MonoBehaviour {
 
         for(int i = 0; i < code.Length; i++) {
 
-            if(!char.IsNumber(code[i])) {
+            if(!char.IsNumber(code[i])) {// is letter
                 if(dataStart > 0 && dataEnd > 0) {
                     temp.dataValue = float.Parse(code.Substring(dataStart, dataEnd - dataStart));
                 }
@@ -92,10 +75,10 @@ public class GcodeInterpreter : MonoBehaviour {
                     //Debug.Log(temp.dataType + temp.dataValue.ToString());
                     codeList.Add(temp);
                 }
-                temp.dataType = code[i];
+                temp.dataType = code[i].ToString();
                 dataStart = i + 1;
                 dataEnd = dataStart;
-            } else {
+            } else { // is number
                 dataEnd++;
             }
         }
@@ -109,13 +92,6 @@ public class GcodeInterpreter : MonoBehaviour {
 }
 
 public struct GcodeData {
-    public char dataType;
+    public string dataType;
     public float dataValue;
-}
-
-public struct G1Data {
-    public float x;
-    public float y;
-    public float z;
-    public float f;
 }
