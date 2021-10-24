@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RobotMaster : MonoBehaviour
 {
+    public UIManager uiManager;
     public bool isPaused;
     int currentCommand;
     public List<GCommand> commands;
@@ -26,13 +27,14 @@ public class RobotMaster : MonoBehaviour
         isPaused = true;
         targetPos = new Vector3();
         commands = interpreter.LoadCommands();
-
+        uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
     }
 
     void Update()
     {
         if(!isPaused && currentCommand<commands.Count) {
             if(!commands[currentCommand].done && !commands[currentCommand].active) {
+                uiManager.UpdateConsole(commands[currentCommand].ToString());
                 commands[currentCommand].Execute(this);
             }
             if(Vector3.Distance(toolTarget.position, targetPos) < posPrecision) {
@@ -47,7 +49,6 @@ public class RobotMaster : MonoBehaviour
 
                 }
             }
-            
         }
     }
 }

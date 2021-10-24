@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     Text FPSText;
     Text VerticesText;
     Text ToolPosText;
+    Text ConsoleText;
 
     Transform toolTarget;
     float incrementMoveAmount;
@@ -21,7 +22,7 @@ public class UIManager : MonoBehaviour
         FPSText = GameObject.Find("FPSText").GetComponent<Text>();
         VerticesText = GameObject.Find("VerticesText").GetComponent<Text>();
         ToolPosText = GameObject.Find("ToolPosText").GetComponent<Text>();
-
+        ConsoleText = GameObject.Find("ConsoleText").GetComponent<Text>();
     }
 
     private void Update() {
@@ -41,6 +42,11 @@ public class UIManager : MonoBehaviour
 
     public void MoveTool(Vector3 newPos) {
         toolTarget.position = newPos;
+    }
+
+    public void UpdateConsole(string consoleText) {
+        Debug.Log(consoleText);
+        ConsoleText.text = consoleText;
     }
 
     public void MoveToolIncrement(int axis) {
