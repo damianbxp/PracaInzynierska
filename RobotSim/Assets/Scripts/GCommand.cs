@@ -14,7 +14,7 @@ abstract public class GCommand
     abstract public bool ImplementCheck(string command);
 }
 
-public class G0 : GCommand {
+abstract public class MoveGCommand : GCommand {
     public float startX;
     public float startY;
     public float startZ;
@@ -23,16 +23,11 @@ public class G0 : GCommand {
     public float Y;
     public float Z;
 
-    public G0() {
-        throw new System.NotImplementedException();
-    }
-
-    public G0(GCommand lastCommand) {
-        name = "G0";
-        isMoveCommand = true;        
+    public MoveGCommand(MoveGCommand lastCommand) {
+        isMoveCommand = true;
 
         startX = float.NaN;
-        startY = float.NaN;
+        startY = float.NaN;//////////////
         startZ = float.NaN;
 
         X = float.NaN;
@@ -43,6 +38,15 @@ public class G0 : GCommand {
         implementedCommands.Add("X");
         implementedCommands.Add("Y");
         implementedCommands.Add("Z");
+    }
+}
+
+public class G0 : MoveGCommand {
+    
+
+    public G0() : base() {
+        name = "G0";
+        
     }
 
     public override string ToString() {
