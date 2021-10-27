@@ -14,7 +14,7 @@ public class RobotMaster : MonoBehaviour
     public Transform toolTarget;
     public Transform tool;
 
-    public Vector3 homePointOffset;
+    public Vector3 homePoint;
 
     List<string> gcodeLines;
     List<GCommand> GCommandsLine = new List<GCommand>();
@@ -44,12 +44,12 @@ public class RobotMaster : MonoBehaviour
                 currentCommand = 0;
                 uiManager.UpdateConsole(gcodeLines[currentLine]);
             } else {
-                Debug.Log($"Running {currentCommand}/{GCommandsLine.Count} in line {currentLine}");
+                Debug.Log($"Running {currentCommand+1}/{GCommandsLine.Count} in line {currentLine+1}");
 
                 switch(GCommandsLine[currentCommand].name) { //wykonaj komende
                     case "G0": {
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
-                        toolTarget.position = GCommandsLine[currentCommand].position;
+                        SetToolTarget(GCommandsLine[currentCommand].position);
 
                         if(Vector3.Distance(toolTarget.position, tool.position)<= posPrecision) {
                             GCommandsLine[currentCommand].done = true;
@@ -79,6 +79,10 @@ public class RobotMaster : MonoBehaviour
                 currentLine++;
             }
         }
+    }
+
+    void SetToolTarget(Vector3 pos) {
+        toolTarget.position = pos / 1000 + homePoint;
     }
     void UpdateGcodeLines() {
         string text = GameObject.Find("GcodeText").GetComponent<Text>().text;
