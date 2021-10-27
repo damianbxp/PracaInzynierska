@@ -7,24 +7,18 @@ public class RobotMaster : MonoBehaviour
 {
     public UIManager uiManager;
     public bool isPaused;
-    int currentCommand;
-    //public List<GCommand> commands;
+    int currentLine;
+    int currentCommand = 0;
 
     public Vector3 targetPos;
 
     public Vector3 homePointOffset;
     public Transform toolTarget;
-    public GcodeInterpreter interpreter;
-
-    public float feedRate;
-    public float maxSpeed;
-    public bool fastMove;
-
-    public float spindleSpeed;
-
-    public float posPrecision;
 
     List<string> gcodeLines;
+    List<GCommand> GCommandsLine = new List<GCommand>();
+
+    GCommand lastCommand = new GCommand();
 
     string[] moveCommands = { "G0", "G1","G2","G3" };
 
@@ -39,10 +33,42 @@ public class RobotMaster : MonoBehaviour
 
     void Update()
     {
-        if(!isPaused && currentCommand < gcodeLines.Count) {
-            DecryptLine(gcodeLines[currentCommand]);
+        if(!isPaused && currentLine < gcodeLines.Count) {
+            if(currentCommand >= GCommandsLine.Count) { // je¿eli zrobi³ wszystkie komendy w lini
+                GCommandsLine = DecryptLine(gcodeLines[currentLine]);
+                //Debug.Log($"Commands in line {currentLine}: {GCommandsLine.Count}");
+                currentCommand = 0;
+            } else {
+                Debug.Log($"Running {currentCommand}/{GCommandsLine.Count} in line {currentLine}");
 
-            currentCommand++;
+                switch(GCommandsLine[currentCommand].name) { //wykonaj komende
+                    case "G0": {
+                        Debug.Log(GCommandsLine[currentCommand]);
+                        GCommandsLine[currentCommand].done = true;
+                        break;
+                    }
+                    case "G53": {
+                        Debug.Log(GCommandsLine[currentCommand]);
+
+                        GCommandsLine[currentCommand].done = true;
+                        break;
+                    }
+                    default: {
+                        Debug.LogWarning("Not supported command");
+                        break;
+                    }
+
+                }
+
+                if(GCommandsLine[currentCommand].done) {
+                    currentCommand++;
+                }
+                
+            }
+
+            if(currentCommand >= GCommandsLine.Count) {
+                currentLine++;
+            }
         }
     }
     void UpdateGcodeLines() {
@@ -66,7 +92,7 @@ public class RobotMaster : MonoBehaviour
                 gCommand.Y = GetCommandValue("Y", code, startIndex);
                 gCommand.Z = GetCommandValue("Z", code, startIndex);
 
-            } else {                                        // komendy na pedn¹ klatkê
+            } else {                                        // komendy na jedn¹ klatkê
 
             }
 
@@ -75,9 +101,9 @@ public class RobotMaster : MonoBehaviour
         }
 
 
-        for(int i = 0; i < gCommands.Count; i++) {
-            Debug.Log(gCommands[i]);
-        }
+        //for(int i = 0; i < gCommands.Count; i++) {
+        //    Debug.Log(gCommands[i]);
+        //}
         return gCommands;
     }
 
