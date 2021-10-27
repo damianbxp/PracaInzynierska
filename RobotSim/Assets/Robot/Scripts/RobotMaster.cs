@@ -5,15 +5,16 @@ using UnityEngine.UI;
 
 public class RobotMaster : MonoBehaviour
 {
-    public UIManager uiManager;
     public bool isPaused;
+    public float posPrecision = 0.01f;
+    public UIManager uiManager;
     int currentLine;
     int currentCommand = 0;
 
-    public Vector3 targetPos;
+    public Transform toolTarget;
+    public Transform tool;
 
     public Vector3 homePointOffset;
-    public Transform toolTarget;
 
     List<string> gcodeLines;
     List<GCommand> GCommandsLine = new List<GCommand>();
@@ -24,11 +25,14 @@ public class RobotMaster : MonoBehaviour
 
     private void Start() {
         isPaused = true;
-        targetPos = new Vector3();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
         UpdateGcodeLines();
 
+        lastCommand.position = new Vector3();
+        lastCommand.X = 0;
+        lastCommand.Y = 0;
+        lastCommand.Z = 0;
     }
 
     void Update()
@@ -38,13 +42,18 @@ public class RobotMaster : MonoBehaviour
                 GCommandsLine = DecryptLine(gcodeLines[currentLine]);
                 //Debug.Log($"Commands in line {currentLine}: {GCommandsLine.Count}");
                 currentCommand = 0;
+                uiManager.UpdateConsole(gcodeLines[currentLine]);
             } else {
                 Debug.Log($"Running {currentCommand}/{GCommandsLine.Count} in line {currentLine}");
 
                 switch(GCommandsLine[currentCommand].name) { //wykonaj komende
                     case "G0": {
-                        Debug.Log(GCommandsLine[currentCommand]);
-                        GCommandsLine[currentCommand].done = true;
+                        GCommandsLine[currentCommand].UpdateCommand(lastCommand);
+                        toolTarget.position = GCommandsLine[currentCommand].position;
+
+                        if(Vector3.Distance(toolTarget.position, tool.position)<= posPrecision) {
+                            GCommandsLine[currentCommand].done = true;
+                        }
                         break;
                     }
                     case "G53": {
@@ -77,7 +86,7 @@ public class RobotMaster : MonoBehaviour
     }
 
     List<GCommand> DecryptLine(string code) {
-        code = code.ToUpper().Replace(" ", "");
+        code = code.ToUpper().Replace(" ", "").Replace(".",",");
         code += ";";
         List<GCommand> gCommands = new List<GCommand>();
         GCommand gCommand;
@@ -114,7 +123,7 @@ public class RobotMaster : MonoBehaviour
         int indexEnd = 0;
         for(int i = indexStart; i < code.Length; i++) {
             indexEnd = i;
-            if(!char.IsDigit(code[i]) && code[i]!='.') break; // je¿eli nie jest cyfr¹ lub '.'
+            if(!char.IsDigit(code[i]) && code[i]!=',') break; // je¿eli nie jest cyfr¹ lub ','
         }
         if(indexStart >= indexEnd) return float.NaN;
         return float.Parse(code.Substring(indexStart, indexEnd - indexStart));
