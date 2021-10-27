@@ -1228,7 +1228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &655335856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2232,7 +2232,7 @@ GameObject:
   - component: {fileID: 966124723}
   - component: {fileID: 966124722}
   m_Layer: 5
-  m_Name: Placeholder
+  m_Name: GcodeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2287,300 +2287,12 @@ MonoBehaviour:
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'G0 X0 Y20 Z100
+  m_Text: 'G53 G0 X10 Y=IC(30.5) Z15 F1000
 
-    G0 X0 Y20 Z101
-
-    G0 X0 Y20 Z102
-
-    G0 X0 Y20
-    Z103
-
-    G0 X0 Y20 Z104
-
-    G0 X0 Y20 Z105
-
-    G0 X0 Y20 Z106
-
-    G0
-    X0 Y20 Z107
-
-    G0 X0 Y20 Z108
-
-    G0 X0 Y20 Z109
-
-    G0 X0 Y20 Z110
-
-    G0
-    X0 Y20 Z111
-
-    G0 X0 Y20 Z112
-
-    G0 X0 Y20 Z113
-
-    G0 X0 Y20 Z114
-
-    G0
-    X0 Y20 Z115
-
-    G0 X0 Y20 Z116
-
-    G0 X0 Y20 Z117
-
-    G0 X0 Y20 Z118
-
-    G0
-    X0 Y20 Z119
-
-    G0 X0 Y20 Z120
-
-    G0 X0 Y20 Z121
-
-    G0 X0 Y20 Z122
-
-    G0
-    X0 Y20 Z123
-
-    G0 X0 Y20 Z124
-
-    G0 X0 Y20 Z125
-
-    G0 X0 Y20 Z126
-
-    G0
-    X0 Y20 Z127
-
-    G0 X0 Y20 Z128
-
-    G0 X0 Y20 Z129
-
-    G0 X0 Y20 Z130
-
-    G0
-    X0 Y20 Z131
-
-    G0 X0 Y20 Z132
-
-    G0 X0 Y20 Z133
-
-    G0 X0 Y20 Z134
-
-    G0
-    X0 Y20 Z135
-
-    G0 X0 Y20 Z136
-
-    G0 X0 Y20 Z137
-
-    G0 X0 Y20 Z138
-
-    G0
-    X0 Y20 Z139
-
-    G0 X0 Y20 Z140
-
-    G0 X0 Y20 Z141
-
-    G0 X0 Y20 Z142
-
-    G0
-    X0 Y20 Z143
-
-    G0 X0 Y20 Z144
-
-    G0 X0 Y20 Z145
-
-    G0 X0 Y20 Z146
-
-    G0
-    X0 Y20 Z147
-
-    G0 X0 Y20 Z148
-
-    G0 X0 Y20 Z149
-
-    G0 X0 Y20 Z150
-
-    G0
-    X0 Y20 Z151
-
-    G0 X0 Y20 Z152
-
-    G0 X0 Y20 Z153
-
-    G0 X0 Y20 Z154
-
-    G0
-    X0 Y20 Z155
-
-    G0 X0 Y20 Z156
-
-    G0 X0 Y20 Z157
-
-    G0 X0 Y20 Z158
-
-    G0
-    X0 Y20 Z159
-
-    G0 X0 Y20 Z160
-
-    G0 X0 Y20 Z161
-
-    G0 X0 Y20 Z162
-
-    G0
-    X0 Y20 Z163
-
-    G0 X0 Y20 Z164
-
-    G0 X0 Y20 Z165
-
-    G0 X0 Y20 Z166
-
-    G0
-    X0 Y20 Z167
-
-    G0 X0 Y20 Z168
-
-    G0 X0 Y20 Z169
-
-    G0 X0 Y20 Z170
-
-    G0
-    X0 Y20 Z171
-
-    G0 X0 Y20 Z172
-
-    G0 X0 Y20 Z173
-
-    G0 X0 Y20 Z174
-
-    G0
-    X0 Y20 Z175
-
-    G0 X0 Y20 Z176
-
-    G0 X0 Y20 Z177
-
-    G0 X0 Y20 Z178
-
-    G0
-    X0 Y20 Z179
-
-    G0 X0 Y20 Z180
-
-    G0 X0 Y20 Z181
-
-    G0 X0 Y20 Z182
-
-    G0
-    X0 Y20 Z183
-
-    G0 X0 Y20 Z184
-
-    G0 X0 Y20 Z185
-
-    G0 X0 Y20 Z186
-
-    G0
-    X0 Y20 Z187
-
-    G0 X0 Y20 Z188
-
-    G0 X0 Y20 Z189
-
-    G0 X0 Y20 Z190
-
-    G0
-    X0 Y20 Z191
-
-    G0 X0 Y20 Z192
-
-    G0 X0 Y20 Z193
-
-    G0 X0 Y20 Z194
-
-    G0
-    X0 Y20 Z195
-
-    G0 X0 Y20 Z196
-
-    G0 X0 Y20 Z197
-
-    G0 X0 Y20 Z198
-
-    G0
-    X0 Y20 Z199
-
-    G0 X0 Y20 Z200
-
-    G0 X0 Y20 Z201
-
-    G0 X0 Y20 Z202
-
-    G0
-    X0 Y20 Z203
-
-    G0 X0 Y20 Z204
-
-    G0 X0 Y20 Z205
-
-    G0 X0 Y20 Z206
-
-    G0
-    X0 Y20 Z207
-
-    G0 X0 Y20 Z208
-
-    G0 X0 Y20 Z209
-
-    G0 X0 Y20 Z210
-
-    G0
-    X0 Y20 Z211
-
-    G0 X0 Y20 Z212
-
-    G0 X0 Y20 Z213
-
-    G0 X0 Y20 Z214
-
-    G0
-    X0 Y20 Z215
-
-    G0 X0 Y20 Z216
-
-    G0 X0 Y20 Z217
-
-    G0 X0 Y20 Z218
-
-    G0
-    X0 Y20 Z219
-
-    G0 X0 Y20 Z220
-
-    G0 X0 Y20 Z221
-
-    G0 X0 Y20 Z222
-
-    G0
-    X0 Y20 Z223
-
-    G0 X0 Y20 Z224
-
-    G0 X0 Y20 Z225
-
-    G0 X0 Y20 Z226
-
-    G0
-    X0 Y20 Z227
-
-    G0 X0 Y20 Z228
-
-'
+    G1 Y15 Z30'
 --- !u!222 &966124723
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3129,7 +2841,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088207740}
-  m_LocalRotation: {x: 0.16163498, y: -0.80841166, z: 0.25988042, w: 0.50279903}
+  m_LocalRotation: {x: 0.16163501, y: -0.80841166, z: 0.25988036, w: 0.5027991}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4352,7 +4064,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1687258581}
-  m_LocalRotation: {x: -0.17072995, y: 0.803564, z: -0.27450344, w: -0.49978408}
+  m_LocalRotation: {x: -0.17072994, y: 0.803564, z: -0.27450344, w: -0.49978408}
   m_LocalPosition: {x: 2.6908467, y: 2.5, z: 1.3264035}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

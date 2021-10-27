@@ -26,91 +26,79 @@ public class RobotMaster : MonoBehaviour
 
     List<string> gcodeLines;
 
+    string[] moveCommands = { "G0", "G1","G2","G3" };
+
     private void Start() {
         isPaused = true;
         targetPos = new Vector3();
-        //commands = interpreter.LoadCommands();
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
         UpdateGcodeLines();
 
-        DecryptLine(gcodeLines[0]);
     }
 
     void Update()
     {
         if(!isPaused && currentCommand < gcodeLines.Count) {
+            DecryptLine(gcodeLines[currentCommand]);
 
+            currentCommand++;
         }
-
-
-        //if(!isPaused && currentCommand<commands.Count) {
-        //    if(!commands[currentCommand].done && !commands[currentCommand].active) {
-        //        uiManager.UpdateConsole(commands[currentCommand].ToString());
-        //        commands[currentCommand].Execute(this);
-        //    }
-        //    if(Vector3.Distance(toolTarget.position, targetPos) < posPrecision) {
-        //        commands[currentCommand].done = true;
-        //        commands[currentCommand].active = false;
-        //        fastMove = false;
-        //        currentCommand++;
-        //    } else {
-        //        if(fastMove) {
-        //            toolTarget.position = homePointOffset + targetPos/1000;
-        //        } else {
-
-        //        }
-        //    }
-        //}
     }
     void UpdateGcodeLines() {
         string text = GameObject.Find("GcodeText").GetComponent<Text>().text;
         gcodeLines = new List<string>(text.Replace("\r", "").Split('\n'));
     }
+
     List<GCommand> DecryptLine(string code) {
         code = code.ToUpper().Replace(" ", "");
-        GcodeData temp = new GcodeData();
-        List<GcodeData> codeList = new List<GcodeData>();
+        code += ";";
+        List<GCommand> gCommands = new List<GCommand>();
+        GCommand gCommand;
+        int startIndex = code.IndexOf("G");
 
-        int dataStart = 0, dataEnd = 0;
+        while(startIndex !=-1) {
+            gCommand = new GCommand();
 
-        //Debug.Log(code);
-        for(int i = 0; i < code.Length; i++) {
-            if(char.IsLetter(code[i])) {
-                if(dataStart > 0 && dataEnd > 0) {
-                    temp.dataValue = float.Parse(code.Substring(dataStart, dataEnd - dataStart));
-                }
-                if(i > 0) {
-                    //Debug.Log($"{temp.dataType}{temp.dataValue}");
-                    codeList.Add(temp);
-                }
-                temp.dataType = code[i].ToString();
-                dataStart = i + 1;
-                dataEnd = dataStart;
-            } else { // is number
-                dataEnd++;
+            gCommand.name = "G" + GetCommandValue("G", code, startIndex);
+            if(IsMoveCommand(gCommand.name)) {              // komendy trwaj¹ce wiele klatek
+                gCommand.X = GetCommandValue("X", code, startIndex);
+                gCommand.Y = GetCommandValue("Y", code, startIndex);
+                gCommand.Z = GetCommandValue("Z", code, startIndex);
+
+            } else {                                        // komendy na pedn¹ klatkê
+
             }
+
+            gCommands.Add(gCommand);
+            startIndex = code.IndexOf("G", startIndex + 1);
         }
-        codeList.Add(temp);
 
-        GCommand gCommand = new GCommand();
-        List<GCommand> gCommandsList = new List<GCommand>();
 
-        for(int i = 0; i < codeList.Count; i++) {
-            if(codeList[i].dataType == "G") {
-                if(gCommand.name != "") {
-                    Debug.Log("Added " + gCommand.name);
-                    gCommandsList.Add(gCommand);
-                }
-
-                gCommand.name = codeList[i].dataType + codeList[i].dataValue.ToString();
-                
-            }
-            for(;i < codeList.Count && codeList[i].dataType != "G"; i++) {
-                Debug.Log($"[{i+1}/{codeList.Count}] {codeList[i].dataType}");
-            }
+        for(int i = 0; i < gCommands.Count; i++) {
+            Debug.Log(gCommands[i]);
         }
-        return gCommandsList;
+        return gCommands;
+    }
+
+    float GetCommandValue(string command, string code, int startIndex = 0) {
+        if(code.IndexOf(command, startIndex) == -1) return float.NaN;
+
+        int indexStart = code.IndexOf(command, startIndex) + command.Length;
+        int indexEnd = 0;
+        for(int i = indexStart; i < code.Length; i++) {
+            indexEnd = i;
+            if(!char.IsDigit(code[i]) && code[i]!='.') break; // je¿eli nie jest cyfr¹ lub '.'
+        }
+        if(indexStart >= indexEnd) return float.NaN;
+        return float.Parse(code.Substring(indexStart, indexEnd - indexStart));
+    }
+
+    bool IsMoveCommand(string command) {
+        for(int i = 0; i < moveCommands.Length; i++) {
+            if(moveCommands[i] == command) return true;
+        }
+        return false;
     }
 
 }
