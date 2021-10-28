@@ -21,6 +21,8 @@ public class RobotMaster : MonoBehaviour
 
     GCommand lastCommand = new GCommand();
 
+    float interpolation;
+
     string[] moveCommands = { "G0", "G1","G2","G3" };
 
     private void Start() {
@@ -37,6 +39,8 @@ public class RobotMaster : MonoBehaviour
 
     void Update()
     {
+        uiManager.UpdateToolPosition((tool.position-homePoint)*1000);
+
         if(!isPaused && currentLine < gcodeLines.Count) {
             if(currentCommand >= GCommandsLine.Count) { // je¿eli zrobi³ wszystkie komendy w lini
                 GCommandsLine = DecryptLine(gcodeLines[currentLine]);
@@ -51,8 +55,16 @@ public class RobotMaster : MonoBehaviour
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
                         SetToolTarget(GCommandsLine[currentCommand].position);
 
-                        if(Vector3.Distance(toolTarget.position, tool.position)<= posPrecision) {
+                        if(Vector3.Distance(toolTarget.position, tool.position)<= posPrecision) GCommandsLine[currentCommand].done = true;
+                        break;
+                    }
+                    case "G1": {
+                        GCommandsLine[currentCommand].UpdateCommand(lastCommand);
+                        LerpToolTarget(GCommandsLine[currentCommand].position);
+
+                        if(Vector3.Distance(toolTarget.position, tool.position) <= posPrecision) {
                             GCommandsLine[currentCommand].done = true;
+                            interpolation = 0;
                         }
                         break;
                     }
@@ -84,6 +96,13 @@ public class RobotMaster : MonoBehaviour
     void SetToolTarget(Vector3 pos) {
         toolTarget.position = pos / 1000 + homePoint;
     }
+
+    void LerpToolTarget(Vector3 pos) {
+        toolTarget.position = Vector3.Lerp(toolTarget.position, pos / 1000 + homePoint, interpolation);
+        interpolation += 0.1f * Time.deltaTime;
+        Debug.Log(interpolation);
+    }
+
     void UpdateGcodeLines() {
         string text = GameObject.Find("GcodeText").GetComponent<Text>().text;
         gcodeLines = new List<string>(text.Replace("\r", "").Split('\n'));

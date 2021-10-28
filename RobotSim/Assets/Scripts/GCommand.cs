@@ -21,7 +21,7 @@ public class GCommand
     public float S = float.NaN;
 
 
-    public void UpdateCommand(GCommand lastCommand) {
+    public void UpdateCommand(GCommand lastCommand) {// zastêpuje NaN poprzednimi warotœciami
         if(float.IsNaN(X)) X = lastCommand.X;
         if(float.IsNaN(Y)) Y = lastCommand.Y;
         if(float.IsNaN(Z)) Z = lastCommand.Z;

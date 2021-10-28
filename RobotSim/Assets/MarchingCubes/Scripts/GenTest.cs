@@ -255,7 +255,7 @@ public class GenTest : MonoBehaviour
 
 	public void Terraform(Vector3 toolPos, float toolRadius, float toolHeight)
 	{
-		uiManager.UpdateToolPosition(toolPos);
+		//uiManager.UpdateToolPosition(toolPos);
 		toolPos -= blockPosition;
 		int editTextureSize = rawDensityTexture.width;
 		float editPixelWorldSize = boundsSize / editTextureSize;

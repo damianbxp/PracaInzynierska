@@ -2246,9 +2246,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'G53 G0 X1 Y=0 Z0.5 F1000
+  m_Text: 'G53 G0 X0 Y0 Z0 F1000
 
-    G0 Y15 Z1'
+    G1 X100'
 --- !u!222 &966124723
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2797,7 +2797,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088207740}
-  m_LocalRotation: {x: 0.161635, y: -0.8084117, z: 0.25988045, w: 0.50279903}
+  m_LocalRotation: {x: 0.16163498, y: -0.80841166, z: 0.25988042, w: 0.50279903}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -3805,11 +3805,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 1
-  posPrecision: 0.01
-  uiManager: {fileID: 0}
+  posPrecision: 0.06
+  uiManager: {fileID: 298424841}
   toolTarget: {fileID: 2092879331}
   tool: {fileID: 907158309}
-  homePointOffset: {x: 2, y: 1, z: 0}
+  homePoint: {x: 2, y: 1.5, z: 0}
 --- !u!4 &1587449091
 Transform:
   m_ObjectHideFlags: 0
@@ -5559,11 +5559,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2092879330}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f074991bb54ed7241b3812fa4296cfb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pos: {x: 0, y: 0, z: 0}
+  homePoint: {x: 2, y: 1.5, z: 0}
 --- !u!1 &2093556103
 GameObject:
   m_ObjectHideFlags: 0
