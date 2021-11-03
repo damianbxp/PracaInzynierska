@@ -14,7 +14,7 @@ public class Tool : MonoBehaviour
 
     Transform TCP;
 
-    public bool autoTransform;
+    public bool powerOn;
 
     void Start()
     {
@@ -24,7 +24,7 @@ public class Tool : MonoBehaviour
     void Update() {
         transform.position = TCP.position;
         //transform.rotation = TCP.rotation;
-        if(Input.GetKey(KeyCode.F) || autoTransform) {
+        if(powerOn) {
             blockMesh.GetComponent<GenTest>().Terraform(toolWorkCenter.position, toolDiameter/2, toolHeight);
             //Debug.Log(transform.position - blockMesh.transform.position);
             onTerrainModified?.Invoke();

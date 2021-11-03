@@ -16,21 +16,33 @@ public class UIManager : MonoBehaviour
     Text BlockLenghtText;
     Text BlockHeightText;
 
+    Text BlockPosX;
+    Text BlockPosY;
+    Text BlockPosZ;
+
     Transform toolTarget;
     float incrementMoveAmount;
+
+    GenTest gen;
 
     private void Start() {
         toolTarget = GameObject.Find("ToolTarget").transform;
         incrementMoveAmount = 0.001f;
 
         FPSText = GameObject.Find("FPSText").GetComponent<Text>();
-        VerticesText = GameObject.Find("VerticesText").GetComponent<Text>();
+        //VerticesText = GameObject.Find("VerticesText").GetComponent<Text>();
         ToolPosText = GameObject.Find("ToolPosText").GetComponent<Text>();
         ConsoleText = GameObject.Find("ConsoleText").GetComponent<Text>();
 
         BlockWidthText = GameObject.Find("WidthText").GetComponent<Text>();
         BlockLenghtText = GameObject.Find("LenghtText").GetComponent<Text>();
         BlockHeightText = GameObject.Find("HeightText").GetComponent<Text>();
+
+        BlockPosX = GameObject.Find("PosXText").GetComponent<Text>();
+        BlockPosY = GameObject.Find("PosYText").GetComponent<Text>();
+        BlockPosZ = GameObject.Find("PosZText").GetComponent<Text>();
+
+        gen = GameObject.Find("MeshGenerator").GetComponent<GenTest>();
     }
 
     private void Update() {
@@ -41,6 +53,7 @@ public class UIManager : MonoBehaviour
         
 
         float width, lenght, height;
+        float x, y, z;
 
         if(!float.TryParse(BlockWidthText.text,out width)) {
             Debug.LogWarning("Incorrect dimmesnion");
@@ -54,8 +67,23 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("Incorrect dimmesnion");
             return;
         }
+        if(!float.TryParse(BlockPosX.text, out x)) {
+            Debug.LogWarning("Incorrect posintion");
+            return;
+        }
+        if(!float.TryParse(BlockPosY.text, out y)) {
+            Debug.LogWarning("Incorrect posintion");
+            return;
+        }
+        if(!float.TryParse(BlockPosZ.text, out z)) {
+            Debug.LogWarning("Incorrect posintion");
+            return;
+        }
 
         Debug.Log($"Generating Block {width} x {lenght} x {height}");
+
+        gen.GenerateBlock(new Vector3(x,y,z)/1000, width, lenght, height);
+
     }
 
     void UpdateFPSText() {

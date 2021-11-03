@@ -39,7 +39,7 @@ public class RobotMaster : MonoBehaviour
 
     void Update()
     {
-        uiManager.UpdateToolPosition((tool.position-homePoint)*1000);
+        //uiManager.UpdateToolPosition((tool.position-homePoint)*1000);
 
         if(!isPaused && currentLine < gcodeLines.Count) {
             if(currentCommand >= GCommandsLine.Count) { // je¿eli zrobi³ wszystkie komendy w lini

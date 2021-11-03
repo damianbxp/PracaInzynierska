@@ -47,10 +47,10 @@ public class GenTest : MonoBehaviour
 
 	void Start()
 	{
-		GenerateBlock(Vector3.zero, 500,500,500);
+		//GenerateBlock(Vector3.zero, 500,500,500);
 	}
 
-	void GenerateBlock(Vector3 pos, float width_, float lenght_, float height_) {
+	public void GenerateBlock(Vector3 pos, float width_, float lenght_, float height_) {
 		width = width_/1000;
 		lenght = lenght_ / 1000;
 		height = height_ / 1000;
@@ -178,7 +178,7 @@ public class GenTest : MonoBehaviour
 		// Fetch vertex data from GPU
 
 		triangleBuffer.GetData(vertexDataArray, 0, 0, numVertices);
-		uiManager.UpdateVertices(numVertices);
+		//uiManager.UpdateVertices(numVertices);
 
 		timer_fetchVertexData.Stop();
 
