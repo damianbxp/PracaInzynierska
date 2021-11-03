@@ -1,6 +1,3 @@
-
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 [SelectionBase]
 public class Tool : MonoBehaviour
@@ -25,7 +22,7 @@ public class Tool : MonoBehaviour
         transform.position = TCP.position;
         //transform.rotation = TCP.rotation;
         if(powerOn) {
-            blockMesh.GetComponent<GenTest>().Terraform(toolWorkCenter.position, toolDiameter/2, toolHeight);
+            blockMesh.GetComponent<BlockGen>().ModifyBlock(toolWorkCenter.position, toolDiameter/2, toolHeight);
             //Debug.Log(transform.position - blockMesh.transform.position);
             onTerrainModified?.Invoke();
         }

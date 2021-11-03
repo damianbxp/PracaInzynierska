@@ -3120,15 +3120,9 @@ MonoBehaviour:
   uiManager: {fileID: 298424841}
   numChunks: 1
   numPointsPerAxis: 100
-  boundsSize: 1
   isoLevel: 0
-  useFlatShading: 0
-  width: 1
-  lenght: 1
-  height: 1
-  blockPosition: {x: 2, y: 0, z: 0}
-  meshCompute: {fileID: 7200000, guid: 7715ea98d472cf242becdb2e0510d05f, type: 3}
-  densityCompute: {fileID: 7200000, guid: 537fc287bb1b90841af94e797baa6f29, type: 3}
+  marchingCubesCompute: {fileID: 7200000, guid: 7715ea98d472cf242becdb2e0510d05f, type: 3}
+  blockMapCompute: {fileID: 7200000, guid: 537fc287bb1b90841af94e797baa6f29, type: 3}
   editCompute: {fileID: 7200000, guid: 4062858c42b1bac4098b21c38409ca4e, type: 3}
   material: {fileID: 2100000, guid: 94380eccdc7aa404eac69b4f229f1a57, type: 2}
   rawDensityTexture: {fileID: 0}
@@ -3549,7 +3543,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088207740}
-  m_LocalRotation: {x: 0.16163498, y: -0.80841166, z: 0.25988042, w: 0.50279903}
+  m_LocalRotation: {x: 0.16163498, y: -0.80841166, z: 0.25988036, w: 0.50279915}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -7926,7 +7920,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2092879330}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 0.1, y: 1.5, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -65,19 +65,18 @@
     <Compile Include="Assets\MarchingCubes\Scripts\Chunk.cs" />
     <Compile Include="Assets\Scripts\MoveToolBtn.cs" />
     <Compile Include="Assets\Robot\Scripts\Tool.cs" />
-    <Compile Include="Assets\MarchingCubes\Scripts\GenTest.cs" />
+    <Compile Include="Assets\MarchingCubes\Scripts\BlockGen.cs" />
     <Compile Include="Assets\Scripts\GCommand.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MeshBaker.cs" />
     <Compile Include="Assets\Robot\Scripts\RobotMaster.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\TextureViewer\TextureViewer3D.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MathUtility.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
-    <Compile Include="Assets\MarchingCubes\Scripts\Terraformer.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />
      <None Include="Assets\MarchingCubes\Scripts\Compute Helper\Resources\GaussianBlur.compute" />
-     <None Include="Assets\MarchingCubes\Scripts\Compute\PlanetMap.compute" />
+     <None Include="Assets\MarchingCubes\Scripts\Compute\BlockMap.compute" />
      <None Include="Assets\MarchingCubes\Scripts\Compute Helper\Resources\ClearTexture.compute" />
      <None Include="Assets\MarchingCubes\Scripts\Compute\MarchingCubes.compute" />
      <None Include="Assets\MarchingCubes\Scripts\Compute Helper\Resources\Copy3D.compute" />

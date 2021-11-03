@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
 
     Text FPSText;
-    Text VerticesText;
     Text ToolPosText;
     Text ConsoleText;
 
@@ -23,14 +19,13 @@ public class UIManager : MonoBehaviour
     Transform toolTarget;
     float incrementMoveAmount;
 
-    GenTest gen;
+    BlockGen gen;
 
     private void Start() {
         toolTarget = GameObject.Find("ToolTarget").transform;
         incrementMoveAmount = 0.001f;
 
         FPSText = GameObject.Find("FPSText").GetComponent<Text>();
-        //VerticesText = GameObject.Find("VerticesText").GetComponent<Text>();
         ToolPosText = GameObject.Find("ToolPosText").GetComponent<Text>();
         ConsoleText = GameObject.Find("ConsoleText").GetComponent<Text>();
 
@@ -42,7 +37,7 @@ public class UIManager : MonoBehaviour
         BlockPosY = GameObject.Find("PosYText").GetComponent<Text>();
         BlockPosZ = GameObject.Find("PosZText").GetComponent<Text>();
 
-        gen = GameObject.Find("MeshGenerator").GetComponent<GenTest>();
+        gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
     }
 
     private void Update() {
@@ -88,10 +83,6 @@ public class UIManager : MonoBehaviour
 
     void UpdateFPSText() {
         FPSText.text = "FPS " + Mathf.Round(1/Time.deltaTime);
-    }
-
-    public void UpdateVertices(int vertices) {
-        VerticesText.text = "Vertices " + vertices;
     }
     public void UpdateToolPosition(Vector3 toolPos) {
         ToolPosText.text = $"Tool Position:\n\tX:{toolPos.x}\n\tY:{toolPos.y}\n\tZ:{toolPos.z}";

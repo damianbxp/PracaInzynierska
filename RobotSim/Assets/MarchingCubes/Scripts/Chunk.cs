@@ -10,7 +10,6 @@ public class Chunk
 	public Mesh mesh;
 
 	public ComputeBuffer pointsBuffer;
-	int numPointsPerAxis;
 	public MeshFilter filter;
 	MeshRenderer renderer;
 	MeshCollider collider;
@@ -29,7 +28,6 @@ public class Chunk
 		this.id = coord;
 		this.centre = centre;
 		this.size = size;
-		this.numPointsPerAxis = numPointsPerAxis;
 
 		mesh = new Mesh();
 		mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
@@ -51,7 +49,7 @@ public class Chunk
 		processedTriangles = new List<int>();
 	}
 
-	public void CreateMesh(VertexData[] vertexData, int numVertices, bool useFlatShading)
+	public void CreateMesh(VertexData[] vertexData, int numVertices)
 	{
 
 		vertexIndexMap.Clear();
@@ -66,16 +64,13 @@ public class Chunk
 			VertexData data = vertexData[i];
 
 			int sharedVertexIndex;
-			if (!useFlatShading && vertexIndexMap.TryGetValue(data.id, out sharedVertexIndex))
+			if (vertexIndexMap.TryGetValue(data.id, out sharedVertexIndex))
 			{
 				processedTriangles.Add(sharedVertexIndex);
 			}
 			else
 			{
-				if (!useFlatShading)
-				{
-					vertexIndexMap.Add(data.id, triangleIndex);
-				}
+				vertexIndexMap.Add(data.id, triangleIndex);
 				processedVertices.Add(data.position);
 				processedNormals.Add(data.normal);
 				processedTriangles.Add(triangleIndex);
@@ -89,14 +84,8 @@ public class Chunk
 		mesh.SetVertices(processedVertices);
 		mesh.SetTriangles(processedTriangles, 0, true);
 
-		if (useFlatShading)
-		{
-			mesh.RecalculateNormals();
-		}
-		else
-		{
-			mesh.SetNormals(processedNormals);
-		}
+		mesh.SetNormals(processedNormals);
+
 
 		collider.sharedMesh = mesh;
 	}

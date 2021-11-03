@@ -1,35 +1,28 @@
-﻿using System.Collections.Generic;
-using Unity.Collections;
-using Unity.Mathematics;
-using UnityEngine;
-using UnityEngine.Rendering;
+﻿using UnityEngine;
 
-public class GenTest : MonoBehaviour
+public class BlockGen : MonoBehaviour
 {
 	public UIManager uiManager;
 
-	[Header("Init Settings")]
+	[Header("Gen Settings")]
 	public int numChunks = 4;
 
 	public int numPointsPerAxis = 10;
-	public float boundsSize = 10;
+	float boundsSize = 10;
 	public float isoLevel = 0f;
-	public bool useFlatShading;
 
-	[Header("Block")]
-	public float width = 0.1f;
-	public float lenght = 0.1f;
-	public float height = 0.1f;
-	public Vector3 blockPosition;
+	float width = 0.1f;
+	float lenght = 0.1f;
+	float height = 0.1f;
+	Vector3 blockPosition;
 
 
 	[Header("References")]
-	public ComputeShader meshCompute;
-	public ComputeShader densityCompute;
+	public ComputeShader marchingCubesCompute;
+	public ComputeShader blockMapCompute;
 	public ComputeShader editCompute;
 	public Material material;
 
-	// Private
 	ComputeBuffer triangleBuffer;
 	ComputeBuffer triCountBuffer;
 	[HideInInspector] public RenderTexture rawDensityTexture;
@@ -40,18 +33,17 @@ public class GenTest : MonoBehaviour
 
 	int totalVerts;
 
-	// Stopwatches
 	System.Diagnostics.Stopwatch timer_fetchVertexData;
 	System.Diagnostics.Stopwatch timer_processVertexData;
 	RenderTexture originalMap;
 
 	void Start()
 	{
-		//GenerateBlock(Vector3.zero, 500,500,500);
+
 	}
 
 	public void GenerateBlock(Vector3 pos, float width_, float lenght_, float height_) {
-		width = width_/1000;
+		width = width_ / 1000;
 		lenght = lenght_ / 1000;
 		height = height_ / 1000;
 
@@ -97,9 +89,9 @@ public class GenTest : MonoBehaviour
 		processedDensityTexture = rawDensityTexture;
 
 		// Set textures on compute shaders
-		densityCompute.SetTexture(0, "DensityTexture", rawDensityTexture);
+		blockMapCompute.SetTexture(0, "DensityTexture", rawDensityTexture);
 		editCompute.SetTexture(0, "EditTexture", rawDensityTexture);
-		meshCompute.SetTexture(0, "DensityTexture", rawDensityTexture);
+		marchingCubesCompute.SetTexture(0, "DensityTexture", rawDensityTexture);
 	}
 
 	void GenerateAllChunks()
@@ -133,14 +125,14 @@ public class GenTest : MonoBehaviour
 		// Get points (each point is a vector4: xyz = position, w = density)
 		int textureSize = rawDensityTexture.width;
 
-		densityCompute.SetInt("textureSize", textureSize);
+		blockMapCompute.SetInt("textureSize", textureSize);
 
-		densityCompute.SetFloat("planetSize", boundsSize);
-		densityCompute.SetFloat("width", width);
-		densityCompute.SetFloat("lenght", lenght);
-		densityCompute.SetFloat("height", height);
+		blockMapCompute.SetFloat("planetSize", boundsSize);
+		blockMapCompute.SetFloat("width", width);
+		blockMapCompute.SetFloat("lenght", lenght);
+		blockMapCompute.SetFloat("height", height);
 
-		ComputeHelper.Dispatch(densityCompute, textureSize, textureSize, textureSize);
+		ComputeHelper.Dispatch(blockMapCompute, textureSize, textureSize, textureSize);
 
 	}
 
@@ -153,17 +145,17 @@ public class GenTest : MonoBehaviour
 		int marchKernel = 0;
 
 
-		meshCompute.SetInt("textureSize", processedDensityTexture.width);
-		meshCompute.SetInt("numPointsPerAxis", numPointsPerAxis);
-		meshCompute.SetFloat("isoLevel", isoLevel);
-		meshCompute.SetFloat("planetSize", boundsSize);
+		marchingCubesCompute.SetInt("textureSize", processedDensityTexture.width);
+		marchingCubesCompute.SetInt("numPointsPerAxis", numPointsPerAxis);
+		marchingCubesCompute.SetFloat("isoLevel", isoLevel);
+		marchingCubesCompute.SetFloat("planetSize", boundsSize);
 		triangleBuffer.SetCounterValue(0);
-		meshCompute.SetBuffer(marchKernel, "triangles", triangleBuffer);
+		marchingCubesCompute.SetBuffer(marchKernel, "triangles", triangleBuffer);
 
 		Vector3 chunkCoord = (Vector3)chunk.id * (numPointsPerAxis - 1);
-		meshCompute.SetVector("chunkCoord", chunkCoord);
+		marchingCubesCompute.SetVector("chunkCoord", chunkCoord);
 
-		ComputeHelper.Dispatch(meshCompute, numVoxelsPerAxis, numVoxelsPerAxis, numVoxelsPerAxis, marchKernel);
+		ComputeHelper.Dispatch(marchingCubesCompute, numVoxelsPerAxis, numVoxelsPerAxis, numVoxelsPerAxis, marchKernel);
 
 		// Create mesh
 		int[] vertexCountData = new int[1];
@@ -184,24 +176,14 @@ public class GenTest : MonoBehaviour
 
 		//CreateMesh(vertices);
 		timer_processVertexData.Start();
-		chunk.CreateMesh(vertexDataArray, numVertices, useFlatShading);
+		chunk.CreateMesh(vertexDataArray, numVertices);
 		timer_processVertexData.Stop();
 	}
-
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.G))
-		{
-			Debug.Log("Generate");
-			GenerateAllChunks();
-		}
-	}
-
 
 
 	void CreateBuffers()
 	{
-		int numPoints = numPointsPerAxis * numPointsPerAxis * numPointsPerAxis;
+		//int numPoints = numPointsPerAxis * numPointsPerAxis * numPointsPerAxis;
 		int numVoxelsPerAxis = numPointsPerAxis - 1;
 		int numVoxels = numVoxelsPerAxis * numVoxelsPerAxis * numVoxelsPerAxis;
 		int maxTriangleCount = numVoxels * 5;
@@ -259,7 +241,7 @@ public class GenTest : MonoBehaviour
 	}
 
 
-	public void Terraform(Vector3 toolPos, float toolRadius, float toolHeight)
+	public void ModifyBlock(Vector3 toolPos, float toolRadius, float toolHeight)
 	{
 		toolPos -= blockPosition;
 		int editTextureSize = rawDensityTexture.width;
@@ -282,28 +264,21 @@ public class GenTest : MonoBehaviour
 		ComputeHelper.Dispatch(editCompute, editTextureSize, editTextureSize, editTextureSize);
 
 
-        //ComputeHelper.CopyRenderTexture3D(originalMap, processedDensityTexture);
-
-        //float worldRadius = (editRadius + 1 + ((blurMap) ? blurRadius : 0)) * editPixelWorldSize;
         float worldRadius = ( editRadius + 1 );
         for(int i = 0; i < chunks.Length; i++) {
             Chunk chunk = chunks[i];
             GenerateChunk(chunk);
             if(MathUtility.SphereIntersectsBox(toolPos, worldRadius, chunk.centre, Vector3.one * chunk.size)) {
-
                 chunk.terra = true;
-
             }
         }
     }
 
 	void Create3DTexture(ref RenderTexture texture, int size, string name)
 	{
-		//
 		var format = UnityEngine.Experimental.Rendering.GraphicsFormat.R32_SFloat;
 		if (texture == null || !texture.IsCreated() || texture.width != size || texture.height != size || texture.volumeDepth != size || texture.graphicsFormat != format)
 		{
-			//Debug.Log ("Create tex: update noise: " + updateNoise);
 			if (texture != null)
 			{
 				texture.Release();
