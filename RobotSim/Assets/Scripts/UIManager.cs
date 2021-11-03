@@ -12,6 +12,10 @@ public class UIManager : MonoBehaviour
     Text ToolPosText;
     Text ConsoleText;
 
+    Text BlockWidthText;
+    Text BlockLenghtText;
+    Text BlockHeightText;
+
     Transform toolTarget;
     float incrementMoveAmount;
 
@@ -23,14 +27,39 @@ public class UIManager : MonoBehaviour
         VerticesText = GameObject.Find("VerticesText").GetComponent<Text>();
         ToolPosText = GameObject.Find("ToolPosText").GetComponent<Text>();
         ConsoleText = GameObject.Find("ConsoleText").GetComponent<Text>();
+
+        BlockWidthText = GameObject.Find("WidthText").GetComponent<Text>();
+        BlockLenghtText = GameObject.Find("LenghtText").GetComponent<Text>();
+        BlockHeightText = GameObject.Find("HeightText").GetComponent<Text>();
     }
 
     private void Update() {
         UpdateFPSText();
     }
 
+    public void GenerateBlock() {
+        
+
+        float width, lenght, height;
+
+        if(!float.TryParse(BlockWidthText.text,out width)) {
+            Debug.LogWarning("Incorrect dimmesnion");
+            return;
+        }
+        if(!float.TryParse(BlockLenghtText.text, out lenght)) {
+            Debug.LogWarning("Incorrect dimmesnion");
+            return;
+        }
+        if(!float.TryParse(BlockHeightText.text, out height)) {
+            Debug.LogWarning("Incorrect dimmesnion");
+            return;
+        }
+
+        Debug.Log($"Generating Block {width} x {lenght} x {height}");
+    }
+
     void UpdateFPSText() {
-        FPSText.text = "FPS " + 1/Time.deltaTime;
+        FPSText.text = "FPS " + Mathf.Round(1/Time.deltaTime);
     }
 
     public void UpdateVertices(int vertices) {

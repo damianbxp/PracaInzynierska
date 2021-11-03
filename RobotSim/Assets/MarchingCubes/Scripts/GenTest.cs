@@ -47,16 +47,22 @@ public class GenTest : MonoBehaviour
 
 	void Start()
 	{
-		uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
+		GenerateBlock(Vector3.zero, 500,500,500);
+	}
 
-		blockPosition += new Vector3(0, height / 2, 0);
+	void GenerateBlock(Vector3 pos, float width_, float lenght_, float height_) {
+		width = width_/1000;
+		lenght = lenght_ / 1000;
+		height = height_ / 1000;
+
+		blockPosition = pos - new Vector3(0, height / 2, 0);
 
 		SetBoundingBox();
-
 		InitTextures();
 		CreateBuffers();
 
 		CreateChunks();
+
 
 		var sw = System.Diagnostics.Stopwatch.StartNew();
 		GenerateAllChunks();
@@ -255,7 +261,6 @@ public class GenTest : MonoBehaviour
 
 	public void Terraform(Vector3 toolPos, float toolRadius, float toolHeight)
 	{
-		//uiManager.UpdateToolPosition(toolPos);
 		toolPos -= blockPosition;
 		int editTextureSize = rawDensityTexture.width;
 		float editPixelWorldSize = boundsSize / editTextureSize;
