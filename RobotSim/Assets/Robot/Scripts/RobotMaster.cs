@@ -47,7 +47,7 @@ public class RobotMaster : MonoBehaviour
                 currentCommand = 0;
                 uiManager.UpdateConsole(gcodeLines[currentLine]);
             } else {
-                Debug.Log($"Running {currentCommand+1}/{GCommandsLine.Count} in line {currentLine+1}");
+                Debug.Log($"Running {currentCommand+1}/{GCommandsLine.Count} in line {currentLine+1}: {GCommandsLine[currentCommand].name} X{GCommandsLine[currentCommand].X} Y{GCommandsLine[currentCommand].Y} Z{GCommandsLine[currentCommand].Z}");
 
                 switch(GCommandsLine[currentCommand].name) { //wykonaj komende
                     case "G0": {
@@ -57,7 +57,7 @@ public class RobotMaster : MonoBehaviour
                         if(Vector3.Distance(toolTarget.position, tool.position)<= posPrecision) GCommandsLine[currentCommand].done = true;
                         break;
                     }
-                    case "G1": {
+                    case "G1": {//nie dzia³a
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
                         LerpToolTarget(GCommandsLine[currentCommand].position);
 
@@ -146,7 +146,7 @@ public class RobotMaster : MonoBehaviour
         int indexEnd = 0;
         for(int i = indexStart; i < code.Length; i++) {
             indexEnd = i;
-            if(!char.IsDigit(code[i]) && code[i]!=',') break; // je¿eli nie jest cyfr¹ lub ','
+            if(!char.IsDigit(code[i]) && code[i]!=',' && code[i] != '-') break; // je¿eli nie jest cyfr¹ lub ',' lub '-'
         }
         if(indexStart >= indexEnd) return float.NaN;
         return float.Parse(code.Substring(indexStart, indexEnd - indexStart));

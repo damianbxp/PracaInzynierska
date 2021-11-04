@@ -16,6 +16,7 @@ public class BlockGen : MonoBehaviour
 	float height = 0.1f;
 	Vector3 blockPosition;
 
+	public RobotMaster robotMaster;
 
 	[Header("References")]
 	public ComputeShader marchingCubesCompute;
@@ -39,10 +40,12 @@ public class BlockGen : MonoBehaviour
 
 	void Start()
 	{
-
+		
 	}
 
 	public void GenerateBlock(Vector3 pos, float width_, float lenght_, float height_) {
+		robotMaster.homePoint = pos;
+
 		width = width_ / 1000;
 		lenght = lenght_ / 1000;
 		height = height_ / 1000;
