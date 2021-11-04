@@ -5,7 +5,7 @@ using UnityEngine;
 public class InverseKinematics : MonoBehaviour
 {
     public Transform target;
-    List<Axis> axes = new List<Axis>();
+    public List<Axis> axes = new List<Axis>();
 
     public Transform rotationJoint, upperArmJoint; 
 
@@ -73,7 +73,7 @@ public class InverseKinematics : MonoBehaviour
     }
 
     private void UpdateAxes(Transform joint) {
-        axes.Add(joint.GetComponent<Axis>());
+        if(joint.GetComponent<Axis>()!=null) axes.Add(joint.GetComponent<Axis>());
 
         if(joint.childCount > 0) {
             UpdateAxes(joint.GetChild(0));

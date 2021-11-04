@@ -16,6 +16,8 @@ public class Axis : MonoBehaviour
 
     float newTheta;
 
+    public bool allowMovement = true;
+
     private void Start() {
         xAngle = transform.localEulerAngles.x;
         yAngle = transform.localEulerAngles.y;
@@ -23,12 +25,11 @@ public class Axis : MonoBehaviour
 
     private void Update() {
 
-        if((minTheta==0 && maxTheta==0)||(theta<maxTheta && theta > minTheta)) {
-            newTheta = theta + offset;
-        }
-
-        
-
+        if(allowMovement) {
+            if((minTheta==0 && maxTheta==0)||(theta<maxTheta && theta > minTheta)) {
+                newTheta = theta + offset;
+            }
         transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed*Time.deltaTime);
+        }
     }
 }

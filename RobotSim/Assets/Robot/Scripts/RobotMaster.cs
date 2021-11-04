@@ -4,9 +4,12 @@ using UnityEngine.UI;
 
 public class RobotMaster : MonoBehaviour
 {
-    public bool isPaused;
+    public bool isPaused = true;
+    public bool isStarted = false;
     public float posPrecision = 0.01f;
     public UIManager uiManager;
+    public InverseKinematics inverseKinematics;
+    public BlockGen blockGen;
     int currentLine;
     int currentCommand = 0;
 
@@ -25,7 +28,6 @@ public class RobotMaster : MonoBehaviour
     string[] moveCommands = { "G0", "G1","G2","G3" };
 
     private void Start() {
-        isPaused = true;
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
         UpdateGcodeLines();
@@ -89,6 +91,19 @@ public class RobotMaster : MonoBehaviour
             if(currentCommand >= GCommandsLine.Count) {
                 currentLine++;
             }
+        }
+    }
+
+    public void StartProgram() {
+        isStarted = true;
+        uiManager.GenerateBlock();
+        PauseProgram();
+    }
+
+    public void PauseProgram() {
+        isPaused = !isPaused;
+        foreach(Axis axis in inverseKinematics.axes) {
+            axis.allowMovement = !isPaused;
         }
     }
 
