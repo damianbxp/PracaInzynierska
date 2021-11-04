@@ -202,9 +202,10 @@ public class BlockGen : MonoBehaviour
 	void OnDestroy()
 	{
 		ReleaseBuffers();
-		foreach (Chunk chunk in chunks)
-		{
-			chunk.Release();
+		if(chunks != null) {
+			foreach(Chunk chunk in chunks) {
+				chunk.Release();
+			}
 		}
 	}
 

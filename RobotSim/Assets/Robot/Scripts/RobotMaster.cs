@@ -103,7 +103,8 @@ public class RobotMaster : MonoBehaviour
     }
 
     void UpdateGcodeLines() {
-        string text = GameObject.Find("GcodeText").GetComponent<Text>().text;
+        string text = GameObject.Find("GcodeText").GetComponent<TMPro.TextMeshProUGUI>().text;
+        Debug.Log(text);
         gcodeLines = new List<string>(text.Replace("\r", "").Split('\n'));
     }
 
