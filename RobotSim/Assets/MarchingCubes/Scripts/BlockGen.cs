@@ -44,6 +44,9 @@ public class BlockGen : MonoBehaviour
 	}
 
 	public void GenerateBlock(Vector3 pos, float width_, float lenght_, float height_) {
+        for(int i = 0; i < transform.childCount; i++) {
+			Destroy(transform.GetChild(i).gameObject);
+        }
 		robotMaster.homePoint = pos;
 
 		width = width_ / 1000;
@@ -70,6 +73,9 @@ public class BlockGen : MonoBehaviour
 
 	void CorrectPosition() {
 		transform.position = blockPosition;
+        for(int i = 0; i < transform.childCount; i++) {
+			transform.GetChild(i).transform.position = blockPosition;
+        }
 	}
 
 	void SetBoundingBox() {
@@ -192,6 +198,8 @@ public class BlockGen : MonoBehaviour
 		int maxTriangleCount = numVoxels * 5;
 		int maxVertexCount = maxTriangleCount * 3;
 
+		if(triangleBuffer!=null) triangleBuffer.Release();//<-
+		if(triCountBuffer!=null) triCountBuffer.Release();//<-
 		triCountBuffer = new ComputeBuffer(1, sizeof(int), ComputeBufferType.Raw);
 		triangleBuffer = new ComputeBuffer(maxVertexCount, ComputeHelper.GetStride<VertexData>(), ComputeBufferType.Append);
 		vertexDataArray = new VertexData[maxVertexCount];

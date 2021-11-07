@@ -55,7 +55,7 @@ public class RobotMaster : MonoBehaviour
 
     void Update()
     {
-        //uiManager.UpdateToolPosition((tool.position-homePoint)*1000);
+        uiManager.UpdateToolPosition((toolTransform.position-homePoint)*1000);
 
         if(!isPaused && !jogMode && isStarted && currentLine < gcodeLines.Count) {
             if(currentCommand >= GCommandsLine.Count) { // je¿eli zrobi³ wszystkie komendy w lini
@@ -70,7 +70,7 @@ public class RobotMaster : MonoBehaviour
                     case "G0": {
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
                         SetToolTarget(GCommandsLine[currentCommand].position);
-
+                        Debug.Log($"{toolTarget.position} {toolTransform.position} {Vector3.Distance(toolTarget.position, toolTransform.position)}");
                         if(Vector3.Distance(toolTarget.position, toolTransform.position) <= posPrecision) {
                             GCommandsLine[currentCommand].done = true;
                             lastCommand = GCommandsLine[currentCommand];

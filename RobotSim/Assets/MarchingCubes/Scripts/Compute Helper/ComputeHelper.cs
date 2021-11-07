@@ -47,6 +47,7 @@ public static class ComputeHelper
 		if (createNewBuffer)
 		{
 			Release(buffer);
+			if(buffer!=null) buffer.Release();//<-
 			buffer = new ComputeBuffer(count, stride);
 		}
 	}
