@@ -6,6 +6,7 @@ public class RobotMaster : MonoBehaviour
 {
     public bool isPaused = true;
     public bool isStarted = false;
+    public bool jogMode = false;
     public float posPrecision = 0.01f;
     public UIManager uiManager;
     public InverseKinematics inverseKinematics;
@@ -27,6 +28,10 @@ public class RobotMaster : MonoBehaviour
 
     string[] moveCommands = { "G0", "G1","G2","G3" };
 
+
+    Text JogBtnText;
+    Text RunBtnText;
+    Text PauseBtnText;
     private void Start() {
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
@@ -36,13 +41,17 @@ public class RobotMaster : MonoBehaviour
         lastCommand.X = 0;
         lastCommand.Y = 0;
         lastCommand.Z = 0;
+
+        JogBtnText = GameObject.Find("JogBtnText").GetComponent<Text>();
+        RunBtnText = GameObject.Find("RunBtnText").GetComponent<Text>();
+        PauseBtnText = GameObject.Find("PauseBtnText").GetComponent<Text>();
     }
 
     void Update()
     {
         //uiManager.UpdateToolPosition((tool.position-homePoint)*1000);
 
-        if(!isPaused && currentLine < gcodeLines.Count) {
+        if(!isPaused && !jogMode && isStarted && currentLine < gcodeLines.Count) {
             if(currentCommand >= GCommandsLine.Count) { // je¿eli zrobi³ wszystkie komendy w lini
                 GCommandsLine = DecryptLine(gcodeLines[currentLine]);
                 //Debug.Log($"Commands in line {currentLine}: {GCommandsLine.Count}");
@@ -95,9 +104,14 @@ public class RobotMaster : MonoBehaviour
     }
 
     public void StartProgram() {
+        currentLine = 0;
+        currentCommand = 0;
         isStarted = true;
+        jogMode = false;
         uiManager.GenerateBlock();
-        PauseProgram();
+        if(!isPaused) PauseProgram();
+
+        UpdateButtons();
     }
 
     public void PauseProgram() {
@@ -105,10 +119,29 @@ public class RobotMaster : MonoBehaviour
         foreach(Axis axis in inverseKinematics.axes) {
             axis.allowMovement = !isPaused;
         }
+        UpdateButtons();
+    }
+
+    public void JogMode() {
+        jogMode = !jogMode;
+        isStarted = false;
+        UpdateButtons();
+    }
+
+    void UpdateButtons() {
+        if(isPaused) PauseBtnText.color = Color.green;
+        else PauseBtnText.color = Color.black;
+
+        if(jogMode) JogBtnText.color = Color.green;
+        else JogBtnText.color = Color.black;
+
+        if(isStarted) RunBtnText.color = Color.green;
+        else RunBtnText.color = Color.black;
     }
 
     void SetToolTarget(Vector3 pos) {
         toolTarget.position = pos / 1000 + homePoint;
+        
     }
 
     void LerpToolTarget(Vector3 pos) {
@@ -122,6 +155,7 @@ public class RobotMaster : MonoBehaviour
         Debug.Log(text);
         gcodeLines = new List<string>(text.Replace("\r", "").Split('\n'));
     }
+
 
     List<GCommand> DecryptLine(string code) {
         code = code.ToUpper().Replace(" ", "").Replace(".",",");

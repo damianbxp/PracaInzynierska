@@ -16,10 +16,13 @@ public class UIManager : MonoBehaviour
     Text BlockPosY;
     Text BlockPosZ;
 
+    Text IncrementText;
+
     Transform toolTarget;
-    float incrementMoveAmount;
+    public float incrementMoveAmount;
 
     BlockGen gen;
+    RobotMaster robotMaster;
 
     private void Start() {
         toolTarget = GameObject.Find("ToolTarget").transform;
@@ -37,7 +40,12 @@ public class UIManager : MonoBehaviour
         BlockPosY = GameObject.Find("PosYText").GetComponent<Text>();
         BlockPosZ = GameObject.Find("PosZText").GetComponent<Text>();
 
+        IncrementText = GameObject.Find("IncrementText").GetComponent<Text>();
+
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
+        robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
+
+        
     }
 
     private void Update() {
@@ -98,35 +106,43 @@ public class UIManager : MonoBehaviour
     }
 
     public void MoveToolIncrement(int axis) {
-        
 
-        switch(axis) {
-            case 1:
-                MoveTool(new Vector3(incrementMoveAmount, 0, 0) + toolTarget.position);
-                break;
-            case -1:
-                MoveTool(new Vector3(-incrementMoveAmount, 0, 0) + toolTarget.position);
-                break;
-            case 2:
-                MoveTool(new Vector3(0, incrementMoveAmount, 0) + toolTarget.position);
-                break;
-            case -2:
-                MoveTool(new Vector3(0, -incrementMoveAmount, 0) + toolTarget.position);
-                break;
-            case 3:
-                MoveTool(new Vector3(0, 0, incrementMoveAmount) + toolTarget.position);
-                break;
-            case -3:
-                MoveTool(new Vector3(0, 0, -incrementMoveAmount) + toolTarget.position);
-                break;
-            default:
-                Debug.LogError("Wrong axis passed");
-                break;
+        if(robotMaster.jogMode) {
+            switch(axis) {
+                case 1:
+                    MoveTool(new Vector3(incrementMoveAmount, 0, 0) + toolTarget.position);
+                    break;
+                case -1:
+                    MoveTool(new Vector3(-incrementMoveAmount, 0, 0) + toolTarget.position);
+                    break;
+                case 2:
+                    MoveTool(new Vector3(0, incrementMoveAmount, 0) + toolTarget.position);
+                    break;
+                case -2:
+                    MoveTool(new Vector3(0, -incrementMoveAmount, 0) + toolTarget.position);
+                    break;
+                case 3:
+                    MoveTool(new Vector3(0, 0, incrementMoveAmount) + toolTarget.position);
+                    break;
+                case -3:
+                    MoveTool(new Vector3(0, 0, -incrementMoveAmount) + toolTarget.position);
+                    break;
+                default:
+                    Debug.LogError("Wrong axis passed");
+                    break;
+            }
         }
     }
     
-    public void SetIncrementAmount(float amount) {
-        incrementMoveAmount = amount;
+
+    public void ChangeIncrement(float amount) {
+        incrementMoveAmount = Mathf.Clamp(incrementMoveAmount*1000 + amount, 0, 1000)/1000;
+        IncrementText.text = ( incrementMoveAmount * 1000 ).ToString();
+    }
+
+    public void SetIncrement(float amount) {
+        incrementMoveAmount = Mathf.Clamp(amount, 0, 1000) / 1000;
+        IncrementText.text = (incrementMoveAmount*1000).ToString();
     }
     
 }
