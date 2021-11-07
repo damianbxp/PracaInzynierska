@@ -71,7 +71,10 @@ public class RobotMaster : MonoBehaviour
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
                         SetToolTarget(GCommandsLine[currentCommand].position);
 
-                        if(Vector3.Distance(toolTarget.position, toolTransform.position)<= posPrecision) GCommandsLine[currentCommand].done = true;
+                        if(Vector3.Distance(toolTarget.position, toolTransform.position) <= posPrecision) {
+                            GCommandsLine[currentCommand].done = true;
+                            lastCommand = GCommandsLine[currentCommand];
+                        }
                         break;
                     }
                     case "G1": {//nie dzia³a
@@ -80,6 +83,7 @@ public class RobotMaster : MonoBehaviour
 
                         if(Vector3.Distance(toolTarget.position, toolTransform.position) <= posPrecision) {
                             GCommandsLine[currentCommand].done = true;
+                            
                             interpolation = 0;
                         }
                         break;

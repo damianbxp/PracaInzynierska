@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     Text IncrementText;
 
     Transform toolTarget;
-    public float incrementMoveAmount = 0.1f;
+    public float incrementMoveAmount;
 
     BlockGen gen;
     RobotMaster robotMaster;
@@ -45,7 +45,7 @@ public class UIManager : MonoBehaviour
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
 
-        
+        SetIncrement(100);
     }
 
     private void Update() {
