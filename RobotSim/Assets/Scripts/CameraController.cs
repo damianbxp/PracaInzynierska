@@ -21,6 +21,6 @@ public class CameraController : MonoBehaviour
         cameraCtrl.m_XAxis.Value += Input.GetAxis("Mouse X") * sensitivityX * Time.deltaTime;
     }
     void MoveCamY() {
-        cameraCtrl.m_YAxis.Value += Input.GetAxis("Mouse Y") * sensitivityY * Time.deltaTime;
+        cameraCtrl.m_YAxis.Value += Input.GetAxis("Mouse Y") * -sensitivityY * Time.deltaTime;
     }
 }

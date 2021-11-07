@@ -45,7 +45,9 @@ public class UIManager : MonoBehaviour
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
 
-        SetIncrement(100);
+        SetIncrement(50);
+
+        GenerateBlock();
     }
 
     private void Update() {
