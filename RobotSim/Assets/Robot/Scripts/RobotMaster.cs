@@ -7,15 +7,17 @@ public class RobotMaster : MonoBehaviour
     public bool isPaused = true;
     public bool isStarted = false;
     public bool jogMode = false;
+    public bool spindle = false;
     public float posPrecision = 0.01f;
     public UIManager uiManager;
     public InverseKinematics inverseKinematics;
     public BlockGen blockGen;
+    public Tool tool;
     int currentLine;
     int currentCommand = 0;
 
     public Transform toolTarget;
-    public Transform tool;
+    public Transform toolTransform;
 
     public Vector3 homePoint;
 
@@ -32,6 +34,7 @@ public class RobotMaster : MonoBehaviour
     Text JogBtnText;
     Text RunBtnText;
     Text PauseBtnText;
+    Text SpindleBtnText;
     private void Start() {
         uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
 
@@ -45,6 +48,9 @@ public class RobotMaster : MonoBehaviour
         JogBtnText = GameObject.Find("JogBtnText").GetComponent<Text>();
         RunBtnText = GameObject.Find("RunBtnText").GetComponent<Text>();
         PauseBtnText = GameObject.Find("PauseBtnText").GetComponent<Text>();
+        SpindleBtnText = GameObject.Find("SpindleBtnText").GetComponent<Text>();
+
+        UpdateButtons();
     }
 
     void Update()
@@ -65,14 +71,14 @@ public class RobotMaster : MonoBehaviour
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
                         SetToolTarget(GCommandsLine[currentCommand].position);
 
-                        if(Vector3.Distance(toolTarget.position, tool.position)<= posPrecision) GCommandsLine[currentCommand].done = true;
+                        if(Vector3.Distance(toolTarget.position, toolTransform.position)<= posPrecision) GCommandsLine[currentCommand].done = true;
                         break;
                     }
                     case "G1": {//nie dzia³a
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
                         LerpToolTarget(GCommandsLine[currentCommand].position);
 
-                        if(Vector3.Distance(toolTarget.position, tool.position) <= posPrecision) {
+                        if(Vector3.Distance(toolTarget.position, toolTransform.position) <= posPrecision) {
                             GCommandsLine[currentCommand].done = true;
                             interpolation = 0;
                         }
@@ -128,6 +134,12 @@ public class RobotMaster : MonoBehaviour
         UpdateButtons();
     }
 
+    public void Spindle() {
+        spindle = !spindle;
+        tool.powerOn = spindle;
+        UpdateButtons();
+    }
+
     void UpdateButtons() {
         if(isPaused) PauseBtnText.color = Color.green;
         else PauseBtnText.color = Color.black;
@@ -137,6 +149,9 @@ public class RobotMaster : MonoBehaviour
 
         if(isStarted) RunBtnText.color = Color.green;
         else RunBtnText.color = Color.black;
+
+        if(spindle) SpindleBtnText.color = Color.green;
+        else SpindleBtnText.color = Color.black;
     }
 
     void SetToolTarget(Vector3 pos) {

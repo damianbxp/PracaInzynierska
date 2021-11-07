@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     Text IncrementText;
 
     Transform toolTarget;
-    public float incrementMoveAmount;
+    public float incrementMoveAmount = 0.1f;
 
     BlockGen gen;
     RobotMaster robotMaster;
