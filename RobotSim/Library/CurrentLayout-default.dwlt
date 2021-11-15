@@ -122,7 +122,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 342}
   m_MaxSize: {x: 12004, y: 8042}
   vertical: 0
-  controlID: 15
+  controlID: 76
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 342}
   m_MaxSize: {x: 8003, y: 8042}
   vertical: 1
-  controlID: 16
+  controlID: 77
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 17
+  controlID: 78
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -315,9 +315,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -0.1769008, y: -0.22939512, z: 2.9056108}
+    m_Target: {x: 1.1305192, y: 1.8076078, z: 1.2940513}
     speed: 2
-    m_Value: {x: -0.1769008, y: -0.22939514, z: 2.9056108}
+    m_Value: {x: 1.1305192, y: 1.8076078, z: 1.2940513}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 2
@@ -364,13 +364,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.12743253, y: -0.5860242, z: 0.09396969, w: 0.79469925}
+    m_Target: {x: -0.22462107, y: 0.6282974, z: -0.19644089, w: -0.71855086}
     speed: 2
-    m_Value: {x: 0.12623781, y: -0.5861527, z: 0.09308861, w: 0.7948734}
+    m_Value: {x: -0.22460797, y: 0.6282608, z: -0.19642945, w: -0.71850896}
   m_Size:
-    m_Target: 3.528233
+    m_Target: 0.51339746
     speed: 2
-    m_Value: 3.528233
+    m_Value: 0.51339746
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -512,9 +512,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: a4470000
-      m_LastClickedID: 18340
-      m_ExpandedIDs: 50fbffffa4470000
+      m_SelectedIDs: 68480000
+      m_LastClickedID: 18536
+      m_ExpandedIDs: c60affff50fbffff404900005a4900006c490000724900008449000090490000944900009a490000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -576,22 +576,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets/Robot/Scripts
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Robot/Scripts
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Praca dyplomowa\PracaInzynierska\RobotSim
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: b44b0000
-    m_LastClickedID: 19380
-    m_ExpandedIDs: 00000000aa4b0000ac4b0000
+    m_SelectedIDs: 124f0000
+    m_LastClickedID: 20242
+    m_ExpandedIDs: 00000000aa4b0000ac4b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -644,8 +644,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 7a480000
-    m_LastClickedInstanceID: 18554
+    m_SelectedInstanceIDs: 68480000
+    m_LastClickedInstanceID: 18536
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000
     m_RenameOverlay:

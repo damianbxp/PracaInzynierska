@@ -24,13 +24,14 @@ public class InverseKinematicsDH : MonoBehaviour
     }
 
     void Calculate() {
-        axes[0].SetTheta(GetTheta1());
+        axes[0].SetTheta(GetTheta1(),false);
         SetTheta3_2();
     }
 
     float GetTheta1() {
-        float theta1 = Mathf.Atan2(transformMatrix.m23 - axes[5].d * transformMatrix.m22, transformMatrix.m03 - axes[5].d * transformMatrix.m02);
-        //theta1 += Mathf.PI;
+        //float theta1 = Mathf.Atan2(transformMatrix.m23 - axes[5].d * transformMatrix.m22, transformMatrix.m03 - axes[5].d * transformMatrix.m02);
+        float theta1 = Mathf.Atan2(wristTarget.position.x, wristTarget.position.z);
+        theta1 -= Mathf.PI/2;
         return theta1;
     }
     void SetTheta3_2() {
@@ -46,7 +47,7 @@ public class InverseKinematicsDH : MonoBehaviour
         theta3 /= 2 * axes[1].a * l1;
         theta3 = Mathf.Acos(theta3);
 
-        
+        //Debug.Log(theta3 * Mathf.Rad2Deg);
 
 
         float temp1 = Mathf.Atan(adjustedWristLocalPos.y / adjustedWristLocalPos.x);
@@ -60,11 +61,12 @@ public class InverseKinematicsDH : MonoBehaviour
         theta2 *= -1;
 
         theta3 -= alpha;
+        theta3 += axes[2].offset * Mathf.Deg2Rad;
 
-        axes[1].SetTheta(theta2);
-        axes[2].SetTheta(theta3);
+        axes[1].SetTheta(theta2,false);
+        axes[2].SetTheta(theta3,false);
 
-        Debug.Log(adjustedWristLocalPos);
+        //Debug.Log(adjustedWristLocalPos);
     }
 
     void UpdateMatix() {
