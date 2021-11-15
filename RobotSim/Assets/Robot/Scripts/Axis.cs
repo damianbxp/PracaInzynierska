@@ -47,13 +47,9 @@ public class Axis : MonoBehaviour
         //}
     }
 
-    public void SetTheta(float angle, bool inverseDirection = true) {
+    public void SetTheta(float angle) {
         if(!float.IsNaN(angle)) {
-            if(inverseDirection) {
-                newTheta = 360 - Mathf.Rad2Deg * angle;
-            } else {
-                newTheta = Mathf.Rad2Deg * angle;
-            }
+            newTheta = Mathf.Rad2Deg * angle;
         }
 
     }
