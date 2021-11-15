@@ -7,6 +7,7 @@ public class InverseKinematicsDH : MonoBehaviour
     public Transform armTarget;
     public Transform wristTarget;
     public Transform rotBaseTransform;
+    public Transform joint3;
     public List<Axis> axes = new List<Axis>();
     Matrix4x4 transformMatrix = new Matrix4x4();
 
@@ -26,6 +27,7 @@ public class InverseKinematicsDH : MonoBehaviour
     void Calculate() {
         SetTheta1();
         SetTheta3_2();
+        SetTheta4_5_6();
     }
 
     void SetTheta1() {
@@ -66,6 +68,28 @@ public class InverseKinematicsDH : MonoBehaviour
         axes[2].SetTheta(theta3);
 
         //Debug.Log(adjustedWristLocalPos);
+    }
+    void SetTheta4_5_6() {
+        Vector3 armTargetRot = armTarget.rotation.eulerAngles;
+        armTargetRot = new Vector3(armTargetRot.x, armTargetRot.z, armTargetRot.y);
+        Vector3 joint3Rot = joint3.rotation.eulerAngles;
+        joint3Rot = new Vector3(joint3Rot.x, joint3Rot.z, joint3Rot.y);
+
+        Matrix4x4 R06 = Matrix4x4.Rotate(Quaternion.Euler(armTargetRot));
+        Matrix4x4 R03 = Matrix4x4.Rotate(Quaternion.Euler(joint3Rot));
+
+        //Matrix4x4 R06 = Matrix4x4.Rotate(armTarget.rotation);
+        //Matrix4x4 R03 = Matrix4x4.Rotate(joint3.rotation);
+
+        Matrix4x4 R36 = R03.inverse * R06;
+        Debug.Log(R36.rotation.eulerAngles);
+        float theta5 = Mathf.Acos(R36.m22);
+        //Debug.Log(theta5 * Mathf.Rad2Deg);
+
+        if(R36.rotation.eulerAngles.x < 90)
+            axes[4].SetTheta(theta5);
+        else
+            axes[4].SetTheta(2*Mathf.PI - theta5);
     }
 
     void UpdateMatix() {
