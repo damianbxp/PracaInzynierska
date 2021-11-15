@@ -68,6 +68,7 @@ public class InverseKinematics : MonoBehaviour
     }
 
     private void UpdateTargetLocalPos() {
+        if(target.position.x == 0) target.position = new Vector3(0.001f, target.position.y, target.position.z);
         Vector3 temp = rotationJoint.InverseTransformVector(target.position - upperArmJoint.position);
         targetLocalPos = new Vector2(-temp.x, temp.z);
     }
