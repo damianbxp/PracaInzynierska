@@ -86,10 +86,15 @@ public class InverseKinematicsDH : MonoBehaviour
         float theta5 = Mathf.Acos(R36.m22);
         //Debug.Log(theta5 * Mathf.Rad2Deg);
 
-        if(R36.rotation.eulerAngles.x < 90)
-            axes[4].SetTheta(theta5);
-        else
-            axes[4].SetTheta(2*Mathf.PI - theta5);
+
+        axes[4].SetTheta(2 * Mathf.PI - theta5);
+
+
+        float theta4 = Mathf.Acos(R36.m12 / Mathf.Sin(theta5));
+        axes[3].SetTheta(theta4);
+
+        float theta6 = Mathf.Asin(R36.m21 / Mathf.Sin(theta5));
+        axes[5].SetTheta(theta6 + axes[5].offset * Mathf.Deg2Rad);
     }
 
     void UpdateMatix() {
