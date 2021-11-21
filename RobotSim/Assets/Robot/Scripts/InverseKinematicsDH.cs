@@ -27,7 +27,7 @@ public class InverseKinematicsDH : MonoBehaviour
     void Calculate() {
         SetTheta1();
         SetTheta3_2();
-        SetTheta4_5_6();
+        //SetTheta4_5_6();
     }
 
     void SetTheta1() {
@@ -91,10 +91,10 @@ public class InverseKinematicsDH : MonoBehaviour
 
 
         float theta4 = Mathf.Acos(R36.m12 / Mathf.Sin(theta5));
-        axes[3].SetTheta(theta4);
+        //axes[3].SetTheta(theta4);
 
         float theta6 = Mathf.Asin(R36.m21 / Mathf.Sin(theta5));
-        axes[5].SetTheta(theta6 + axes[5].offset * Mathf.Deg2Rad);
+        //axes[5].SetTheta(theta6 + axes[5].offset * Mathf.Deg2Rad);
     }
 
     void UpdateMatix() {
