@@ -37,14 +37,14 @@ public class Axis : MonoBehaviour
         localPos = new Vector2(temp.x, temp.y);
 
 
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
+        //transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
 
-        //if(allowMovement) {
-        //    if((minTheta==0 && maxTheta==0)||(theta<maxTheta && theta > minTheta)) {
-        //        newTheta = theta + offset;
-        //    }
-        //transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed*Time.deltaTime);
-        //}
+        if(allowMovement) {
+            //if(( minTheta == 0 && maxTheta == 0 ) || ( theta < maxTheta && theta > minTheta )) {
+            //    newTheta = theta;
+            //}
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
+        }
     }
 
     public void SetTheta(float angle) {

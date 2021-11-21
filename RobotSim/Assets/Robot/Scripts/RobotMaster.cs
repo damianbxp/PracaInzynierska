@@ -10,7 +10,7 @@ public class RobotMaster : MonoBehaviour
     public bool spindle = false;
     public float posPrecision = 0.01f;
     public UIManager uiManager;
-    public InverseKinematics inverseKinematics;
+    public InverseKinematicsDH inverseKinematics;
     public BlockGen blockGen;
     public Tool tool;
     int currentLine;
@@ -52,7 +52,7 @@ public class RobotMaster : MonoBehaviour
 
     void Update()
     {
-        uiManager.UpdateToolPosition((toolTransform.position-homePoint)*1000);
+        uiManager.UpdateToolPosition(((toolTransform.position-homePoint)*1000).Round(2), toolTransform.rotation.eulerAngles.Round(2));
 
         if(!isPaused && !jogMode && isStarted && currentLine < gcodeLines.Count) {
             if(currentCommand >= GCommandsLine.Count) { // je¿eli zrobi³ wszystkie komendy w lini
