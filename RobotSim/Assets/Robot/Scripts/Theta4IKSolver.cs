@@ -18,7 +18,7 @@ public class Theta4IKSolver : MonoBehaviour
         float theta4 = Mathf.Atan2(localToolPos.x, localToolPos.y);
         //theta4 = 2 * Mathf.PI - theta4;
         //theta4 += axis.offset * Mathf.Rad2Deg;
-        Debug.Log(theta4 * Mathf.Rad2Deg);
+        //Debug.Log(theta4 * Mathf.Rad2Deg);
         axis.SetTheta(theta4);
     }
 }
