@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Theta6IKSolver : MonoBehaviour
+public class IKRotSolver : MonoBehaviour
 {
     public Transform lookAtTarget;
     Vector3 localToolPos;
@@ -14,8 +14,8 @@ public class Theta6IKSolver : MonoBehaviour
 
         //Debug.Log(localToolPos * 1000);
 
-        float theta6 = Mathf.Atan2(localToolPos.x, localToolPos.y);
-        axis.SetTheta(theta6 + axis.offset * Mathf.Deg2Rad);
+        float theta5 = Mathf.Atan2(localToolPos.x, localToolPos.y);
+        axis.SetTheta(theta5 + axis.offset *Mathf.Deg2Rad);
 
     }
 }

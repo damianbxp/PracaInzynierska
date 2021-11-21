@@ -61,7 +61,6 @@
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Processing\GaussianBlur.cs" />
     <Compile Include="Assets\Robot\Scripts\InverseKinematics.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Scripts\ToolLookAtDummy.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\VertexData.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\ComputeHelper.cs" />
@@ -75,9 +74,7 @@
     <Compile Include="Assets\MarchingCubes\Scripts\TextureViewer\TextureViewer3D.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MathUtility.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
-    <Compile Include="Assets\Robot\Scripts\Theta4IKSolver.cs" />
-    <Compile Include="Assets\Robot\Scripts\Theta5IKSolver.cs" />
-    <Compile Include="Assets\Robot\Scripts\Theta6IKSolver.cs" />
+    <Compile Include="Assets\Robot\Scripts\IKRotSolver.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />

@@ -2036,10 +2036,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 622084212}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f2ebad5674509b4f956d8af23553405, type: 3}
+  m_Script: {fileID: 11500000, guid: 703b67d79a4c68b419ddd8cfae543c51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toolTarget: {fileID: 2092879331}
+  lookAtTarget: {fileID: 2092879331}
   axis: {fileID: 6930275042721234124}
 --- !u!1 &625222537
 GameObject:
@@ -2218,7 +2218,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 650097913}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ac0ee7701004c04489058265102505d, type: 3}
+  m_Script: {fileID: 11500000, guid: 703b67d79a4c68b419ddd8cfae543c51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lookAtTarget: {fileID: 1455370165}
@@ -3831,7 +3831,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088207740}
-  m_LocalRotation: {x: -0.06025271, y: 0.8539229, z: -0.5068334, w: -0.101514965}
+  m_LocalRotation: {x: -0.060252756, y: 0.8539229, z: -0.5068334, w: -0.10151505}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -8832,7 +8832,7 @@ MonoBehaviour:
   d: 1.22
   a: 0
   alpha: -90
-  offset: 90
+  offset: 0
   minTheta: 0
   maxTheta: 0
   localPos: {x: 0, y: 0}
