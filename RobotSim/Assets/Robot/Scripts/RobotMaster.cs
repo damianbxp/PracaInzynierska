@@ -10,7 +10,7 @@ public class RobotMaster : MonoBehaviour
     public bool spindle = false;
     public float posPrecision = 0.01f;
     public UIManager uiManager;
-    public InverseKinematics inverseKinematics;
+    public InverseKinematicsDH inverseKinematics;
     public BlockGen blockGen;
     public Tool tool;
     int currentLine;
@@ -40,10 +40,7 @@ public class RobotMaster : MonoBehaviour
 
         UpdateGcodeLines();
 
-        lastCommand.position = new Vector3();
-        lastCommand.X = 0;
-        lastCommand.Y = 0;
-        lastCommand.Z = 0;
+        ResetLastCommand();
 
         JogBtnText = GameObject.Find("JogBtnText").GetComponent<Text>();
         RunBtnText = GameObject.Find("RunBtnText").GetComponent<Text>();
@@ -55,7 +52,7 @@ public class RobotMaster : MonoBehaviour
 
     void Update()
     {
-        uiManager.UpdateToolPosition((toolTransform.position-homePoint)*1000);
+        uiManager.UpdateToolPosition(((toolTransform.position-homePoint)*1000).Round(2), toolTransform.rotation.eulerAngles.Round(2));
 
         if(!isPaused && !jogMode && isStarted && currentLine < gcodeLines.Count) {
             if(currentCommand >= GCommandsLine.Count) { // je¿eli zrobi³ wszystkie komendy w lini
@@ -64,13 +61,13 @@ public class RobotMaster : MonoBehaviour
                 currentCommand = 0;
                 uiManager.UpdateConsole(gcodeLines[currentLine]);
             } else {
-                Debug.Log($"Running {currentCommand+1}/{GCommandsLine.Count} in line {currentLine+1}: {GCommandsLine[currentCommand].name} X{GCommandsLine[currentCommand].X} Y{GCommandsLine[currentCommand].Y} Z{GCommandsLine[currentCommand].Z}");
+                //Debug.Log($"Running {currentCommand+1}/{GCommandsLine.Count} in line {currentLine+1}: {GCommandsLine[currentCommand].name} X{GCommandsLine[currentCommand].X} Y{GCommandsLine[currentCommand].Y} Z{GCommandsLine[currentCommand].Z}");
 
                 switch(GCommandsLine[currentCommand].name) { //wykonaj komende
                     case "G0": {
                         GCommandsLine[currentCommand].UpdateCommand(lastCommand);
                         SetToolTarget(GCommandsLine[currentCommand].position);
-                        Debug.Log($"{toolTarget.position} {toolTransform.position} {Vector3.Distance(toolTarget.position, toolTransform.position)}");
+                        //Debug.Log($"{toolTarget.position} {toolTransform.position} {Vector3.Distance(toolTarget.position, toolTransform.position)}");
                         if(Vector3.Distance(toolTarget.position, toolTransform.position) <= posPrecision) {
                             GCommandsLine[currentCommand].done = true;
                             lastCommand = GCommandsLine[currentCommand];
@@ -121,6 +118,9 @@ public class RobotMaster : MonoBehaviour
         uiManager.GenerateBlock();
         if(!isPaused) PauseProgram();
 
+        ResetLastCommand();
+        UpdateGcodeLines();
+
         UpdateButtons();
     }
 
@@ -158,6 +158,12 @@ public class RobotMaster : MonoBehaviour
         else SpindleBtnText.color = Color.black;
     }
 
+    void ResetLastCommand() {
+        lastCommand.position = new Vector3();
+        lastCommand.X = 0;
+        lastCommand.Y = 0;
+        lastCommand.Z = 0;
+    }
     void SetToolTarget(Vector3 pos) {
         toolTarget.position = pos / 1000 + homePoint;
         

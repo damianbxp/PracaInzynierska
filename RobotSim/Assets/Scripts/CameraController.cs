@@ -8,6 +8,10 @@ public class CameraController : MonoBehaviour
     public float sensitivityX;
     public float sensitivityY;
 
+    private void Start() {
+        cameraCtrl.m_XAxis.Value = 100;
+    }
+
     private void Update() {
         if(Input.GetKey(KeyCode.LeftAlt)) {
             MoveCamX();

@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 
     Text FPSText;
     Text ToolPosText;
+    Text ToolRotText;
     Text ConsoleText;
 
     Text BlockWidthText;
@@ -16,10 +17,12 @@ public class UIManager : MonoBehaviour
     Text BlockPosY;
     Text BlockPosZ;
 
-    Text IncrementText;
+    Text IncrementMoveText;
+    Text IncrementRotText;
 
     Transform toolTarget;
     public float incrementMoveAmount;
+    public float incrementRotAmount;
 
     BlockGen gen;
     RobotMaster robotMaster;
@@ -30,6 +33,7 @@ public class UIManager : MonoBehaviour
 
         FPSText = GameObject.Find("FPSText").GetComponent<Text>();
         ToolPosText = GameObject.Find("ToolPosText").GetComponent<Text>();
+        ToolRotText = GameObject.Find("ToolRotText").GetComponent<Text>();
         ConsoleText = GameObject.Find("ConsoleText").GetComponent<Text>();
 
         BlockWidthText = GameObject.Find("WidthText").GetComponent<Text>();
@@ -40,12 +44,14 @@ public class UIManager : MonoBehaviour
         BlockPosY = GameObject.Find("PosYText").GetComponent<Text>();
         BlockPosZ = GameObject.Find("PosZText").GetComponent<Text>();
 
-        IncrementText = GameObject.Find("IncrementText").GetComponent<Text>();
+        IncrementMoveText = GameObject.Find("IncrementMoveText").GetComponent<Text>();
+        IncrementRotText = GameObject.Find("IncrementRotText").GetComponent<Text>();
 
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
 
-        SetIncrement(50);
+        SetMoveIncrement(50);
+        SetRotIncrement(5);
 
         GenerateBlock();
     }
@@ -94,12 +100,17 @@ public class UIManager : MonoBehaviour
     void UpdateFPSText() {
         FPSText.text = "FPS " + Mathf.Round(1/Time.deltaTime);
     }
-    public void UpdateToolPosition(Vector3 toolPos) {
+    public void UpdateToolPosition(Vector3 toolPos, Vector3 toolRot) {
         ToolPosText.text = $"Tool Position:\n\tX:{toolPos.x}\n\tY:{toolPos.y}\n\tZ:{toolPos.z}";
+        ToolRotText.text = $"\nA:{toolRot.x}\nB:{toolRot.y}\nC:{toolRot.z}";
     }
 
     public void MoveTool(Vector3 newPos) {
         toolTarget.position = newPos;
+    }
+
+    public void RotateTool(Vector3 newRotation) {
+        toolTarget.rotation = Quaternion.Euler(newRotation);
     }
 
     public void UpdateConsole(string consoleText) {
@@ -135,16 +146,60 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-    
 
-    public void ChangeIncrement(float amount) {
-        incrementMoveAmount = Mathf.Clamp(incrementMoveAmount*1000 + amount, 0, 1000)/1000;
-        IncrementText.text = ( incrementMoveAmount * 1000 ).ToString();
+    public void RotToolIncrement(int axis) {
+
+        if(robotMaster.jogMode) {
+            switch(axis) {
+                case 1:
+                    //RotateTool(new Vector3(incrementRotAmount, 0, 0) + toolTarget.rotation.eulerAngles);
+                    toolTarget.Rotate(new Vector3(incrementRotAmount, 0, 0));
+                    break;
+                case -1:
+                    //RotateTool(new Vector3(-incrementRotAmount, 0, 0) + toolTarget.rotation.eulerAngles);
+                    toolTarget.Rotate(new Vector3(-incrementRotAmount, 0, 0));
+                    break;
+                case 2:
+                    //RotateTool(new Vector3(0, incrementRotAmount, 0) + toolTarget.rotation.eulerAngles);
+                    toolTarget.Rotate(new Vector3(0, incrementRotAmount, 0));
+                    break;
+                case -2:
+                    //RotateTool(new Vector3(0, -incrementRotAmount, 0) + toolTarget.rotation.eulerAngles);
+                    toolTarget.Rotate(new Vector3(0, -incrementRotAmount, 0));
+                    break;
+                case 3:
+                    //RotateTool(new Vector3(0, 0, incrementRotAmount) + toolTarget.rotation.eulerAngles);
+                    toolTarget.Rotate(new Vector3(0, 0, incrementRotAmount));
+                    break;
+                case -3:
+                    //RotateTool(new Vector3(0, 0, -incrementRotAmount) + toolTarget.rotation.eulerAngles);
+                    toolTarget.Rotate(new Vector3(0, 0, -incrementRotAmount));
+                    break;
+                default:
+                    Debug.LogError("Wrong axis passed");
+                    break;
+            }
+        }
     }
 
-    public void SetIncrement(float amount) {
+    public void ChangeMoveIncrement(float amount) {
+        SetMoveIncrement(incrementMoveAmount * 1000 + amount);
+
+        //incrementMoveAmount = Mathf.Clamp(incrementMoveAmount*1000 + amount, 0, 1000)/1000;
+        //IncrementMoveText.text = ( incrementMoveAmount * 1000 ).ToString();
+    }
+
+    public void SetMoveIncrement(float amount) {
         incrementMoveAmount = Mathf.Clamp(amount, 0, 1000) / 1000;
-        IncrementText.text = (incrementMoveAmount*1000).ToString();
+        IncrementMoveText.text = (incrementMoveAmount*1000).ToString();
     }
-    
+
+    public void ChangeRotIncrement(float amount) {
+        SetRotIncrement(incrementRotAmount + amount);
+    }
+
+    public void SetRotIncrement(float amount) {
+        incrementRotAmount = Mathf.Clamp(amount, 0, 360);
+        IncrementRotText.text = incrementRotAmount.ToString();
+    }
 }
