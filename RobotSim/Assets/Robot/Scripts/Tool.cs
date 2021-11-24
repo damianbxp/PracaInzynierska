@@ -28,7 +28,7 @@ public class Tool : MonoBehaviour
         toolMount.LookAt(toolLookAtDummy);
 
         if(powerOn) {
-            blockMesh.GetComponent<BlockGen>().ModifyBlock(toolWorkCenter.position, toolDiameter/2, toolHeight);
+            blockMesh.GetComponent<BlockGen>().ModifyBlock(toolWorkCenter, toolDiameter/2, toolHeight);
             //Debug.Log(transform.position - blockMesh.transform.position);
             onTerrainModified?.Invoke();
         }

@@ -253,9 +253,9 @@ public class BlockGen : MonoBehaviour
 	}
 
 
-	public void ModifyBlock(Vector3 toolPos, float toolRadius, float toolHeight)
+	public void ModifyBlock(Transform toolTransform, float toolRadius, float toolHeight)
 	{
-		toolPos -= blockPosition;
+		Vector3 toolPos = toolTransform.position - blockPosition;
 		int editTextureSize = rawDensityTexture.width;
 		float editPixelWorldSize = boundsSize / editTextureSize;
 		int editRadius = Mathf.CeilToInt(toolRadius / editPixelWorldSize);
@@ -268,8 +268,22 @@ public class BlockGen : MonoBehaviour
 		int editY = Mathf.RoundToInt(ty * (editTextureSize - 1));
 		int editZ = Mathf.RoundToInt(tz * (editTextureSize - 1));
 
+		Vector3 toolEndPos =toolPos - toolTransform.up * toolHeight;
+
+		float tEndx = Mathf.Clamp01(( toolEndPos.x + boundsSize / 2 ) / boundsSize);
+		float tEndy = Mathf.Clamp01(( toolEndPos.y + boundsSize / 2 ) / boundsSize);
+		float tEndz = Mathf.Clamp01(( toolEndPos.z + boundsSize / 2 ) / boundsSize);
+
+		int editEndX = Mathf.RoundToInt(tEndx * ( editTextureSize - 1 ));
+		int editEndY = Mathf.RoundToInt(tEndy * ( editTextureSize - 1 ));
+		int editEndZ = Mathf.RoundToInt(tEndz * ( editTextureSize - 1 ));
+
+		//Debug.Log($"{editX} {editY} {editZ}");
+		//Debug.Log($"\n{toolPos.x} {toolPos.y} {toolPos.z}\n{toolEndPos.x} {toolEndPos.y} {toolEndPos.z}");
 
 		editCompute.SetInts("toolCentre", editX, editY, editZ);
+		editCompute.SetInts("toolEnd",editEndX, editEndY, editEndZ);
+		//editCompute.SetInts("toolEnd",50, 100, 50);
 		editCompute.SetInt("toolHeight", Mathf.CeilToInt(toolHeight / editPixelWorldSize));
 		editCompute.SetInt("toolRadius", Mathf.CeilToInt(toolRadius / editPixelWorldSize));
 

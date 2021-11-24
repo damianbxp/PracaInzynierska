@@ -57,11 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Robot\Scripts\InverseKinematicsDH.cs" />
+    <Compile Include="Assets\Scripts\RotToolBtn.cs" />
+    <Compile Include="Assets\Scripts\ExtensionMethods.cs" />
     <Compile Include="Assets\Robot\Scripts\Axis.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Processing\GaussianBlur.cs" />
     <Compile Include="Assets\Robot\Scripts\InverseKinematics.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\VertexData.cs" />
+    <Compile Include="Assets\Robot\Scripts\IKRotSolver.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\ComputeHelper.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Chunk.cs" />
@@ -74,9 +77,6 @@
     <Compile Include="Assets\MarchingCubes\Scripts\TextureViewer\TextureViewer3D.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MathUtility.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
-    <Compile Include="Assets\Robot\Scripts\IKRotSolver.cs" />
-    <Compile Include="Assets\Scripts\ExtensionMethods.cs" />
-    <Compile Include="Assets\Scripts\RotToolBtn.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />
