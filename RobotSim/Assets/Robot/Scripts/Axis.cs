@@ -22,6 +22,7 @@ public class Axis : MonoBehaviour
     float xAngle;
     float yAngle;
 
+    public DummyAxis dummyAxis;
     public float newTheta;
     public Transform baseTransform;
 
@@ -44,11 +45,13 @@ public class Axis : MonoBehaviour
             //    newTheta = theta;
             //}
             transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
+
         }
     }
 
     public void SetTheta(float angle) {
         if(!float.IsNaN(angle)) {
+            dummyAxis.SetTheta(angle);
             newTheta = Mathf.Rad2Deg * angle;
         }
 

@@ -77,6 +77,7 @@
     <Compile Include="Assets\MarchingCubes\Scripts\TextureViewer\TextureViewer3D.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MathUtility.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
+    <Compile Include="Assets\Robot\Scripts\DummyAxis.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />

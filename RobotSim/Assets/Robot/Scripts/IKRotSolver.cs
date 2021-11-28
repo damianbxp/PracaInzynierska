@@ -7,6 +7,7 @@ public class IKRotSolver : MonoBehaviour
     public Transform lookAtTarget;
     Vector3 localToolPos;
     public Axis axis;
+    public DummyAxis dummyAxis;
 
     private void Update() {
         localToolPos = transform.InverseTransformVector(transform.position - lookAtTarget.position);
@@ -15,7 +16,8 @@ public class IKRotSolver : MonoBehaviour
         //Debug.Log(localToolPos * 1000);
 
         float theta5 = Mathf.Atan2(localToolPos.x, localToolPos.y);
-        axis.SetTheta(theta5 + axis.offset *Mathf.Deg2Rad);
-
+        theta5 = theta5 + axis.offset * Mathf.Deg2Rad;
+        axis.SetTheta(theta5);
+        dummyAxis.SetTheta(theta5);
     }
 }
