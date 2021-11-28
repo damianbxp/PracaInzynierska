@@ -281,7 +281,7 @@ public class BlockGen : MonoBehaviour
 		//Debug.Log($"{editX} {editY} {editZ}");
 		//Debug.Log($"\n{toolPos.x} {toolPos.y} {toolPos.z}\n{toolEndPos.x} {toolEndPos.y} {toolEndPos.z}");
 
-		editCompute.SetInts("toolCentre", editX, editY, editZ);
+		editCompute.SetInts("toolCenter", editX, editY, editZ);
 		editCompute.SetInts("toolEnd",editEndX, editEndY, editEndZ);
 		//editCompute.SetInts("toolEnd",50, 100, 50);
 		editCompute.SetInt("toolHeight", Mathf.CeilToInt(toolHeight / editPixelWorldSize));

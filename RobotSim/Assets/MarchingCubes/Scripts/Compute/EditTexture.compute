@@ -1,59 +1,44 @@
 #pragma kernel CSMain
 
 RWTexture3D<float> EditTexture;
-int3 toolCentre;
+int3 toolCenter;
 int3 toolEnd;
 int toolRadius;
 int toolHeight;
 
-double Distance(double3 a, double3 b) {
-	/*int x = (a.x - b.x);
-	int y = (a.y - b.y);
-	int z = (a.z - b.z);*/
+int Pow2(int x) {
+	return x * x;
+}
+
+int Distance(int3 a, int3 b) {
 	return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
 }
 
-//double DotProdukt(double3 a, double3 b) {
-//	return a.x * b.x + a.y * b.y + a.z * b.z;
-//}
-//
-//double CalculatePointDistance(int3 p) {
-//	//double3 d = (toolEnd - toolCentre) / Distance(toolEnd, toolCentre); //tool direction
-//	////double3 v = p - toolCentre;
-//	//double t = DotProdukt(v, d);
-//	//double3 P = toolCentre + t * d;
-//	//return Distance(P, p);
-//	double a = Distance(toolCentre, p);
-//	double b = Distance(toolCentre, toolEnd);
-//	double c = Distance(p, toolEnd);
-//	
-//	return ;
-//}
+float Lenght(int3 a) {
+	return sqrt(Pow2(a.x) + Pow2(a.y) + Pow2(a.z));
+}
+
+int DotProduct(int3 a, int3 b) {
+	return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+
 
 [numthreads(8,8,8)]
 void CSMain (int3 id : SV_DispatchThreadID)
 {
-	/*if (id.y >= toolCentre.y && id.y < toolCentre.y + toolHeight) {
-		int distance2D = sqrt((id.x - toolCentre.x) * (id.x - toolCentre.x) + (id.z - toolCentre.z) * (id.z - toolCentre.z));
-		if (distance2D <= toolRadius) {
-			EditTexture[id] = 1;
-		}
-	}*/
-	double b = Distance(toolCentre, toolEnd);
+	int3 a = id - toolCenter;
+	int3 b = toolEnd - toolCenter;
+	int lenA = Lenght(a);
 
-	double maxA_C = sqrt(b * b + toolRadius * toolRadius);
-	double a = Distance(toolCentre, id);
-	double c = Distance(id, toolEnd);
-	if (a <= maxA_C && c <= maxA_C) {
-		double s = (a + b + c) / 2;
-		double area = sqrt(s * (s - a) * (s - b) * (s - c));
-		if (2 * (area / b) <= toolRadius) {
+	int dot = DotProduct(a, b);
+	float cosAngle = dot / (Lenght(a) * Lenght(b));
+	if (cosAngle <= 0) {
+		float bp = cosAngle * lenA;
+		int distance = sqrt(Pow2(lenA) - Pow2(bp));
+		if (distance <= toolRadius) {
 			EditTexture[id] = 1;
 		}
 	}
-
-	/*if (CalculatePointDistance(id) <= toolRadius) {
-		EditTexture[id] = 1;
-	}*/
-
+	
 }
