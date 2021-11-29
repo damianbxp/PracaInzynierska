@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1000"
+   height="1000"
+   viewBox="0 0 264.58333 264.58334"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="icons.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="true"
+     units="px"
+     inkscape:zoom="0.74118967"
+     inkscape:cx="393.96124"
+     inkscape:cy="463.44412"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     gridtolerance="10">
+    <inkscape:grid
+       type="xygrid"
+       id="grid828"
+       spacingx="52.916667"
+       spacingy="52.916667"
+       dotted="false"
+       empspacing="5"
+       empcolor="#0000ff"
+       empopacity="0.63921569"
+       color="#1111c0"
+       opacity="1" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Logo"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path860"
+       cx="41.341141"
+       cy="16.123047"
+       r="4.3408203" />
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none"
+       id="path860-0"
+       cx="26.768393"
+       cy="29.455566"
+       r="4.3408203"
+       inkscape:transform-center-x="-0.20670574"
+       inkscape:transform-center-y="-2.2737631" />
+    <rect
+       style="fill:#1e1e1e;fill-opacity:1;stroke:#000000;stroke-width:1.53955;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect884"
+       width="19.388184"
+       height="13.083659"
+       x="16.247477"
+       y="37.848228" />
+    <circle
+       style="fill:none;stroke:#000000;stroke-width:0.144398;stroke-linecap:round;stroke-linejoin:bevel"
+       id="path860-3"
+       cx="13.694255"
+       cy="19.688721"
+       r="1.9013114" />
+  </g>
+</svg>

@@ -202,4 +202,20 @@ public class UIManager : MonoBehaviour
         incrementRotAmount = Mathf.Clamp(amount, 0, 360);
         IncrementRotText.text = incrementRotAmount.ToString();
     }
+
+    public void WindowVisibility(Transform uiWindow) {
+        if(uiWindow == null) {
+            Debug.LogError("Nothing assigned to button");
+            return;
+        }
+        CanvasGroup canvasRenderer = uiWindow.GetComponent<CanvasGroup>();
+        if(canvasRenderer != null) {
+            canvasRenderer.interactable = !canvasRenderer.interactable;
+            canvasRenderer.blocksRaycasts = canvasRenderer.interactable;
+            if(canvasRenderer.interactable) canvasRenderer.alpha = 1f;
+            else canvasRenderer.alpha = 0f;
+        } else {
+            Debug.LogError("Canvas Renderer not found");
+        }
+    }
 }
