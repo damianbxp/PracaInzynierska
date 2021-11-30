@@ -14,7 +14,6 @@ public class Tool : MonoBehaviour
 
     public bool powerOn;
 
-    public Transform toolLookAtDummy;
     public Transform toolMount;
 
     void Start()
@@ -25,13 +24,19 @@ public class Tool : MonoBehaviour
     void Update() {
 
         //transform.rotation = Quaternion.Euler(0, 0, 0); /// utrzymuje wrzeciono pionowo <- usun¹æ
-        toolMount.LookAt(toolLookAtDummy);
+        
 
         if(powerOn) {
             blockMesh.GetComponent<BlockGen>().ModifyBlock(toolWorkCenter, toolDiameter/2, toolHeight);
             //Debug.Log(transform.position - blockMesh.transform.position);
             onTerrainModified?.Invoke();
         }
+    }
+
+    public void UpdateTool(float diameter, float height) {
+        toolDiameter = diameter;
+        toolHeight = height;
+        UpdateTool();
     }
 
     public void UpdateTool() {

@@ -29,13 +29,13 @@ void CSMain (int3 id : SV_DispatchThreadID)
 {
 	int3 a = id - toolCenter;
 	int3 b = toolEnd - toolCenter;
-	int lenA = Lenght(a);
+	float lenA = Lenght(a);
 
 	int dot = DotProduct(a, b);
 	float cosAngle = dot / (Lenght(a) * Lenght(b));
 	if (cosAngle <= 0) {
 		float bp = cosAngle * lenA;
-		int distance = sqrt(Pow2(lenA) - Pow2(bp));
+		float distance = sqrt(Pow2(lenA) - Pow2(bp));
 		if (distance <= toolRadius) {
 			EditTexture[id] = 1;
 		}

@@ -24,8 +24,12 @@ public class UIManager : MonoBehaviour
     public float incrementMoveAmount;
     public float incrementRotAmount;
 
+    Text ToolDiameter;
+    Text ToolHeight;
+
     BlockGen gen;
     RobotMaster robotMaster;
+    public Tool tool;
 
     private void Start() {
         toolTarget = GameObject.Find("ToolTarget").transform;
@@ -47,10 +51,14 @@ public class UIManager : MonoBehaviour
         IncrementMoveText = GameObject.Find("IncrementMoveText").GetComponent<Text>();
         IncrementRotText = GameObject.Find("IncrementRotText").GetComponent<Text>();
 
+        ToolDiameter = GameObject.Find("ToolDiameterInputText").GetComponent<Text>();
+        ToolHeight = GameObject.Find("ToolHeightInputText").GetComponent<Text>();
+
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
 
-        SetMoveIncrement(50);
+
+        SetMoveIncrement(20);
         SetRotIncrement(5);
 
         GenerateBlock();
@@ -217,5 +225,20 @@ public class UIManager : MonoBehaviour
         } else {
             Debug.LogError("Canvas Renderer not found");
         }
+    }
+
+    public void SetTool() {
+        float toolDiameter;
+        float toolHeight;
+        if(!float.TryParse(ToolDiameter.text, out toolDiameter)) {
+            Debug.LogWarning("Float Parse Failed "+ ToolDiameter.text);
+            return;
+        }
+        if(!float.TryParse(ToolHeight.text, out toolHeight)) {
+            Debug.LogWarning("Float Parse Failed " + ToolHeight.text);
+            return;
+        }
+
+        tool.UpdateTool(toolDiameter, toolHeight);
     }
 }
