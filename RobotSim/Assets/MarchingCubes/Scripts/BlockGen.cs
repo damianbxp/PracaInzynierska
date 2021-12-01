@@ -253,7 +253,7 @@ public class BlockGen : MonoBehaviour
 	}
 
 
-	public void ModifyBlock(Transform toolTransform, float toolRadius, float toolHeight)
+	public void ModifyBlock(Transform toolTransform, float toolRadius, float toolHeight, float toolAngle)
 	{
 		Vector3 toolPos = toolTransform.position - blockPosition;
 		int editTextureSize = rawDensityTexture.width;
@@ -286,6 +286,7 @@ public class BlockGen : MonoBehaviour
 		//editCompute.SetInts("toolEnd",50, 100, 50);
 		editCompute.SetInt("toolHeight", Mathf.CeilToInt(toolHeight / editPixelWorldSize));
 		editCompute.SetInt("toolRadius", Mathf.CeilToInt(toolRadius / editPixelWorldSize));
+		editCompute.SetFloat("toolAngleCos", -Mathf.Cos(Mathf.Deg2Rad * toolAngle));
 
 		ComputeHelper.Dispatch(editCompute, editTextureSize, editTextureSize, editTextureSize);
 

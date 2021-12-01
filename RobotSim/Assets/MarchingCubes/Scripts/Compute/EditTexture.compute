@@ -5,6 +5,7 @@ int3 toolCenter;
 int3 toolEnd;
 int toolRadius;
 int toolHeight;
+float toolAngleCos;
 
 int Pow2(int x) {
 	return x * x;
@@ -33,7 +34,7 @@ void CSMain (int3 id : SV_DispatchThreadID)
 
 	int dot = DotProduct(a, b);
 	float cosAngle = dot / (Lenght(a) * Lenght(b));
-	if (cosAngle <= 0) {
+	if (cosAngle <= toolAngleCos) {
 		float bp = cosAngle * lenA;
 		float distance = sqrt(Pow2(lenA) - Pow2(bp));
 		if (distance <= toolRadius) {

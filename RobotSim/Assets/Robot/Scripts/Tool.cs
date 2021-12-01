@@ -10,6 +10,7 @@ public class Tool : MonoBehaviour
 
     public float toolDiameter;
     public float toolHeight;
+    public float toolTipAngle;
 
 
     public bool powerOn;
@@ -27,15 +28,16 @@ public class Tool : MonoBehaviour
         
 
         if(powerOn) {
-            blockMesh.GetComponent<BlockGen>().ModifyBlock(toolWorkCenter, toolDiameter/2, toolHeight);
+            blockMesh.GetComponent<BlockGen>().ModifyBlock(toolWorkCenter, toolDiameter/2, toolHeight, toolTipAngle/2);
             //Debug.Log(transform.position - blockMesh.transform.position);
             onTerrainModified?.Invoke();
         }
     }
 
-    public void UpdateTool(float diameter, float height) {
+    public void UpdateTool(float diameter, float height, float tipAngle) {
         toolDiameter = diameter;
         toolHeight = height;
+        toolTipAngle = tipAngle;
         UpdateTool();
     }
 

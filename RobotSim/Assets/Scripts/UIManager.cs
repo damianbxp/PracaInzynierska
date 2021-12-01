@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
 
     Text ToolDiameter;
     Text ToolHeight;
+    Text ToolTipAngle;
 
     BlockGen gen;
     RobotMaster robotMaster;
@@ -53,6 +54,7 @@ public class UIManager : MonoBehaviour
 
         ToolDiameter = GameObject.Find("ToolDiameterInputText").GetComponent<Text>();
         ToolHeight = GameObject.Find("ToolHeightInputText").GetComponent<Text>();
+        ToolTipAngle = GameObject.Find("ToolTipAngleInputText").GetComponent<Text>();
 
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
@@ -62,6 +64,7 @@ public class UIManager : MonoBehaviour
         SetRotIncrement(5);
 
         GenerateBlock();
+        SetTool();
     }
 
     private void Update() {
@@ -228,8 +231,8 @@ public class UIManager : MonoBehaviour
     }
 
     public void SetTool() {
-        float toolDiameter;
-        float toolHeight;
+        float toolDiameter, toolHeight, toolTipAngle;
+        
         if(!float.TryParse(ToolDiameter.text, out toolDiameter)) {
             Debug.LogWarning("Float Parse Failed "+ ToolDiameter.text);
             return;
@@ -238,7 +241,14 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("Float Parse Failed " + ToolHeight.text);
             return;
         }
+        if(!float.TryParse(ToolHeight.text, out toolTipAngle)) {
+            Debug.LogWarning("Float Parse Failed " + ToolTipAngle.text);
+            return;
+        }
+        toolDiameter /= 1000;
+        toolHeight /= 1000;
+        toolTipAngle /= 1000;
 
-        tool.UpdateTool(toolDiameter, toolHeight);
+        tool.UpdateTool(toolDiameter, toolHeight, toolTipAngle);
     }
 }
