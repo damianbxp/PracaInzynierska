@@ -19,15 +19,20 @@ public class UIManager : MonoBehaviour
 
     Text IncrementMoveText;
     Text IncrementRotText;
+    InputField IncrementJointText;
 
     Transform toolTarget;
     public float incrementMoveAmount;
     public float incrementRotAmount;
+    public float incrementJointAmount;
     int moveCoordSys;
     Transform toolLocalCoord;
     Text RobotCoord;
     Text ToolCoord;
-    Text AxisCoord;
+    Text JointCoord;
+
+    public CanvasGroup KartensianCoordGroup;
+    public CanvasGroup JointCoordGroup;
 
     Text ToolDiameter;
     Text ToolHeight;
@@ -57,10 +62,12 @@ public class UIManager : MonoBehaviour
 
         IncrementMoveText = GameObject.Find("IncrementMoveText").GetComponent<Text>();
         IncrementRotText = GameObject.Find("IncrementRotText").GetComponent<Text>();
+        IncrementJointText = GameObject.Find("JointIncrementInput").GetComponent<InputField>();
+
         RobotCoord = GameObject.Find("RobotCoordText").GetComponent<Text>();
         RobotCoord.color = Color.green;
         ToolCoord = GameObject.Find("ToolCoordText").GetComponent<Text>();
-        AxisCoord = GameObject.Find("AxisCoordText").GetComponent<Text>();
+        JointCoord = GameObject.Find("JointCoordText").GetComponent<Text>();
 
         ToolDiameter = GameObject.Find("ToolDiameterInputText").GetComponent<Text>();
         ToolHeight = GameObject.Find("ToolHeightInputText").GetComponent<Text>();
@@ -69,10 +76,7 @@ public class UIManager : MonoBehaviour
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
 
-
-        SetMoveIncrement(20);
-        SetRotIncrement(5);
-
+        UpdateJointIncrement();
         GenerateBlock();
         SetTool();
     }
@@ -142,7 +146,6 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
     public void RotateTool(Vector3 addRot) {
         switch(moveCoordSys) {
             case 0: {
@@ -171,20 +174,45 @@ public class UIManager : MonoBehaviour
                 moveCoordSys = coord;
                 RobotCoord.color = Color.green;
                 ToolCoord.color = Color.black;
-                AxisCoord.color = Color.black;
+                JointCoord.color = Color.black;
+
+                KartensianCoordGroup.interactable = true;
+                KartensianCoordGroup.blocksRaycasts = true;
+                KartensianCoordGroup.alpha = 1;
+
+                JointCoordGroup.interactable = false;
+                JointCoordGroup.blocksRaycasts = false;
+                JointCoordGroup.alpha = 0;
+
                 break;
             }
             case 1: {//narzedzie
                 moveCoordSys = coord;
                 RobotCoord.color = Color.black;
                 ToolCoord.color = Color.green;
-                AxisCoord.color = Color.black;
+                JointCoord.color = Color.black;
+
+                KartensianCoordGroup.interactable = true;
+                KartensianCoordGroup.blocksRaycasts = true;
+                KartensianCoordGroup.alpha = 1;
+
+                JointCoordGroup.interactable = false;
+                JointCoordGroup.blocksRaycasts = false;
+                JointCoordGroup.alpha = 0;
                 break;
             }
             case 2: {// oœ
                 RobotCoord.color = Color.black;
                 ToolCoord.color = Color.black;
-                AxisCoord.color = Color.green;
+                JointCoord.color = Color.green;
+
+                KartensianCoordGroup.interactable = false;
+                KartensianCoordGroup.blocksRaycasts = false;
+                KartensianCoordGroup.alpha = 0;
+
+                JointCoordGroup.interactable = true;
+                JointCoordGroup.blocksRaycasts = true;
+                JointCoordGroup.alpha = 1;
                 break;
             }
             default: {
@@ -194,8 +222,8 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    #region JogMove
     public void MoveToolIncrement(int axis) {
-
         if(robotMaster.jogMode) {
             switch(axis) {
                 case 1:
@@ -222,9 +250,19 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+    public void ChangeMoveIncrement(float amount) {
+        SetMoveIncrement(incrementMoveAmount * 1000 + amount);
 
+        //incrementMoveAmount = Mathf.Clamp(incrementMoveAmount*1000 + amount, 0, 1000)/1000;
+        //IncrementMoveText.text = ( incrementMoveAmount * 1000 ).ToString();
+    }
+    public void SetMoveIncrement(float amount) {
+        incrementMoveAmount = Mathf.Clamp(amount, 0, 1000) / 1000;
+        IncrementMoveText.text = (incrementMoveAmount*1000).ToString();
+    }
+    #endregion
+    #region JogRot
     public void RotToolIncrement(int axis) {
-
         if(robotMaster.jogMode) {
             switch(axis) {
                 case 1:
@@ -251,27 +289,33 @@ public class UIManager : MonoBehaviour
             }
         }
     }
-
-    public void ChangeMoveIncrement(float amount) {
-        SetMoveIncrement(incrementMoveAmount * 1000 + amount);
-
-        //incrementMoveAmount = Mathf.Clamp(incrementMoveAmount*1000 + amount, 0, 1000)/1000;
-        //IncrementMoveText.text = ( incrementMoveAmount * 1000 ).ToString();
-    }
-
-    public void SetMoveIncrement(float amount) {
-        incrementMoveAmount = Mathf.Clamp(amount, 0, 1000) / 1000;
-        IncrementMoveText.text = (incrementMoveAmount*1000).ToString();
-    }
-
     public void ChangeRotIncrement(float amount) {
         SetRotIncrement(incrementRotAmount + amount);
     }
-
     public void SetRotIncrement(float amount) {
         incrementRotAmount = Mathf.Clamp(amount, 0, 360);
         IncrementRotText.text = incrementRotAmount.ToString();
     }
+    #endregion
+    #region JogJoint
+    public void AddJointIncrement(float amount) {
+        SetJointIncrement(amount + incrementJointAmount);
+    }
+    public void SetJointIncrement(float amount) {
+        incrementJointAmount = Mathf.Clamp(amount, 0, 360);
+        IncrementJointText.text = incrementJointAmount.ToString();
+    }
+    public void UpdateJointIncrement() {
+        if(float.TryParse(IncrementJointText.text, out float i))
+            incrementJointAmount = i;
+        else
+            Debug.LogWarning("Float Parse Failed " + IncrementJointText.text);
+    }
+    public void SetJointTheta(float theta) {
+
+    }
+
+    #endregion
 
     public void WindowVisibility(Transform uiWindow) {
         if(uiWindow == null) {

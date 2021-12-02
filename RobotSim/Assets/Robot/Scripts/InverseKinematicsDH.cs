@@ -9,16 +9,17 @@ public class InverseKinematicsDH : MonoBehaviour
     public Transform rotBaseTransform;
     public Transform joint3;
     public List<Axis> axes = new List<Axis>();
-    Matrix4x4 transformMatrix = new Matrix4x4();
+    //Matrix4x4 transformMatrix = new Matrix4x4();
 
     Vector2 wristLocalPos;
 
+
     private void Start() {
-        UpdateAxes(transform.GetChild(0));        
+        UpdateAxes(transform.GetChild(0));
     }
 
     private void Update() {
-        UpdateMatix();
+        //UpdateMatix();
         Vector3 temp = rotBaseTransform.InverseTransformVector(wristTarget.position);
         wristLocalPos = new Vector2(temp.x, temp.z);
         Calculate();
@@ -71,7 +72,7 @@ public class InverseKinematicsDH : MonoBehaviour
     }
 
     void UpdateMatix() {
-        transformMatrix.SetTRS(armTarget.position, armTarget.rotation, Vector3.one);
+        //transformMatrix.SetTRS(armTarget.position, armTarget.rotation, Vector3.one);
     }
 
     private void UpdateAxes(Transform joint) {
