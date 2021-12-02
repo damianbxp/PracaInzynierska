@@ -23,6 +23,11 @@ public class UIManager : MonoBehaviour
     Transform toolTarget;
     public float incrementMoveAmount;
     public float incrementRotAmount;
+    int moveCoordSys;
+    Transform toolLocalCoord;
+    Text RobotCoord;
+    Text ToolCoord;
+    Text AxisCoord;
 
     Text ToolDiameter;
     Text ToolHeight;
@@ -34,6 +39,7 @@ public class UIManager : MonoBehaviour
 
     private void Start() {
         toolTarget = GameObject.Find("ToolTarget").transform;
+        toolLocalCoord = GameObject.Find("ToolLocalCoord").transform;
         incrementMoveAmount = 0.001f;
 
         FPSText = GameObject.Find("FPSText").GetComponent<Text>();
@@ -51,6 +57,10 @@ public class UIManager : MonoBehaviour
 
         IncrementMoveText = GameObject.Find("IncrementMoveText").GetComponent<Text>();
         IncrementRotText = GameObject.Find("IncrementRotText").GetComponent<Text>();
+        RobotCoord = GameObject.Find("RobotCoordText").GetComponent<Text>();
+        RobotCoord.color = Color.green;
+        ToolCoord = GameObject.Find("ToolCoordText").GetComponent<Text>();
+        AxisCoord = GameObject.Find("AxisCoordText").GetComponent<Text>();
 
         ToolDiameter = GameObject.Find("ToolDiameterInputText").GetComponent<Text>();
         ToolHeight = GameObject.Find("ToolHeightInputText").GetComponent<Text>();
@@ -116,12 +126,38 @@ public class UIManager : MonoBehaviour
         ToolRotText.text = $"\nA:{toolRot.x}\nB:{toolRot.y}\nC:{toolRot.z}";
     }
 
-    public void MoveTool(Vector3 newPos) {
-        toolTarget.position = newPos;
+    public void MoveTool(Vector3 addPos) {
+        switch(moveCoordSys) {
+            case 0: {
+                toolTarget.position += addPos;
+                break;
+            }
+            case 1: {
+                toolTarget.position += toolLocalCoord.TransformDirection(addPos);
+                break;
+            }
+            default: {
+                Debug.LogWarning("Wrong Coord Systen Passed");
+                break;
+            }
+        }
     }
 
-    public void RotateTool(Vector3 newRotation) {
-        toolTarget.rotation = Quaternion.Euler(newRotation);
+    public void RotateTool(Vector3 addRot) {
+        switch(moveCoordSys) {
+            case 0: {
+                toolTarget.Rotate(addRot,Space.World);
+                break;
+            }
+            case 1: {
+                toolTarget.Rotate(addRot);
+                break;
+            }
+            default: {
+                Debug.LogWarning("Wrong Coord Systen Passed");
+                break;
+            }
+        }
     }
 
     public void UpdateConsole(string consoleText) {
@@ -129,27 +165,56 @@ public class UIManager : MonoBehaviour
         ConsoleText.text = consoleText;
     }
 
+    public void SetMoveCoordSys(int coord) {
+        switch(coord) {
+            case 0: {//robot
+                moveCoordSys = coord;
+                RobotCoord.color = Color.green;
+                ToolCoord.color = Color.black;
+                AxisCoord.color = Color.black;
+                break;
+            }
+            case 1: {//narzedzie
+                moveCoordSys = coord;
+                RobotCoord.color = Color.black;
+                ToolCoord.color = Color.green;
+                AxisCoord.color = Color.black;
+                break;
+            }
+            case 2: {// oœ
+                RobotCoord.color = Color.black;
+                ToolCoord.color = Color.black;
+                AxisCoord.color = Color.green;
+                break;
+            }
+            default: {
+                Debug.LogWarning("Wrong Coord Systen Passed");
+                break;
+            }
+        }
+    }
+
     public void MoveToolIncrement(int axis) {
 
         if(robotMaster.jogMode) {
             switch(axis) {
                 case 1:
-                    MoveTool(new Vector3(incrementMoveAmount, 0, 0) + toolTarget.position);
+                    MoveTool(new Vector3(incrementMoveAmount, 0, 0));
                     break;
                 case -1:
-                    MoveTool(new Vector3(-incrementMoveAmount, 0, 0) + toolTarget.position);
+                    MoveTool(new Vector3(-incrementMoveAmount, 0, 0));
                     break;
                 case 2:
-                    MoveTool(new Vector3(0, incrementMoveAmount, 0) + toolTarget.position);
+                    MoveTool(new Vector3(0, incrementMoveAmount, 0));
                     break;
                 case -2:
-                    MoveTool(new Vector3(0, -incrementMoveAmount, 0) + toolTarget.position);
+                    MoveTool(new Vector3(0, -incrementMoveAmount, 0));
                     break;
                 case 3:
-                    MoveTool(new Vector3(0, 0, incrementMoveAmount) + toolTarget.position);
+                    MoveTool(new Vector3(0, 0, incrementMoveAmount));
                     break;
                 case -3:
-                    MoveTool(new Vector3(0, 0, -incrementMoveAmount) + toolTarget.position);
+                    MoveTool(new Vector3(0, 0, -incrementMoveAmount));
                     break;
                 default:
                     Debug.LogError("Wrong axis passed");
@@ -163,28 +228,22 @@ public class UIManager : MonoBehaviour
         if(robotMaster.jogMode) {
             switch(axis) {
                 case 1:
-                    //RotateTool(new Vector3(incrementRotAmount, 0, 0) + toolTarget.rotation.eulerAngles);
-                    toolTarget.Rotate(new Vector3(incrementRotAmount, 0, 0));
+                    RotateTool(new Vector3(incrementRotAmount, 0, 0));
                     break;
                 case -1:
-                    //RotateTool(new Vector3(-incrementRotAmount, 0, 0) + toolTarget.rotation.eulerAngles);
-                    toolTarget.Rotate(new Vector3(-incrementRotAmount, 0, 0));
+                    RotateTool(new Vector3(-incrementRotAmount, 0, 0));
                     break;
                 case 2:
-                    //RotateTool(new Vector3(0, incrementRotAmount, 0) + toolTarget.rotation.eulerAngles);
-                    toolTarget.Rotate(new Vector3(0, incrementRotAmount, 0));
+                    RotateTool(new Vector3(0, incrementRotAmount, 0));
                     break;
                 case -2:
-                    //RotateTool(new Vector3(0, -incrementRotAmount, 0) + toolTarget.rotation.eulerAngles);
-                    toolTarget.Rotate(new Vector3(0, -incrementRotAmount, 0));
+                    RotateTool(new Vector3(0, -incrementRotAmount, 0));
                     break;
                 case 3:
-                    //RotateTool(new Vector3(0, 0, incrementRotAmount) + toolTarget.rotation.eulerAngles);
-                    toolTarget.Rotate(new Vector3(0, 0, incrementRotAmount));
+                    RotateTool(new Vector3(0, 0, incrementRotAmount));
                     break;
                 case -3:
-                    //RotateTool(new Vector3(0, 0, -incrementRotAmount) + toolTarget.rotation.eulerAngles);
-                    toolTarget.Rotate(new Vector3(0, 0, -incrementRotAmount));
+                    RotateTool(new Vector3(0, 0, -incrementRotAmount));
                     break;
                 default:
                     Debug.LogError("Wrong axis passed");
