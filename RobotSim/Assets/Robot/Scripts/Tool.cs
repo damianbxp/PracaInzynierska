@@ -38,6 +38,7 @@ public class Tool : MonoBehaviour
         toolDiameter = diameter;
         toolHeight = height;
         toolTipAngle = tipAngle;
+        Debug.Log(toolTipAngle);
         UpdateTool();
     }
 

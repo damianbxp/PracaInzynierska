@@ -344,13 +344,13 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("Float Parse Failed " + ToolHeight.text);
             return;
         }
-        if(!float.TryParse(ToolHeight.text, out toolTipAngle)) {
+        if(!float.TryParse(ToolTipAngle.text, out toolTipAngle)) {
             Debug.LogWarning("Float Parse Failed " + ToolTipAngle.text);
             return;
         }
         toolDiameter /= 1000;
         toolHeight /= 1000;
-        toolTipAngle /= 1000;
+        
 
         tool.UpdateTool(toolDiameter, toolHeight, toolTipAngle);
     }
