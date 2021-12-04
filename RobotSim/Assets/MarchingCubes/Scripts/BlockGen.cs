@@ -286,7 +286,8 @@ public class BlockGen : MonoBehaviour
 		//editCompute.SetInts("toolEnd",50, 100, 50);
 		editCompute.SetInt("toolHeight", Mathf.CeilToInt(toolHeight / editPixelWorldSize));
 		editCompute.SetInt("toolRadius", Mathf.CeilToInt(toolRadius / editPixelWorldSize));
-		editCompute.SetFloat("toolAngleCos", -Mathf.Cos(Mathf.Deg2Rad * toolAngle));
+		Debug.Log(toolRadius);
+		editCompute.SetFloat("toolAngleCos", Mathf.Cos(Mathf.Deg2Rad * toolAngle));
 
 		ComputeHelper.Dispatch(editCompute, editTextureSize, editTextureSize, editTextureSize);
 

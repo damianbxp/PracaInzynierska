@@ -34,12 +34,13 @@ void CSMain (int3 id : SV_DispatchThreadID)
 
 	int dot = DotProduct(a, b);
 	float cosAngle = dot / (Lenght(a) * Lenght(b));
-	if (cosAngle <= toolAngleCos) {
+	if (cosAngle > toolAngleCos) {
 		float bp = cosAngle * lenA;
 		float distance = sqrt(Pow2(lenA) - Pow2(bp));
 		if (distance <= toolRadius) {
 			EditTexture[id] = 1;
 		}
+		EditTexture[id] = 1;
 	}
 	
 }
