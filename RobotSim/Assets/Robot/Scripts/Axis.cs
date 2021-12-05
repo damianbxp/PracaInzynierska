@@ -37,23 +37,17 @@ public class Axis : MonoBehaviour
         Vector3 temp = baseTransform.InverseTransformVector(transform.position);
         localPos = new Vector2(temp.x, temp.y);
 
-
-        //transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
-
         if(allowMovement) {
-            //if(( minTheta == 0 && maxTheta == 0 ) || ( theta < maxTheta && theta > minTheta )) {
-            //    newTheta = theta;
-            //}
             transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
-
         }
     }
 
     public void SetTheta(float angle) {
-        if(!float.IsNaN(angle)) {
-            dummyAxis.SetTheta(angle);
-            newTheta = Mathf.Rad2Deg * angle;
+        if(!float.IsNaN(angle)) { // sprawdzenie czy "angle" jest liczb¹
+            if(minTheta != 0 && maxTheta != 0) // sprawdzenie czy na oœ jest na³o¿one ograniczenie
+                angle = Mathf.Clamp(angle, minTheta, maxTheta); // korekcja k¹ta
+            dummyAxis.SetTheta(angle); // nadanie k¹ta dla robota ducha
+            newTheta = Mathf.Rad2Deg * angle; // nadanie k¹ta
         }
-
     }
 }
