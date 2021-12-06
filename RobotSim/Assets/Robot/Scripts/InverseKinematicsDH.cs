@@ -43,7 +43,6 @@ public class InverseKinematicsDH : MonoBehaviour
         //Debug.Log(adjustedWristLocalPos);
 
         float l1 = Vector2.Distance(Vector2.zero, new Vector2(1.220f, 0.145f));
-        float P24 = Vector2.Distance(axes[1].localPos, wristLocalPos);
 
         float theta3 = Pow2(adjustedWristLocalPos.x) + Pow2(adjustedWristLocalPos.y) - Pow2(axes[1].a) - Pow2(l1);
         theta3 /= 2 * axes[1].a * l1;

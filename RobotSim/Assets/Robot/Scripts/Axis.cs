@@ -15,8 +15,6 @@ public class Axis : MonoBehaviour
     public float minTheta;
     public float maxTheta;
 
-    public Vector2 localPos;
-
     public float speed;
 
     float xAngle;
@@ -34,9 +32,6 @@ public class Axis : MonoBehaviour
     }
 
     private void Update() {
-        Vector3 temp = baseTransform.InverseTransformVector(transform.position);
-        localPos = new Vector2(temp.x, temp.y);
-
         if(allowMovement) {
             transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
         }
