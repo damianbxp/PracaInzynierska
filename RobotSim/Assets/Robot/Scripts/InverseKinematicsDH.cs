@@ -12,17 +12,20 @@ public class InverseKinematicsDH : MonoBehaviour
     //Matrix4x4 transformMatrix = new Matrix4x4();
 
     Vector2 wristLocalPos;
-
+    RobotMaster robotMaster;
 
     private void Start() {
         UpdateAxes(transform.GetChild(0));
+        robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
     }
 
     private void Update() {
         //UpdateMatix();
-        Vector3 temp = rotBaseTransform.InverseTransformVector(wristTarget.position);
-        wristLocalPos = new Vector2(temp.x, temp.z);
-        Calculate();
+        if(robotMaster.enableIK) {
+            Vector3 temp = rotBaseTransform.InverseTransformVector(wristTarget.position);
+            wristLocalPos = new Vector2(temp.x, temp.z);
+            Calculate();
+        }
     }
 
     void Calculate() {

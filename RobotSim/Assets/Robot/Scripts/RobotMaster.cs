@@ -8,6 +8,7 @@ public class RobotMaster : MonoBehaviour
     public bool isStarted = false;
     public bool jogMode = false;
     public bool spindle = false;
+    public bool enableIK = true;
     public float posPrecision = 0.01f;
     public UIManager uiManager;
     public InverseKinematicsDH inverseKinematics;
@@ -142,6 +143,10 @@ public class RobotMaster : MonoBehaviour
         spindle = !spindle;
         tool.powerOn = spindle;
         UpdateButtons();
+    }
+
+    public void EnableIK(bool enable) {
+        enableIK = enable;
     }
 
     void UpdateButtons() {

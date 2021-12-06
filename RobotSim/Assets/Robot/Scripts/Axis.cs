@@ -33,7 +33,7 @@ public class Axis : MonoBehaviour
 
     private void Update() {
         if(allowMovement) {
-            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, newTheta)), speed * Time.deltaTime);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(new Vector3(xAngle, yAngle, theta)), speed * Time.deltaTime);
         }
     }
 
@@ -42,7 +42,7 @@ public class Axis : MonoBehaviour
             if(minTheta != 0 && maxTheta != 0) // sprawdzenie czy na oœ jest na³o¿one ograniczenie
                 angle = Mathf.Clamp(angle, minTheta, maxTheta); // korekcja k¹ta
             dummyAxis.SetTheta(angle); // nadanie k¹ta dla robota ducha
-            newTheta = Mathf.Rad2Deg * angle; // nadanie k¹ta
+            theta = Mathf.Rad2Deg * angle; // nadanie k¹ta
         }
     }
 }
