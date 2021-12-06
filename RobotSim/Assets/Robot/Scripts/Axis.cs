@@ -10,6 +10,7 @@ public class Axis : MonoBehaviour
     public float a;
     public float alpha;
     public float offset;
+    public float jointMoveOffset;
 
     [Header("Limits")]
     public float minTheta;

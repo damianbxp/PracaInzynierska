@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,8 @@ public class UIManager : MonoBehaviour
     Text ToolCoord;
     Text JointCoord;
 
+    public List<InputField> jointMoveUIFields;
+
     public CanvasGroup KartensianCoordGroup;
     public CanvasGroup JointCoordGroup;
 
@@ -40,6 +43,7 @@ public class UIManager : MonoBehaviour
 
     BlockGen gen;
     RobotMaster robotMaster;
+    InverseKinematicsDH IK;
     public Tool tool;
 
     private void Start() {
@@ -68,6 +72,8 @@ public class UIManager : MonoBehaviour
         RobotCoord.color = Color.green;
         ToolCoord = GameObject.Find("ToolCoordText").GetComponent<Text>();
         JointCoord = GameObject.Find("JointCoordText").GetComponent<Text>();
+        
+        
 
         ToolDiameter = GameObject.Find("ToolDiameterInputText").GetComponent<Text>();
         ToolHeight = GameObject.Find("ToolHeightInputText").GetComponent<Text>();
@@ -75,6 +81,10 @@ public class UIManager : MonoBehaviour
 
         gen = GameObject.Find("MeshGenerator").GetComponent<BlockGen>();
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
+        IK = GameObject.Find("kuka_kr_60_L30_HA").GetComponent<InverseKinematicsDH>();
+
+        SetMoveIncrement(10);
+        SetRotIncrement(5);
 
         UpdateJointIncrement();
         GenerateBlock();
@@ -184,6 +194,8 @@ public class UIManager : MonoBehaviour
                 JointCoordGroup.blocksRaycasts = false;
                 JointCoordGroup.alpha = 0;
 
+                robotMaster.enableIK = true;
+
                 break;
             }
             case 1: {//narzedzie
@@ -199,6 +211,7 @@ public class UIManager : MonoBehaviour
                 JointCoordGroup.interactable = false;
                 JointCoordGroup.blocksRaycasts = false;
                 JointCoordGroup.alpha = 0;
+                robotMaster.enableIK = true;
                 break;
             }
             case 2: {// oœ
@@ -213,6 +226,13 @@ public class UIManager : MonoBehaviour
                 JointCoordGroup.interactable = true;
                 JointCoordGroup.blocksRaycasts = true;
                 JointCoordGroup.alpha = 1;
+                robotMaster.enableIK = false;
+
+                for(int i = 0; i < 6; i++) {
+                    jointMoveUIFields[i].text = (IK.axes[i].theta - IK.axes[i].jointMoveOffset).ToString();
+                    SetJointTheta(i);
+                }
+
                 break;
             }
             default: {
@@ -311,8 +331,42 @@ public class UIManager : MonoBehaviour
         else
             Debug.LogWarning("Float Parse Failed " + IncrementJointText.text);
     }
-    public void SetJointTheta(float theta) {
 
+    public void IncreaseJointAngle(int axis) {
+        if(!robotMaster.jogMode)
+            return;
+        if(!float.TryParse(jointMoveUIFields[axis].text, out float theta)) {
+            Debug.LogWarning("Float Parse Failed " + jointMoveUIFields[axis].text);
+            return;
+        }
+
+        jointMoveUIFields[axis].text = (theta + incrementJointAmount).ToString();
+        SetJointTheta(axis);
+    }
+
+    public void DecreaseJointAngle(int axis) {
+        if(!robotMaster.jogMode)
+            return;
+        if(!float.TryParse(jointMoveUIFields[axis].text, out float theta)) {
+            Debug.LogWarning("Float Parse Failed " + jointMoveUIFields[axis].text);
+            return;
+        }
+
+        jointMoveUIFields[axis].text = ( theta - incrementJointAmount ).ToString();
+        SetJointTheta(axis);
+    }
+
+    public void SetJointTheta(int axis) {
+        if(!robotMaster.jogMode)
+            return;
+        if(!float.TryParse(jointMoveUIFields[axis].text, out float theta)) {
+            Debug.LogWarning("Float Parse Failed " + jointMoveUIFields[axis].text);
+            return;
+        }
+        SetJointTheta(axis, theta);
+    }
+    public void SetJointTheta(int axis, float theta) {
+        IK.axes[axis].SetTheta((theta + IK.axes[axis].jointMoveOffset)*Mathf.Deg2Rad);
     }
 
     #endregion

@@ -12,7 +12,6 @@ public class ToolTarget : MonoBehaviour
         tcp = GameObject.Find("ToolWorkCenter").GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(!robotMaster.enableIK) {
