@@ -13,4 +13,12 @@ static class ExtensionMethods {
             Mathf.Round(vector3.y * multiplier) / multiplier,
             Mathf.Round(vector3.z * multiplier) / multiplier);
     }
+    public static float Round(this float x, int decimalPlaces = 2) {
+        float multiplier = 1;
+        for(int i = 0; i < decimalPlaces; i++) {
+            multiplier *= 10f;
+        }
+
+        return Mathf.Round(x * multiplier) / multiplier;
+    }
 }

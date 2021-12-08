@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour
     RobotMaster robotMaster;
     InverseKinematicsDH IK;
     public Tool tool;
+    float toolHeight;
 
     private void Start() {
         toolTarget = GameObject.Find("ToolTarget").transform;
@@ -136,7 +137,7 @@ public class UIManager : MonoBehaviour
         FPSText.text = "FPS " + Mathf.Round(1/Time.deltaTime);
     }
     public void UpdateToolPosition(Vector3 toolPos, Vector3 toolRot) {
-        ToolPosText.text = $"Tool Position:\n\tX:{toolPos.x}\n\tY:{toolPos.y}\n\tZ:{toolPos.z}";
+        ToolPosText.text = $"Tool Position:\n\tX:{toolPos.x}\n\tY:{toolPos.z}\n\tZ:{(toolPos.y - toolHeight * 1000 / 2).Round(2)}";
         ToolRotText.text = $"\nA:{toolRot.x}\nB:{toolRot.y}\nC:{toolRot.z}";
     }
 
@@ -388,7 +389,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void SetTool() {
-        float toolDiameter, toolHeight, toolTipAngle;
+        float toolDiameter, toolTipAngle;
         
         if(!float.TryParse(ToolDiameter.text, out toolDiameter)) {
             Debug.LogWarning("Float Parse Failed "+ ToolDiameter.text);
