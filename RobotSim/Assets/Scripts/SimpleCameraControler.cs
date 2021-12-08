@@ -33,7 +33,8 @@ public class SimpleCameraControler : MonoBehaviour
         transform.Rotate(0, Input.GetAxis("Mouse X")*sensitivityX*Time.deltaTime, 0);
     }
     void MoveY() {
-        yPivot.Rotate(Input.GetAxis("Mouse Y") * sensitivityY * Time.deltaTime, 0, 0);
+        float input = Input.GetAxis("Mouse Y");
+        yPivot.Rotate(input * sensitivityY * Time.deltaTime, 0, 0);
     }
     void Zoom() {
         float input = Input.GetAxis("Mouse ScrollWheel");
