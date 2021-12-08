@@ -11,6 +11,7 @@ public class GCommand
     public float Y = float.NaN;
     public float Z = float.NaN;
     public Vector3 position = new Vector3(float.NaN, float.NaN, float.NaN);
+    public Vector3 rotation = new Vector3(float.NaN, float.NaN, float.NaN);
 
 
     public float A = float.NaN;
@@ -20,14 +21,20 @@ public class GCommand
     public float F = float.NaN;
     public float S = float.NaN;
 
+    public GCommand previousCommand;
+    public GCommand nextCommand;
 
-    public void UpdateCommand(GCommand lastCommand) {// zastêpuje NaN poprzednimi warotœciami
-        if(float.IsNaN(X)) X = lastCommand.X;
-        if(float.IsNaN(Y)) Y = lastCommand.Y;
-        if(float.IsNaN(Z)) Z = lastCommand.Z;
+    public void UpdateCommand() {// zastêpuje NaN poprzednimi warotœciami
+        if(float.IsNaN(X)) X = previousCommand.X;
+        if(float.IsNaN(Y)) Y = previousCommand.Y;
+        if(float.IsNaN(Z)) Z = previousCommand.Z;
 
+        //if(float.IsNaN(A)) A = previousCommand.A;
+        //if(float.IsNaN(B)) B = previousCommand.B;
+        //if(float.IsNaN(C)) C = previousCommand.C;
 
-        position = new Vector3(X, Y, Z);
+        position = new Vector3(X, Z, Y);
+        rotation = new Vector3(A, B, C);
     }
 
     public override string ToString() {

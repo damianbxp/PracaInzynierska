@@ -80,6 +80,7 @@
     <Compile Include="Assets\MarchingCubes\Scripts\MathUtility.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
     <Compile Include="Assets\Scripts\SimpleCameraControler.cs" />
+    <Compile Include="Assets\Scripts\GcodeInterpreter.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />
