@@ -60,7 +60,7 @@ public class GcodeInterpreter : MonoBehaviour
                     break;
                 }
                 case "G2": {
-                    G2Move(GCommandsList[currentCommand] as SGCommand);
+                    G2G3Move(GCommandsList[currentCommand] as SGCommand);
                     break;
                 }
                 default: {
@@ -89,17 +89,28 @@ public class GcodeInterpreter : MonoBehaviour
             GCommandsList[currentCommand].done = true;
         }
     }
-    void G2Move(SGCommand g) {
+    void G2G3Move(SGCommand g) {
         Vector3 center = g.previousCommand.position + g.offset;
         Vector3 relStart = g.previousCommand.position - center;
         Vector3 relEnd = g.position - center;
 
         float distComplete = ( Time.time - commandStartTime ) * g.F;
-        float totalDistance = ( 2 * Mathf.PI * g.offset.magnitude * Vector3.Angle(g.position, g.previousCommand.position) ) / 360;
-        float distFraction = distComplete / totalDistance;
 
-        Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, -distFraction); //d³u¿sza droga + | krótsza droga -
+        bool longWay = false;
+
+        float travelAngle = Vector3.Angle(g.position, g.previousCommand.position);
+        float opositeTravelAngle = 360 - travelAngle;
+        float totalDistance = ( 2 * Mathf.PI * g.offset.magnitude * travelAngle ) / 360;
+        float opositeTotalDistance = ( 2 * Mathf.PI * g.offset.magnitude * opositeTravelAngle ) / 360;
+        float distFraction = distComplete / totalDistance;
+        float opositeDistFraction = distComplete / opositeTotalDistance;
+
+
+        Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, ( longWay ? -1 : 1 ) * distFraction); //d³u¿sza droga + | krótsza droga -
+        Debug.LogWarning($"{distFraction} {opositeDistFraction}");
         robotMaster.SetToolTarget(pos, Vector3.zero);
+        if(Mathf.Abs(longWay ? opositeDistFraction : distFraction) > 1)
+            g.done = true;
     }
 
     void UpdateGcodeLines() {
