@@ -33,9 +33,9 @@ public class GCommand {
         if(float.IsNaN(Y)) Y = previousCommand.Y;
         if(float.IsNaN(Z)) Z = previousCommand.Z;
 
-        //if(float.IsNaN(A)) A = previousCommand.A;
-        //if(float.IsNaN(B)) B = previousCommand.B;
-        //if(float.IsNaN(C)) C = previousCommand.C;
+        if(float.IsNaN(A)) A = previousCommand.A;
+        if(float.IsNaN(B)) B = previousCommand.B;
+        if(float.IsNaN(C)) C = previousCommand.C;
 
         position = new Vector3(X, Z, Y);
         rotation = new Vector3(A, B, C);

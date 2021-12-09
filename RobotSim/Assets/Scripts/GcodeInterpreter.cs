@@ -41,8 +41,7 @@ public class GcodeInterpreter : MonoBehaviour
         if(GCommandsList[currentCommand].done) {
             currentCommand++;
             if(currentCommand >= GCommandsList.Count) {
-                programFinished = true;
-                uiManager.UpdateConsole("Zakoñczono program");
+                FinishProgram();
                 return;
             }
             commandStartTime = Time.time;
@@ -52,7 +51,7 @@ public class GcodeInterpreter : MonoBehaviour
             UpdateTimer();
             switch(GCommandsList[currentCommand].name) { //wykonaj komende
                 case "G0": {
-                    robotMaster.SetToolTarget(GCommandsList[currentCommand].position);
+                    robotMaster.SetToolTarget(GCommandsList[currentCommand].position, GCommandsList[currentCommand].rotation);
                     //Debug.Log($"{robotMaster.toolTarget.position} {robotMaster.toolTransform.position} {Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position)}");
                     if(Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision) {
                         GCommandsList[currentCommand].done = true;
@@ -62,8 +61,9 @@ public class GcodeInterpreter : MonoBehaviour
                 case "G1": {//nie dzia³a
                     float distanceTraveled = ( Time.time - commandStartTime ) * GCommandsList[currentCommand].F;
                     float distanceFraction = distanceTraveled / Vector3.Distance(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position);
-
-                    robotMaster.SetToolTarget(Vector3.Lerp(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position, distanceFraction));
+                    Vector3 pos = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position, distanceFraction);
+                    Vector3 rot = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.rotation, GCommandsList[currentCommand].rotation, distanceFraction);
+                    robotMaster.SetToolTarget(pos, rot);
                     if(distanceFraction > 1) {
                         GCommandsList[currentCommand].done = true;
                     }
@@ -185,6 +185,13 @@ public class GcodeInterpreter : MonoBehaviour
 
         UpdateGcodeLines();
         GCommandsList = GenerateGCommandsList();
+        robotMaster.UpdateButtons();
+    }
+
+    public void FinishProgram() {
+        programFinished = true;
+        isStarted = false;
+        uiManager.UpdateConsole("Zakoñczono program");
         robotMaster.UpdateButtons();
     }
 

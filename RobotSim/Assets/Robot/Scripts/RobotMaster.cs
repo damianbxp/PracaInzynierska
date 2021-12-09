@@ -81,7 +81,8 @@ public class RobotMaster : MonoBehaviour
         else SpindleBtnText.color = Color.black;
     }
 
-    public void SetToolTarget(Vector3 pos) {
+    public void SetToolTarget(Vector3 pos, Vector3 rot) {
         toolTarget.position = pos / 1000 + homePoint;
+        toolTarget.eulerAngles = new Vector3(rot.x, rot.z, rot.y);
     }
 }
