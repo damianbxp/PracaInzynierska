@@ -23,7 +23,8 @@ public class GcodeInterpreter : MonoBehaviour
     public Text CommandTimeText; 
     public Text ProgramTimeText; 
 
-    string[] moveCommands = { "G0", "G1", "G2", "G3" };
+    string[] linearCommands = { "G0", "G1"};
+    string[] circularCommands = {"G2", "G3" };
     void Start()
     {
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
@@ -51,27 +52,15 @@ public class GcodeInterpreter : MonoBehaviour
             UpdateTimer();
             switch(GCommandsList[currentCommand].name) { //wykonaj komende
                 case "G0": {
-                    robotMaster.SetToolTarget(GCommandsList[currentCommand].position, GCommandsList[currentCommand].rotation);
-                    //Debug.Log($"{robotMaster.toolTarget.position} {robotMaster.toolTransform.position} {Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position)}");
-                    if(Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision) {
-                        GCommandsList[currentCommand].done = true;
-                    }
+                    G0Move();
                     break;
                 }
-                case "G1": {//nie dzia³a
-                    float distanceTraveled = ( Time.time - commandStartTime ) * GCommandsList[currentCommand].F;
-                    float distanceFraction = distanceTraveled / Vector3.Distance(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position);
-                    Vector3 pos = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position, distanceFraction);
-                    Vector3 rot = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.rotation, GCommandsList[currentCommand].rotation, distanceFraction);
-                    robotMaster.SetToolTarget(pos, rot);
-                    if(distanceFraction > 1) {
-                        GCommandsList[currentCommand].done = true;
-                    }
+                case "G1": {
+                    G1Move();
                     break;
                 }
-                case "G53": {
-
-                    GCommandsList[currentCommand].done = true;
+                case "G2": {
+                    G2Move(GCommandsList[currentCommand] as SGCommand);
                     break;
                 }
                 default: {
@@ -81,6 +70,36 @@ public class GcodeInterpreter : MonoBehaviour
 
             }
         }
+    }
+
+    void G0Move() {
+        robotMaster.SetToolTarget(GCommandsList[currentCommand].position, GCommandsList[currentCommand].rotation);
+        //Debug.Log($"{robotMaster.toolTarget.position} {robotMaster.toolTransform.position} {Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position)}");
+        if(Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision) {
+            GCommandsList[currentCommand].done = true;
+        }
+    }
+    void G1Move() {
+        float distComplete = ( Time.time - commandStartTime ) * GCommandsList[currentCommand].F;
+        float distFraction = distComplete / Vector3.Distance(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position);
+        Vector3 pos = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position, distFraction);
+        Vector3 rot = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.rotation, GCommandsList[currentCommand].rotation, distFraction);
+        robotMaster.SetToolTarget(pos, rot);
+        if(distFraction > 1) {
+            GCommandsList[currentCommand].done = true;
+        }
+    }
+    void G2Move(SGCommand g) {
+        Vector3 center = g.previousCommand.position + g.offset;
+        Vector3 relStart = g.previousCommand.position - center;
+        Vector3 relEnd = g.position - center;
+
+        float distComplete = ( Time.time - commandStartTime ) * g.F;
+        float totalDistance = ( 2 * Mathf.PI * g.offset.magnitude * Vector3.Angle(g.position, g.previousCommand.position) ) / 360;
+        float distFraction = distComplete / totalDistance;
+
+        Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, -distFraction); //d³u¿sza droga + | krótsza droga -
+        robotMaster.SetToolTarget(pos, Vector3.zero);
     }
 
     void UpdateGcodeLines() {
@@ -121,36 +140,63 @@ public class GcodeInterpreter : MonoBehaviour
         code = code.ToUpper().Replace(" ", "").Replace(".", ",");
         code += ";";
         List<GCommand> gCommands = new List<GCommand>();
-        GCommand gCommand;
         int startIndex = code.IndexOf("G");
 
         while(startIndex != -1) {
-            gCommand = new GCommand();
 
-            gCommand.name = "G" + GetCommandValue("G", code, startIndex);
-            if(IsMoveCommand(gCommand.name)) {              // komendy trwaj¹ce wiele klatek
-                gCommand.X = GetCommandValue("X", code, startIndex);
-                gCommand.Y = GetCommandValue("Y", code, startIndex);
-                gCommand.Z = GetCommandValue("Z", code, startIndex);
-                gCommand.A = GetCommandValue("A", code, startIndex);
-                gCommand.B = GetCommandValue("B", code, startIndex);
-                gCommand.C = GetCommandValue("C", code, startIndex);
-                
+            string name = "G" + GetCommandValue("G", code, startIndex);
 
-            } else {                                        // komendy na jedn¹ klatkê
+            switch(CommandType(name)) {
+                case 0: {   //komandy na jedn¹ klatkê
+                    break;
+                }
+                case 1: {   //ruch liniowy
+                    GCommand gCommand = new GCommand {
+                        name = name,
+                        X = GetCommandValue("X", code, startIndex),
+                        Y = GetCommandValue("Y", code, startIndex),
+                        Z = GetCommandValue("Z", code, startIndex),
+                        A = GetCommandValue("A", code, startIndex),
+                        B = GetCommandValue("B", code, startIndex),
+                        C = GetCommandValue("C", code, startIndex),
 
+                        F = GetCommandValue("F", code, startIndex),
+                        S = GetCommandValue("S", code, startIndex)
+                    };
+
+                    gCommands.Add(gCommand);
+
+                    break;
+                }
+                case 2: {   //ruch ko³owy
+                    SGCommand sGCommand = new SGCommand {
+                        name = name,
+                        X = GetCommandValue("X", code, startIndex),
+                        Y = GetCommandValue("Y", code, startIndex),
+                        Z = GetCommandValue("Z", code, startIndex),
+                        A = GetCommandValue("A", code, startIndex),
+                        B = GetCommandValue("B", code, startIndex),
+                        C = GetCommandValue("C", code, startIndex),
+
+                        I = GetCommandValue("I", code, startIndex),
+                        J = GetCommandValue("J", code, startIndex),
+                        K = GetCommandValue("K", code, startIndex),
+
+                        F = GetCommandValue("F", code, startIndex),
+                        S = GetCommandValue("S", code, startIndex)
+                    };
+
+                    gCommands.Add(sGCommand);
+
+                    break;
+                }
+                default:
+                    break;
             }
 
-            gCommand.F = GetCommandValue("F", code, startIndex);
 
-            gCommands.Add(gCommand);
             startIndex = code.IndexOf("G", startIndex + 1);
         }
-
-
-        //for(int i = 0; i < gCommands.Count; i++) {
-        //    Debug.Log(gCommands[i]);
-        //}
         return gCommands;
     }
 
@@ -167,11 +213,12 @@ public class GcodeInterpreter : MonoBehaviour
         return float.Parse(code.Substring(indexStart, indexEnd - indexStart));
     }
 
-    bool IsMoveCommand(string command) {
-        for(int i = 0; i < moveCommands.Length; i++) {
-            if(moveCommands[i] == command) return true;
+    int CommandType(string command) {
+        for(int i = 0; i < linearCommands.Length; i++) {
+            if(linearCommands[i] == command) return 1;
+            if(circularCommands[i] == command) return 2;
         }
-        return false;
+        return 0;
     }
 
     public void StartProgram() {

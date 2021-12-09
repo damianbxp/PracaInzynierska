@@ -23,7 +23,7 @@ public class GCommand {
     public GCommand previousCommand;
     public GCommand nextCommand;
 
-    public void UpdateCommand() {// zastêpuje NaN poprzednimi warotœciami
+    public virtual void UpdateCommand() {// zastêpuje NaN poprzednimi warotœciami
         if(previousCommand == null)
             previousCommand = new GCommand();
         if(nextCommand == null)
@@ -44,21 +44,24 @@ public class GCommand {
         if(float.IsNaN(S)) S = previousCommand.S;
     }
 
-    public static GCommand Zero() {
-        GCommand g = new GCommand();
-        g.X = 0;
-        g.Y = 0;
-        g.Z = 0;
-        g.A = 0;
-        g.B = 0;
-        g.C = 0;
-        g.F = 0;
-        g.S = 0;
+    public override string ToString() {
+        return $"{name} X{X} Y{Y} Z{Z} A{A} B{B} C{C} F{F} S{S}";
+    }
+}
 
-        return g;
+public class SGCommand : GCommand {
+    public float I = float.NaN;
+    public float J = float.NaN;
+    public float K = float.NaN;
+    public Vector3 offset = new Vector3(float.NaN, float.NaN, float.NaN);
+
+    public override void UpdateCommand(){
+        base.UpdateCommand();
+
+        offset = new Vector3(I, J, K);
     }
 
     public override string ToString() {
-        return $"{name} X{X} Y{Y} Z{Z} A{A} B{B} C{C} F{F} S{S}";
+        return $"{name} X{X} Y{Y} Z{Z} A{A} B{B} C{C} I{I} J{J} K{K} F{F} S{S}";
     }
 }
