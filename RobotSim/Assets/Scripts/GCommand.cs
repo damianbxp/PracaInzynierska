@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GCommand
-{
+public class GCommand {
     public bool done = false;
     public string name = "";
 
@@ -17,7 +16,7 @@ public class GCommand
     public float A = float.NaN;
     public float B = float.NaN;
     public float C = float.NaN;
-    
+
     public float F = float.NaN;
     public float S = float.NaN;
 
@@ -25,6 +24,11 @@ public class GCommand
     public GCommand nextCommand;
 
     public void UpdateCommand() {// zastêpuje NaN poprzednimi warotœciami
+        if(previousCommand == null)
+            previousCommand = new GCommand();
+        if(nextCommand == null)
+            nextCommand = new GCommand();
+
         if(float.IsNaN(X)) X = previousCommand.X;
         if(float.IsNaN(Y)) Y = previousCommand.Y;
         if(float.IsNaN(Z)) Z = previousCommand.Z;
@@ -35,6 +39,23 @@ public class GCommand
 
         position = new Vector3(X, Z, Y);
         rotation = new Vector3(A, B, C);
+
+        if(float.IsNaN(F)) F = previousCommand.F;
+        if(float.IsNaN(S)) S = previousCommand.S;
+    }
+
+    public static GCommand Zero() {
+        GCommand g = new GCommand();
+        g.X = 0;
+        g.Y = 0;
+        g.Z = 0;
+        g.A = 0;
+        g.B = 0;
+        g.C = 0;
+        g.F = 0;
+        g.S = 0;
+
+        return g;
     }
 
     public override string ToString() {
