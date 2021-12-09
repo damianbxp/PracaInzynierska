@@ -48,7 +48,7 @@ public class Tool : MonoBehaviour
         transform.localPosition = new Vector3(0,0,toolHeight / 2);
         transform.GetChild(0).localScale = new Vector3(toolDiameter, toolHeight/2, toolDiameter);
         toolWorkCenter.localPosition = new Vector3(0, -toolHeight / 2, 0);
-        armTarget.localPosition = new Vector3(0, 0, toolHeight);
+        armTarget.localPosition = new Vector3(0, toolHeight, 0);
         
         dummyTool.localPosition = new Vector3(0, 0, toolHeight / 2);
         dummyTool.GetChild(0).localScale = new Vector3(toolDiameter, toolHeight / 2, toolDiameter);

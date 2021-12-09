@@ -148,7 +148,7 @@ public class UIManager : MonoBehaviour
                 break;
             }
             case 1: {
-                toolTarget.position += toolLocalCoord.TransformDirection(addPos);
+                toolTarget.position += toolLocalCoord.TransformDirection(new Vector3(addPos.x,addPos.z,addPos.y));
                 break;
             }
             default: {
