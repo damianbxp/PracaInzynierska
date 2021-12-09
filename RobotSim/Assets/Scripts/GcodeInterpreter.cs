@@ -63,6 +63,10 @@ public class GcodeInterpreter : MonoBehaviour
                     G2G3Move(GCommandsList[currentCommand] as SGCommand);
                     break;
                 }
+                case "G3": {
+                    G2G3Move(GCommandsList[currentCommand] as SGCommand);
+                    break;
+                }
                 default: {
                     Debug.LogWarning("Not supported command");
                     break;
@@ -107,7 +111,7 @@ public class GcodeInterpreter : MonoBehaviour
 
 
         Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, ( longWay ? -1 : 1 ) * distFraction); //d³u¿sza droga + | krótsza droga -
-        Debug.LogWarning($"{distFraction} {opositeDistFraction}");
+        //Debug.LogWarning($"{distFraction} {opositeDistFraction}");
         robotMaster.SetToolTarget(pos, Vector3.zero);
         if(Mathf.Abs(longWay ? opositeDistFraction : distFraction) > 1)
             g.done = true;

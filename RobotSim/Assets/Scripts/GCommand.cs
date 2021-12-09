@@ -58,7 +58,7 @@ public class SGCommand : GCommand {
     public override void UpdateCommand(){
         base.UpdateCommand();
 
-        offset = new Vector3(I, J, K);
+        offset = new Vector3(I, K, J);
     }
 
     public override string ToString() {
