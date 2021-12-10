@@ -1016,7 +1016,7 @@ MonoBehaviour:
 
     G1 X300 Y0 Z0
 
-    G2 X0 Y0 Z300 I-300
+    G3 X0 Y0 Z300 I-300
     J0 K0
 
     G2 X300 Y0 Z0 I0 J0 K-300
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "G0 X0 Y0 Z0 A0 B0 C0 F100\nG1 X300 Y0 Z0\nG2 X0 Y0 Z300 I-300 J0 K0\nG2
+  m_text: "G0 X0 Y0 Z0 A0 B0 C0 F100\nG1 X300 Y0 Z0\nG3 X0 Y0 Z300 I-300 J0 K0\nG2
     X300 Y0 Z0 I0 J0 K-300\nG2 x0 Y300 I-300 J0 K0\nG2 X300 Y0 Z300 I0 J-300 K0\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -22988,7 +22988,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: 0
   maxTheta: 0
-  speed: 3
+  speed: 5
   dummyAxis: {fileID: 1587478723}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23249,7 +23249,7 @@ MonoBehaviour:
   jointMoveOffset: -90
   minTheta: -120
   maxTheta: 135
-  speed: 3
+  speed: 5
   dummyAxis: {fileID: 1910775048}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23411,7 +23411,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: 0
   maxTheta: 0
-  speed: 3
+  speed: 5
   dummyAxis: {fileID: 670826530}
   newTheta: 180
   baseTransform: {fileID: 6811166159413986613}
@@ -23529,7 +23529,7 @@ MonoBehaviour:
   jointMoveOffset: -90
   minTheta: 0
   maxTheta: 0
-  speed: 3
+  speed: 5
   dummyAxis: {fileID: 582351539}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23573,7 +23573,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: 0
   maxTheta: 0
-  speed: 3
+  speed: 5
   dummyAxis: {fileID: 1598227245}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23660,7 +23660,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: -45
   maxTheta: 125
-  speed: 3
+  speed: 5
   dummyAxis: {fileID: 1046971736}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}

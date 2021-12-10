@@ -60,6 +60,7 @@ public class GcodeInterpreter : MonoBehaviour
                     break;
                 }
                 case "G2": {
+                    
                     G2G3Move(GCommandsList[currentCommand] as SGCommand);
                     break;
                 }
@@ -89,7 +90,7 @@ public class GcodeInterpreter : MonoBehaviour
         Vector3 pos = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position, distFraction);
         Vector3 rot = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.rotation, GCommandsList[currentCommand].rotation, distFraction);
         robotMaster.SetToolTarget(pos, rot);
-        if(distFraction > 1) {
+        if(distFraction > 1 && Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision) {
             GCommandsList[currentCommand].done = true;
         }
     }
@@ -108,11 +109,22 @@ public class GcodeInterpreter : MonoBehaviour
 
         float travelAngle = Vector3.Angle(g.position, g.previousCommand.position);
 
-        Vector3 cross = Vector3.Cross(g.position, g.previousCommand.position);
-        Vector3 normal = Vector3.Cross(center - relStart, relEnd - relStart).normalized;
+        //Vector3 cross = Vector3.Cross(g.position, g.previousCommand.position);
+        //Vector3 normal = Vector3.Cross(center - relStart, relEnd - relStart).normalized;
+        Vector3 normal = Vector3.Cross(relStart - center, relEnd - center).normalized;
 
+        if(Vector3.Angle(normal, new Vector3(1,-1,1)) >= 90) { // ruch przeciwnie do ruchu wskazówek zegara
+            if(g.name == "G3")
+                longWay = true;
+        } else {
+            if(g.name == "G2")
+                longWay = true;
+        }
 
-        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + normal, Color.blue);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + normal, Color.black);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + Vector3.forward * 0.1f, Color.green);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + Vector3.right * 0.1f, Color.red);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + Vector3.up * 0.1f, Color.blue);
         //Debug.LogError($"{relStart} {relEnd} {center}");
 
         float opositeTravelAngle = 360 - travelAngle;
@@ -121,11 +133,18 @@ public class GcodeInterpreter : MonoBehaviour
         float distFraction = distComplete / totalDistance;
         float opositeDistFraction = distComplete / opositeTotalDistance;
 
+        Debug.LogError($"{distFraction} {opositeDistFraction}");
 
-        Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, ( longWay ? -1 : 1 ) * distFraction); //d³u¿sza droga + | krótsza droga -
+        if(!longWay) {
+            distFraction = Mathf.Clamp(distFraction, 0, 1);
+        } else {
+            opositeDistFraction = Mathf.Clamp(opositeDistFraction, 0, 1);
+        }
+
+        Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, ( longWay ? -1 : 1 ) * distFraction);
         pos += center;
         robotMaster.SetToolTarget(pos, Vector3.zero);
-        if(Mathf.Abs(longWay ? opositeDistFraction : distFraction) > 1)
+        if(Mathf.Abs(longWay ? opositeDistFraction : distFraction) == 1 && Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision)
             g.done = true;
     }
 
