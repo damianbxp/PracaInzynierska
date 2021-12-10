@@ -7,14 +7,23 @@ public class SimpleCameraControler : MonoBehaviour
     Transform yPivot;
     Transform cameraTR;
 
+    public Transform robot;
+    public Transform block;
+    public Transform tool;
+    int lookAt;
+
     public float sensitivityX;
     public float sensitivityY;
     public float sensitivityZoom;
+
+    public float zoomMin;
+    public float zoomMax;
 
     void Start()
     {
         yPivot = transform.GetChild(0).transform;
         cameraTR = yPivot.GetChild(0).transform;
+        ChangeCameraPivot();
     }
 
     
@@ -27,6 +36,10 @@ public class SimpleCameraControler : MonoBehaviour
         } else if(Input.GetKey(KeyCode.LeftControl)) {
             MoveX();
         }
+
+        if(lookAt == 2) {
+            transform.position = tool.position;
+        }
     }
 
     void MoveX() {
@@ -38,11 +51,32 @@ public class SimpleCameraControler : MonoBehaviour
     }
     void Zoom() {
         float input = Input.GetAxis("Mouse ScrollWheel");
-        if((cameraTR.localPosition.z < -1f || input < 0)&& (cameraTR.localPosition.z > -5 || input > 0))
+        if((cameraTR.localPosition.z < -zoomMin || input < 0)&& (cameraTR.localPosition.z > -zoomMax || input > 0))
             cameraTR.Translate(0, 0, input * sensitivityZoom * Time.deltaTime, Space.Self);
     }
 
-    public void SetPivotPos(Transform tr) {
-        transform.position = tr.position;
+    public void ChangeCameraPivot() {
+        lookAt++;
+        if(lookAt > 2)
+            lookAt = 0;
+        Debug.LogError(lookAt);
+        switch(lookAt) {
+            case 0: {//patrz na robota
+                transform.position = robot.position;
+                break;
+            }
+            case 1: {//patrz na blok
+                transform.position = block.position;
+                break;
+            }
+            case 2: {//patrz na narzedzie
+                transform.position = tool.position;
+                break;
+            }
+            default: {
+                Debug.LogError("Camera change - lookingAt wrong value");
+                break;
+            }
+        }
     }
 }

@@ -133,7 +133,6 @@ public class GcodeInterpreter : MonoBehaviour
         float distFraction = distComplete / totalDistance;
         float opositeDistFraction = distComplete / opositeTotalDistance;
 
-        Debug.LogError($"{distFraction} {opositeDistFraction}");
 
         if(!longWay) {
             distFraction = Mathf.Clamp(distFraction, 0, 1);
