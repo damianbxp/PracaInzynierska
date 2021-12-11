@@ -62,7 +62,9 @@
     <Compile Include="Assets\Robot\Scripts\Axis.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Processing\GaussianBlur.cs" />
     <Compile Include="Assets\Robot\Scripts\InverseKinematics.cs" />
+    <Compile Include="Assets\Scripts\SimpleCameraControler.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\GcodeInterpreter.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\VertexData.cs" />
     <Compile Include="Assets\Robot\Scripts\DummyAxis.cs" />
     <Compile Include="Assets\Robot\Scripts\IKRotSolver.cs" />
@@ -79,8 +81,19 @@
     <Compile Include="Assets\MarchingCubes\Scripts\TextureViewer\TextureViewer3D.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\MathUtility.cs" />
     <Compile Include="Assets\MarchingCubes\Scripts\Compute Helper\Channel.cs" />
-    <Compile Include="Assets\Scripts\SimpleCameraControler.cs" />
-    <Compile Include="Assets\Scripts\GcodeInterpreter.cs" />
+    <Compile Include="Assets\Scripts\GcodeSaveOpen.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\Sample\BasicSample.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\IStandaloneFileBrowser.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleOpenFileTextMultiple.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleOpenFileImage.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserEditor.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserMac.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowser.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleSaveFileImage.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserWindows.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleOpenFileText.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\StandaloneFileBrowserLinux.cs" />
+    <Compile Include="Assets\StandaloneFileBrowser\Sample\CanvasSampleSaveFileText.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\MarchingCubes\Scripts\Compute\EditTexture.compute" />
@@ -93,6 +106,7 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\MarchingCubes\Scripts\Compute Helper\Resources\ClearTexture.compute" />
+     <None Include="Assets\StandaloneFileBrowser\Plugins\Ookii.Dialogs.dll" />
      <None Include="Assets\MarchingCubes\Scripts\Compute\MarchingCubes.compute" />
      <None Include="Assets\MarchingCubes\Scripts\Compute Helper\Resources\Copy3D.compute" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
@@ -107,6 +121,7 @@
      <None Include="Assets\MarchingCubes\Scripts\Compute Helper\Resources\NormalizeTexture.compute" />
      <None Include="Assets\MarchingCubes\Scripts\TextureViewer\TextureViewer3D.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <None Include="Assets\StandaloneFileBrowser\Plugins\System.Windows.Forms.dll" />
      <None Include="Assets\MarchingCubes\Scripts\Compute\Includes\MarchTables.compute" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
@@ -335,6 +350,12 @@
     </Reference>
     <Reference Include="UnityEditor.UnityConnectModule">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.5f1\Editor\Data\Managed\UnityEngine\UnityEditor.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Ookii.Dialogs">
+      <HintPath>Assets\StandaloneFileBrowser\Plugins\Ookii.Dialogs.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <HintPath>Assets\StandaloneFileBrowser\Plugins\System.Windows.Forms.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.3.5f1\Editor\Data\MonoBleedingEdge\lib\mono\4.7.1-api\mscorlib.dll</HintPath>

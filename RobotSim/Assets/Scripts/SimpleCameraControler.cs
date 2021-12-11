@@ -59,7 +59,6 @@ public class SimpleCameraControler : MonoBehaviour
         lookAt++;
         if(lookAt > 2)
             lookAt = 0;
-        Debug.LogError(lookAt);
         switch(lookAt) {
             case 0: {//patrz na robota
                 transform.position = robot.position;
