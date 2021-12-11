@@ -113,7 +113,7 @@ public class GcodeInterpreter : MonoBehaviour
         //Vector3 normal = Vector3.Cross(center - relStart, relEnd - relStart).normalized;
         Vector3 normal = Vector3.Cross(relStart - center, relEnd - center).normalized;
 
-        if(Vector3.Angle(normal, new Vector3(1,-1,1)) >= 90) { // ruch przeciwnie do ruchu wskazówek zegara
+        if(Vector3.Angle(normal, new Vector3(1, -1, 1)) >= 90) { // ruch przeciwnie do ruchu wskazówek zegara
             if(g.name == "G3")
                 longWay = true;
         } else {
@@ -121,10 +121,10 @@ public class GcodeInterpreter : MonoBehaviour
                 longWay = true;
         }
 
-        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + normal, Color.black);
-        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + Vector3.forward * 0.1f, Color.green);
-        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + Vector3.right * 0.1f, Color.red);
-        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y)/1000 + Vector3.up * 0.1f, Color.blue);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + normal, Color.black);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + Vector3.forward * 0.1f, Color.green);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + Vector3.right * 0.1f, Color.red);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + Vector3.up * 0.1f, Color.blue);
         //Debug.LogError($"{relStart} {relEnd} {center}");
 
         float opositeTravelAngle = 360 - travelAngle;
@@ -142,9 +142,32 @@ public class GcodeInterpreter : MonoBehaviour
 
         Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, ( longWay ? -1 : 1 ) * distFraction);
         pos += center;
+
         robotMaster.SetToolTarget(pos, Vector3.zero);
         if(Mathf.Abs(longWay ? opositeDistFraction : distFraction) == 1 && Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision)
             g.done = true;
+    }
+
+    public Vector3 GetPointOnCircle(SGCommand g, float fraction) {
+        //w uk³adzie XYZ
+        Vector3 center = g.previousCommand.position + g.offset;
+        Vector3 relStart = g.previousCommand.position - center;
+        Vector3 relEnd = g.position - center;
+
+        bool longWay = false;
+
+        Vector3 normal = Vector3.Cross(relStart - center, relEnd - center).normalized;
+
+        if(Vector3.Angle(normal, new Vector3(1, -1, 1)) >= 90) {
+            if(g.name == "G3")
+                longWay = true;
+        } else {
+            if(g.name == "G2")
+                longWay = true;
+        }
+
+        Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, ( longWay ? -1 : 1 ) * fraction);
+        return pos += center;
     }
 
     void UpdateGcodeLines() {
@@ -290,6 +313,16 @@ public class GcodeInterpreter : MonoBehaviour
     void UpdateTimer() {
         CommandTimeText.text = $"{( Time.time - commandStartTime ).Round(1):0.0#}s";
         ProgramTimeText.text = $"{( Time.time - programStartTime ).Round(1):0.0#}s";
+    }
+
+    public void ExportKRL() {
+        UpdateGcodeLines();
+        GCommandsList = GenerateGCommandsList();
+        string krlCode = "";
+        foreach(GCommand g in GCommandsList) {
+            krlCode += g.ToKRL() + "\n";
+        }
+        GetComponent<GcodeSaveOpen>().SaveFile(krlCode, "src");
     }
 }
 public struct GcodeData {

@@ -31,9 +31,13 @@ public class GcodeSaveOpen : MonoBehaviour
     }
 
     public void SaveFile() {
-        string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "", "gcode");
+        SaveFile(GameObject.Find("GcodeText").GetComponent<TMPro.TMP_InputField>().text.ToUpper().Normalize(System.Text.NormalizationForm.FormC), "gcode");
+    }
+
+    public void SaveFile(string content, string fileType) {
+        string path = StandaloneFileBrowser.SaveFilePanel("Save File", "", "", fileType);
         if(path.Length > 0) {
-            File.WriteAllText(path, GameObject.Find("GcodeText").GetComponent<TMPro.TMP_InputField>().text.ToUpper().Normalize(System.Text.NormalizationForm.FormC));
+            File.WriteAllText(path, content);
             Debug.Log("File saved");
         } else
             Debug.LogError("Save fail - no path found");

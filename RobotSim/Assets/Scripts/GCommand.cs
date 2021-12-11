@@ -44,6 +44,21 @@ public class GCommand {
         if(float.IsNaN(S)) S = previousCommand.S;
     }
 
+    public virtual string ToKRL() {
+        string returnStr = "";
+        if(name == "G0")
+            returnStr = "PTP";
+        else
+            returnStr = "LIN";
+        
+        string point = " {" + $"X {X.ToStrDot()}, Y {Y.ToStrDot()}, Z {Z.ToStrDot()}, A {A.ToStrDot()}, B {B.ToStrDot()}, C {C.ToStrDot()}" + "} ";
+        returnStr += point;
+        if(name == "G1")
+            returnStr += $"Vel={F / 1000}m/s";
+
+        return returnStr;
+    }
+
     public override string ToString() {
         return $"{name} X{X} Y{Y} Z{Z} A{A} B{B} C{C} F{F} S{S}";
     }
@@ -59,6 +74,17 @@ public class SGCommand : GCommand {
         base.UpdateCommand();
 
         offset = new Vector3(I, K, J);
+    }
+
+    public override string ToKRL() {
+        string returnStr = "CIRC";
+        string point = " {" + $"X {X.ToStrDot()}, Y {Y.ToStrDot()}, Z {Z.ToStrDot()}, A {A.ToStrDot()}, B {B.ToStrDot()}, C {C.ToStrDot()}" + "} ";
+        Vector3 auxPoint = GameObject.Find("RobotMaster").GetComponent<GcodeInterpreter>().GetPointOnCircle(this, 0.5f);
+        string auxPointStr = " {" + $"X {auxPoint.x.ToStrDot()}, Y {auxPoint.z.ToStrDot()}, Z {auxPoint.y.ToStrDot()}" + "}";
+
+        returnStr += auxPointStr + point;
+        returnStr += $"Vel={F / 1000}m/s";
+        return returnStr;
     }
 
     public override string ToString() {
