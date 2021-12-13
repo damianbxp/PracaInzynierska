@@ -56,7 +56,7 @@ public class GcodeInterpreter : MonoBehaviour
                     break;
                 }
                 case "G1": {
-                    G1Move();
+                    G1Move(GCommandsList[currentCommand]);
                     break;
                 }
                 case "G2": {
@@ -84,33 +84,29 @@ public class GcodeInterpreter : MonoBehaviour
             GCommandsList[currentCommand].done = true;
         }
     }
-    void G1Move() {
-        float distComplete = ( Time.time - commandStartTime ) * GCommandsList[currentCommand].F;
-        float distFraction = distComplete / Vector3.Distance(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position);
-        Vector3 pos = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.position, GCommandsList[currentCommand].position, distFraction);
-        Vector3 rot = Vector3.Lerp(GCommandsList[currentCommand].previousCommand.rotation, GCommandsList[currentCommand].rotation, distFraction);
+    void G1Move(GCommand g) {
+        float distComplete = ( Time.time - commandStartTime ) * g.F;
+        float distFraction = distComplete / Vector3.Distance(g.previousCommand.position, g.position);
+        Vector3 pos = Vector3.Lerp(g.previousCommand.position, g.position, distFraction);
+        Vector3 rot = Quaternion.Lerp(Quaternion.Euler(g.previousCommand.rotation), Quaternion.Euler(g.rotation), distFraction).eulerAngles;
+
         robotMaster.SetToolTarget(pos, rot);
         if(distFraction > 1 && Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision) {
-            GCommandsList[currentCommand].done = true;
+            g.done = true;
         }
     }
     void G2G3Move(SGCommand g) {
-        //w uk³adzie XYZ
-        Vector3 center = g.previousCommand.position + g.offset;
-        Vector3 relStart = g.previousCommand.position - center;
-        Vector3 relEnd = g.position - center;
-
-        //Debug.LogError(center);
-
-        float distComplete = ( Time.time - commandStartTime ) * g.F;
-
         bool longWay = false;
+        
+        Vector3 center = g.previousCommand.position + g.offset; // obliczenie œrodka ³uku
+        Vector3 relStart = g.previousCommand.position - center; // obliczenie punktu pocz¹tkowego wzglêdem œrodka
+        Vector3 relEnd = g.position - center; // obliczenie punktu koñcowego wzglêdem œrodka
 
+        
+        float distComplete = ( Time.time - commandStartTime ) * g.F;
 
         float travelAngle = Vector3.Angle(g.position, g.previousCommand.position);
 
-        //Vector3 cross = Vector3.Cross(g.position, g.previousCommand.position);
-        //Vector3 normal = Vector3.Cross(center - relStart, relEnd - relStart).normalized;
         Vector3 normal = Vector3.Cross(relStart - center, relEnd - center).normalized;
 
         if(Vector3.Angle(normal, new Vector3(1, -1, 1)) >= 90) { // ruch przeciwnie do ruchu wskazówek zegara
@@ -143,7 +139,9 @@ public class GcodeInterpreter : MonoBehaviour
         Vector3 pos = Vector3.SlerpUnclamped(relStart, relEnd, ( longWay ? -1 : 1 ) * distFraction);
         pos += center;
 
-        robotMaster.SetToolTarget(pos, Vector3.zero);
+        Vector3 rot = Quaternion.Lerp(Quaternion.Euler(g.previousCommand.rotation), Quaternion.Euler(g.rotation), distFraction).eulerAngles;
+
+        robotMaster.SetToolTarget(pos, rot);
         if(Mathf.Abs(longWay ? opositeDistFraction : distFraction) == 1 && Vector3.Distance(robotMaster.toolTarget.position, robotMaster.toolTransform.position) <= posPrecision)
             g.done = true;
     }
@@ -189,9 +187,9 @@ public class GcodeInterpreter : MonoBehaviour
             list[i].previousCommand = list[i - 1];
         }
 
-        for(int i = 0; i < list.Count-1; i++) {
-            list[i].nextCommand = list[i + 1];
-        }
+        //for(int i = 0; i < list.Count-1; i++) {
+        //    list[i].nextCommand = list[i + 1];
+        //}
 
         for(int i = 0; i < list.Count; i++) {
             list[i].UpdateCommand();

@@ -21,13 +21,13 @@ public class GCommand {
     public float S = float.NaN;
 
     public GCommand previousCommand;
-    public GCommand nextCommand;
+    //public GCommand nextCommand;
 
     public virtual void UpdateCommand() {// zastêpuje NaN poprzednimi warotœciami
         if(previousCommand == null)
             previousCommand = new GCommand();
-        if(nextCommand == null)
-            nextCommand = new GCommand();
+        //if(nextCommand == null)
+        //    nextCommand = new GCommand();
 
         if(float.IsNaN(X)) X = previousCommand.X;
         if(float.IsNaN(Y)) Y = previousCommand.Y;
