@@ -28,15 +28,15 @@
      inkscape:document-units="mm"
      showgrid="true"
      units="px"
-     inkscape:zoom="1"
-     inkscape:cx="727"
-     inkscape:cy="271.5"
+     inkscape:zoom="0.5"
+     inkscape:cx="322"
+     inkscape:cy="53"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="1912"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer10"
+     inkscape:current-layer="layer9"
      gridtolerance="10">
     <inkscape:grid
        type="xygrid"
@@ -247,9 +247,9 @@
        style="font-style:normal;font-weight:normal;font-size:200px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect8057);fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:3.77953;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"><tspan
          x="821.4082"
          y="208.22388"
-         id="tspan2889"><tspan
+         id="tspan2984"><tspan
            style="font-family:'Franklin Gothic Medium Cond';-inkscape-font-specification:'Franklin Gothic Medium Cond'"
-           id="tspan2887">G</tspan></tspan></text>
+           id="tspan2982">G</tspan></tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -324,24 +324,24 @@
      inkscape:groupmode="layer"
      id="layer9"
      inkscape:label="KRL"
-     sodipodi:insensitive="true"
      style="display:inline">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:28.2222px;line-height:1.25;font-family:sans-serif;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:28.2222px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        x="159.01457"
        y="90.487503"
        id="text4164"><tspan
          sodipodi:role="line"
          id="tspan4162"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.2222px;font-family:'Siemens Serif Semibold';-inkscape-font-specification:'Siemens Serif Semibold, ';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.2222px;font-family:'Siemens Serif Semibold';-inkscape-font-specification:'Siemens Serif Semibold, ';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          x="159.01457"
          y="90.487503">KRL</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer10"
-     inkscape:label="kamera">
+     inkscape:label="kamera"
+     sodipodi:insensitive="true">
     <path
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="M 238.38958,81.491666 256.38125,71.4375 256.11666,88.370833 Z"

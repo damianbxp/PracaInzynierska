@@ -36,6 +36,7 @@ public class GcodeInterpreter : MonoBehaviour
         if(!robotMaster.isPaused && !robotMaster.jogMode && isStarted && !programFinished) {
             RunProgram();
         }
+        
     }
 
     void RunProgram() {
@@ -53,19 +54,23 @@ public class GcodeInterpreter : MonoBehaviour
             switch(GCommandsList[currentCommand].name) { //wykonaj komende
                 case "G0": {
                     G0Move();
+                    SpindleUpdate(GCommandsList[currentCommand]);
                     break;
                 }
                 case "G1": {
                     G1Move(GCommandsList[currentCommand]);
+                    SpindleUpdate(GCommandsList[currentCommand]);
                     break;
                 }
                 case "G2": {
                     
                     G2G3Move(GCommandsList[currentCommand] as SGCommand);
+                    SpindleUpdate(GCommandsList[currentCommand]);
                     break;
                 }
                 case "G3": {
                     G2G3Move(GCommandsList[currentCommand] as SGCommand);
+                    SpindleUpdate(GCommandsList[currentCommand]);
                     break;
                 }
                 default: {
@@ -141,6 +146,9 @@ public class GcodeInterpreter : MonoBehaviour
             g.done = true;
     }
 
+    void SpindleUpdate(GCommand g) {
+        robotMaster.Spindle(g.S > 0);
+    }
     public Vector3 GetPointOnCircle(SGCommand g, float fraction) {
         //w uk³adzie XYZ
         Vector3 center = g.previousCommand.position + g.offset;
@@ -299,6 +307,7 @@ public class GcodeInterpreter : MonoBehaviour
     public void FinishProgram() {
         programFinished = true;
         isStarted = false;
+        robotMaster.Spindle(false);
         uiManager.UpdateConsole("Zakoñczono program");
         robotMaster.UpdateButtons();
     }

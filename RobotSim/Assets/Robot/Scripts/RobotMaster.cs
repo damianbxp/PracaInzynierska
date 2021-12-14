@@ -59,9 +59,16 @@ public class RobotMaster : MonoBehaviour
     }
 
     public void Spindle() {
-        spindle = !spindle;
-        tool.powerOn = spindle;
-        UpdateButtons();
+        Debug.LogError(spindle);
+        Spindle(!spindle);
+    }
+
+    public void Spindle(bool value) {
+        if(spindle != value) {
+            spindle = value;
+            tool.powerOn = spindle;
+            UpdateButtons();
+        }
     }
 
     public void EnableIK(bool enable) {
