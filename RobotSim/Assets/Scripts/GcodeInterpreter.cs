@@ -73,6 +73,15 @@ public class GcodeInterpreter : MonoBehaviour
                     SpindleUpdate(GCommandsList[currentCommand]);
                     break;
                 }
+                case "S": {
+                    SpindleUpdate(GCommandsList[currentCommand]);
+                    GCommandsList[currentCommand].done = true;
+                    break;
+                }
+                case "F": {
+                    GCommandsList[currentCommand].done = true;
+                    break;
+                }
                 default: {
                     Debug.LogWarning("Not supported command");
                     break;
@@ -210,6 +219,27 @@ public class GcodeInterpreter : MonoBehaviour
         code += ";";
         List<GCommand> gCommands = new List<GCommand>();
         int startIndex = code.IndexOf("G");
+
+        if(startIndex == -1) {
+            float otherValue;
+            otherValue = GetCommandValue("S", code);
+            if(!float.IsNaN(otherValue)) {
+                GCommand g = new GCommand {
+                    name = "S",
+                    S = otherValue
+                };
+                gCommands.Add(g);
+            } else {
+                otherValue = GetCommandValue("F", code);
+                if(!float.IsNaN(otherValue)) {
+                    GCommand g = new GCommand {
+                        name = "F",
+                        F = otherValue
+                    };
+                    gCommands.Add(g);
+                }
+            }
+        }
 
         while(startIndex != -1) {
 
