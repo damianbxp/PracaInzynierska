@@ -51,8 +51,10 @@ public class SimpleCameraControler : MonoBehaviour
     }
     void Zoom() {
         float input = Input.GetAxis("Mouse ScrollWheel");
-        if((cameraTR.localPosition.z < -zoomMin || input < 0)&& (cameraTR.localPosition.z > -zoomMax || input > 0))
-            cameraTR.Translate(0, 0, input * sensitivityZoom, Space.Self);
+        //if((cameraTR.localPosition.z < -zoomMin || input < 0)&& (cameraTR.localPosition.z > -zoomMax || input > 0))
+        //    cameraTR.Translate(0, 0, input * sensitivityZoom, Space.Self);
+        input *= sensitivityZoom;
+        cameraTR.localPosition = new Vector3(0,0,Mathf.Clamp(cameraTR.localPosition.z + input, -zoomMax, -zoomMin));
     }
 
     public void ChangeCameraPivot() {

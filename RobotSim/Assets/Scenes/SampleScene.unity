@@ -16253,9 +16253,9 @@ MonoBehaviour:
   robot: {fileID: 6811166159413986613}
   block: {fileID: 1041445926}
   tool: {fileID: 11030236}
-  sensitivityX: 100
-  sensitivityY: 50
-  sensitivityZoom: 500
+  sensitivityX: 10
+  sensitivityY: 1
+  sensitivityZoom: 5
   zoomMin: 1
   zoomMax: 5
 --- !u!1 &1531015672
@@ -23157,7 +23157,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: 0
   maxTheta: 0
-  speed: 5
+  speed: 4
   dummyAxis: {fileID: 1587478723}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23418,7 +23418,7 @@ MonoBehaviour:
   jointMoveOffset: -90
   minTheta: -120
   maxTheta: 135
-  speed: 5
+  speed: 4
   dummyAxis: {fileID: 1910775048}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23580,7 +23580,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: 0
   maxTheta: 0
-  speed: 5
+  speed: 4
   dummyAxis: {fileID: 670826530}
   newTheta: 180
   baseTransform: {fileID: 6811166159413986613}
@@ -23698,7 +23698,7 @@ MonoBehaviour:
   jointMoveOffset: -90
   minTheta: 0
   maxTheta: 0
-  speed: 5
+  speed: 4
   dummyAxis: {fileID: 582351539}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23742,7 +23742,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: 0
   maxTheta: 0
-  speed: 5
+  speed: 4
   dummyAxis: {fileID: 1598227245}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
@@ -23829,7 +23829,7 @@ MonoBehaviour:
   jointMoveOffset: 0
   minTheta: -45
   maxTheta: 125
-  speed: 5
+  speed: 4
   dummyAxis: {fileID: 1046971736}
   newTheta: 0
   baseTransform: {fileID: 6811166159413986613}
