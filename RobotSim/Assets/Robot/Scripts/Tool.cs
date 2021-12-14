@@ -52,5 +52,7 @@ public class Tool : MonoBehaviour
         
         dummyTool.localPosition = new Vector3(0, 0, toolHeight / 2);
         dummyTool.GetChild(0).localScale = new Vector3(toolDiameter, toolHeight / 2, toolDiameter);
+
+        GameObject.Find("RobotMaster").GetComponent<GcodeInterpreter>().posPrecision = toolHeight/1.8f;
     }
 }
