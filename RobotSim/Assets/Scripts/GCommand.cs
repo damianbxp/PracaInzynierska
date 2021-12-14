@@ -46,7 +46,7 @@ public class GCommand {
     }
 
     public virtual string ToKRL() {
-        string returnStr = "";
+        string returnStr;
         if(name == "G0")
             returnStr = "PTP";
         else

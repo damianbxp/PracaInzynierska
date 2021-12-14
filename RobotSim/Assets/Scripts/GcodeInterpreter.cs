@@ -99,6 +99,11 @@ public class GcodeInterpreter : MonoBehaviour
         }
     }
     void G1Move(GCommand g) {
+        if(float.IsNaN(g.F)) {
+            uiManager.UpdateConsole("Nieznany posuw");
+            FinishProgram();
+            return;
+        }
         float distComplete = ( Time.time - commandStartTime ) * g.F;
         float distFraction = distComplete / Vector3.Distance(g.previousCommand.position, g.position);
         Vector3 pos = Vector3.Lerp(g.previousCommand.position, g.position, distFraction);
@@ -110,6 +115,11 @@ public class GcodeInterpreter : MonoBehaviour
         }
     }
     void G2G3Move(SGCommand g) {
+        if(float.IsNaN(g.F)) {
+            uiManager.UpdateConsole("Nieznany posuw");
+            FinishProgram();
+            return;
+        }
         bool longWay = false;
         
         Vector3 center = g.previousCommand.position + g.offset; // obliczenie œrodka ³uku
