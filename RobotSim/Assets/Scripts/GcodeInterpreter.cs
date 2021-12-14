@@ -209,10 +209,6 @@ public class GcodeInterpreter : MonoBehaviour
             list[i].previousCommand = list[i - 1];
         }
 
-        //for(int i = 0; i < list.Count-1; i++) {
-        //    list[i].nextCommand = list[i + 1];
-        //}
-
         for(int i = 0; i < list.Count; i++) {
             list[i].UpdateCommand();
         }

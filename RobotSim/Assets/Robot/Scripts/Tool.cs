@@ -25,13 +25,8 @@ public class Tool : MonoBehaviour
     }
 
     void Update() {
-
-        //transform.rotation = Quaternion.Euler(0, 0, 0); /// utrzymuje wrzeciono pionowo <- usun¹æ
-        
-
         if(powerOn) {
             blockMesh.GetComponent<BlockGen>().ModifyBlock(toolWorkCenter, toolDiameter/2, toolHeight, toolTipAngle/2);
-            //Debug.Log(transform.position - blockMesh.transform.position);
             onTerrainModified?.Invoke();
         }
     }

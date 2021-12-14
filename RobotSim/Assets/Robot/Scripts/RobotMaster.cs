@@ -59,7 +59,6 @@ public class RobotMaster : MonoBehaviour
     }
 
     public void Spindle() {
-        Debug.LogError(spindle);
         Spindle(!spindle);
     }
 

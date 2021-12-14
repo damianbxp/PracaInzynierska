@@ -279,9 +279,6 @@ public class UIManager : MonoBehaviour
     }
     public void ChangeMoveIncrement(float amount) {
         SetMoveIncrement(incrementMoveAmount * 1000 + amount);
-
-        //incrementMoveAmount = Mathf.Clamp(incrementMoveAmount*1000 + amount, 0, 1000)/1000;
-        //IncrementMoveText.text = ( incrementMoveAmount * 1000 ).ToString();
     }
     public void SetMoveIncrement(float amount) {
         incrementMoveAmount = Mathf.Clamp(amount, 0, 1000) / 1000;
