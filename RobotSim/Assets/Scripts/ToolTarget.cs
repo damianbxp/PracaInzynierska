@@ -14,9 +14,15 @@ public class ToolTarget : MonoBehaviour
 
     void Update()
     {
-        if(!robotMaster.enableIK) {
-            transform.position = tcp.position;
-            transform.rotation = Quaternion.Euler(tcp.eulerAngles + new Vector3(-90,0,0));
-        }
+        //if(!robotMaster.enableIK) {
+        //    transform.position = tcp.position;
+        //    transform.rotation = Quaternion.Euler(tcp.eulerAngles + new Vector3(-90,0,0));
+        //}
+    }
+    public void FollowTCP(bool follow) {
+        if(follow)
+            transform.SetParent(tcp);
+        else
+            transform.SetParent(null);
     }
 }

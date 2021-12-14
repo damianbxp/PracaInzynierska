@@ -102,13 +102,10 @@ public class GcodeInterpreter : MonoBehaviour
         Vector3 relStart = g.previousCommand.position - center; // obliczenie punktu pocz¹tkowego wzglêdem œrodka
         Vector3 relEnd = g.position - center; // obliczenie punktu koñcowego wzglêdem œrodka
 
-        
         float distComplete = ( Time.time - commandStartTime ) * g.F;
-
         float travelAngle = Vector3.Angle(g.position, g.previousCommand.position);
 
         Vector3 normal = Vector3.Cross(relStart - center, relEnd - center).normalized;
-
         if(Vector3.Angle(normal, new Vector3(1, -1, 1)) >= 90) { // ruch przeciwnie do ruchu wskazówek zegara
             if(g.name == "G3")
                 longWay = true;
@@ -117,18 +114,16 @@ public class GcodeInterpreter : MonoBehaviour
                 longWay = true;
         }
 
-        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + normal, Color.black);
+        Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + normal.normalized * 0.2f, Color.black);
         Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + Vector3.forward * 0.1f, Color.green);
         Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + Vector3.right * 0.1f, Color.red);
         Debug.DrawLine(robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000, robotMaster.homePoint + new Vector3(center.x, center.z, center.y) / 1000 + Vector3.up * 0.1f, Color.blue);
-        //Debug.LogError($"{relStart} {relEnd} {center}");
 
         float opositeTravelAngle = 360 - travelAngle;
         float totalDistance = ( 2 * Mathf.PI * g.offset.magnitude * travelAngle ) / 360;
         float opositeTotalDistance = ( 2 * Mathf.PI * g.offset.magnitude * opositeTravelAngle ) / 360;
         float distFraction = distComplete / totalDistance;
         float opositeDistFraction = distComplete / opositeTotalDistance;
-
 
         if(!longWay) {
             distFraction = Mathf.Clamp(distFraction, 0, 1);

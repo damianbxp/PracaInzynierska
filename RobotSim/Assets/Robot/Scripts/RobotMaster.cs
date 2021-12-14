@@ -16,6 +16,7 @@ public class RobotMaster : MonoBehaviour
     public GcodeInterpreter gcodeInterpreter;
 
 
+    ToolTarget toolTargetScript;
     public Transform toolTarget;
     public Transform toolTransform;
 

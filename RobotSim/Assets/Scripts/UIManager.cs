@@ -196,6 +196,8 @@ public class UIManager : MonoBehaviour
                 JointCoordGroup.alpha = 0;
 
                 robotMaster.enableIK = true;
+                toolTarget.GetComponent<ToolTarget>().FollowTCP(false);
+
 
                 break;
             }
@@ -213,6 +215,8 @@ public class UIManager : MonoBehaviour
                 JointCoordGroup.blocksRaycasts = false;
                 JointCoordGroup.alpha = 0;
                 robotMaster.enableIK = true;
+                toolTarget.GetComponent<ToolTarget>().FollowTCP(false);
+
                 break;
             }
             case 2: {// oœ
@@ -228,6 +232,8 @@ public class UIManager : MonoBehaviour
                 JointCoordGroup.blocksRaycasts = true;
                 JointCoordGroup.alpha = 1;
                 robotMaster.enableIK = false;
+
+                toolTarget.GetComponent<ToolTarget>().FollowTCP(true);
 
                 for(int i = 0; i < 6; i++) {
                     jointMoveUIFields[i].text = (IK.axes[i].theta - IK.axes[i].jointMoveOffset).ToString();
