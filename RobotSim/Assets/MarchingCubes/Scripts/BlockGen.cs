@@ -278,17 +278,13 @@ public class BlockGen : MonoBehaviour
 		int editEndY = Mathf.RoundToInt(tEndy * ( editTextureSize - 1 ));
 		int editEndZ = Mathf.RoundToInt(tEndz * ( editTextureSize - 1 ));
 
-		//Debug.Log($"{editX} {editY} {editZ}");
-		//Debug.Log($"\n{toolPos.x} {toolPos.y} {toolPos.z}\n{toolEndPos.x} {toolEndPos.y} {toolEndPos.z}");
 
 		editCompute.SetInts("toolCenter", editX, editY, editZ);
 		editCompute.SetInts("toolEnd",editEndX, editEndY, editEndZ);
-		//editCompute.SetInts("toolEnd",50, 100, 50);
 		editCompute.SetInt("toolHeight", Mathf.CeilToInt(toolHeight / editPixelWorldSize));
 		editCompute.SetInt("toolRadius", Mathf.CeilToInt(toolRadius / editPixelWorldSize));
 		editCompute.SetFloat("toolAngleCos", -Mathf.Cos(Mathf.Deg2Rad * toolAngle));
 		ComputeHelper.Dispatch(editCompute, editTextureSize, editTextureSize, editTextureSize);
-
 
         float worldRadius = ( editRadius + 1 );
         for(int i = 0; i < chunks.Length; i++) {
