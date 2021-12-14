@@ -1012,9 +1012,13 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 'G0 X200 Y-200 Z3 A0 B0 C0 F100
+  m_Text: 'G0 X200 Y-200 Z3 A0 B0 C0
 
-    G1 Z-5 S1000
+    F2400
+
+    S 1000
+
+    G1 Z-5
 
     G1 Y200
 
@@ -1057,8 +1061,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "G0 X200 Y-200 Z3 A0 B0 C0 F100\nG1 Z-5 S1000\nG1 Y200\nG1 X-200\nG1 Y-200\nG1
-    X200\nG1 Z5\u200B"
+  m_text: "G0 X200 Y-200 Z3 A0 B0 C0\nF2400\nS 1000\nG1 Z-5\nG1 Y200\nG1 X-200\nG1
+    Y-200\nG1 X200\nG1 Z5\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

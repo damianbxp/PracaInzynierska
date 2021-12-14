@@ -41,6 +41,7 @@ public class GCommand {
         rotation = new Vector3(A, B, C);
 
         if(float.IsNaN(F)) F = previousCommand.F;
+        else F /= 60;
         if(float.IsNaN(S)) S = previousCommand.S;
     }
 
