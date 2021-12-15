@@ -145,6 +145,12 @@ public class BlockGen : MonoBehaviour
 
 	}
 
+	public void UpdateChunks() {
+        foreach(var chunk in chunks) {
+			GenerateChunk(chunk);
+        }
+    }
+
 	void GenerateChunk(Chunk chunk)
 	{
 
@@ -286,11 +292,14 @@ public class BlockGen : MonoBehaviour
 		editCompute.SetFloat("toolAngleCos", -Mathf.Cos(Mathf.Deg2Rad * toolAngle));
 		ComputeHelper.Dispatch(editCompute, editTextureSize, editTextureSize, editTextureSize);
 
-        for(int i = 0; i < chunks.Length; i++) {
+		//Transform debugSphere = GameObject.Find("DebugSphere").transform;
+		//debugSphere.position = blockPosition + toolPos + toolTransform.up * toolHeight/2;
+		//debugSphere.localScale = Vector3.one * toolHeight;
+
+		for(int i = 0; i < chunks.Length; i++) {
             Chunk chunk = chunks[i];
-            if(MathUtility.SphereIntersectsBox(toolPos, toolRadius, chunk.centre, Vector3.one * chunk.size)) {
+            if(MathUtility.SphereIntersectsBox(toolPos + toolTransform.up * toolHeight / 2, toolHeight/1.5f, chunk.centre, Vector3.one * chunk.size)) {
                 chunk.terra = true;
-				//Debug.LogError(chunk.centre);
                 GenerateChunk(chunk);
             }
         }

@@ -11,7 +11,6 @@ public class GcodeInterpreter : MonoBehaviour
     public bool isStarted = false;
     public bool programFinished = false;
     public float posPrecision;
-    //int currentLine;
     int currentCommand = 0;
 
     List<string> gcodeLines;
@@ -49,7 +48,7 @@ public class GcodeInterpreter : MonoBehaviour
             commandStartTime = Time.time;
             uiManager.UpdateConsole(GCommandsList[currentCommand].ToString());
         } else {
-            Debug.Log($"Running {currentCommand + 1}/{GCommandsList.Count}: {GCommandsList[currentCommand]}");
+            //Debug.Log($"Running {currentCommand + 1}/{GCommandsList.Count}: {GCommandsList[currentCommand]}");
             UpdateTimer();
             switch(GCommandsList[currentCommand].name) { //wykonaj komende
                 case "G0": {
