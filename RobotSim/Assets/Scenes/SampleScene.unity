@@ -9697,8 +9697,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 298424841}
-  numChunks: 1
-  numPointsPerAxis: 100
+  numChunks: 4
+  numPointsPerAxis: 25
   isoLevel: 0
   robotMaster: {fileID: 1587449090}
   marchingCubesCompute: {fileID: 7200000, guid: 7715ea98d472cf242becdb2e0510d05f, type: 3}

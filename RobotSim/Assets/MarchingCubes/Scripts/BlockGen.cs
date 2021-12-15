@@ -286,12 +286,12 @@ public class BlockGen : MonoBehaviour
 		editCompute.SetFloat("toolAngleCos", -Mathf.Cos(Mathf.Deg2Rad * toolAngle));
 		ComputeHelper.Dispatch(editCompute, editTextureSize, editTextureSize, editTextureSize);
 
-        float worldRadius = ( editRadius + 1 );
         for(int i = 0; i < chunks.Length; i++) {
             Chunk chunk = chunks[i];
-            GenerateChunk(chunk);
-            if(MathUtility.SphereIntersectsBox(toolPos, worldRadius, chunk.centre, Vector3.one * chunk.size)) {
+            if(MathUtility.SphereIntersectsBox(toolPos, toolRadius, chunk.centre, Vector3.one * chunk.size)) {
                 chunk.terra = true;
+				//Debug.LogError(chunk.centre);
+                GenerateChunk(chunk);
             }
         }
     }

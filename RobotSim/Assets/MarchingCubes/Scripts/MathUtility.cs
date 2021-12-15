@@ -17,6 +17,7 @@ public static class MathUtility
 		float dz = closestZ - sphereCentre.z;
 
 		float sqrDstToBox = dx * dx + dy * dy + dz * dz;
+		//Debug.LogError(sqrDstToBox);
 		return sqrDstToBox < sphereRadius * sphereRadius;
 	}
 
