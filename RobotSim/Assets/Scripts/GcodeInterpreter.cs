@@ -130,10 +130,10 @@ public class GcodeInterpreter : MonoBehaviour
 
         Vector3 normal = Vector3.Cross(relStart - center, relEnd - center).normalized;
         if(Vector3.Angle(normal, new Vector3(1, -1, 1)) >= 90) { // ruch przeciwnie do ruchu wskazówek zegara
-            if(g.name == "G3")
+            if(g.name == "G2")
                 longWay = true;
         } else {
-            if(g.name == "G2")
+            if(g.name == "G3")
                 longWay = true;
         }
 

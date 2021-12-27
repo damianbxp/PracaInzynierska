@@ -19,12 +19,13 @@ public class InverseKinematicsDH : MonoBehaviour
         robotMaster = GameObject.Find("RobotMaster").GetComponent<RobotMaster>();
     }
 
-    private void Update() {
-        //UpdateMatix();
-        if(robotMaster.enableIK) {
+    private void Update() {//automatycznie uruchamiana w ka¿dej klatce
+        if(robotMaster.enableIK) {//mo¿liwoœæ wy³¹czenia kinematyki odwrotnej
+            //transformacja punktu z globalnego uk³adu wspó³¿êdnych na lokalny
             Vector3 temp = rotBaseTransform.InverseTransformVector(wristTarget.position);
+            //rzutowanie punktu 3D na punkt 2D, wspó³¿êdna y jest pomijana
             wristLocalPos = new Vector2(temp.x, temp.z);
-            Calculate();
+            Calculate(); //obliczanie kinematyki odwrotnej
         }
     }
 
